@@ -1,0 +1,51 @@
+/**
+* Hoja de estilos para Balero CMS -> MsgBox
+* Forma de uso: $objeto = new MsgBox("Titulo", "Mensaje");
+* Más info: http://balerocms.com
+*/
+
+.msgbox_middle {
+	height: 50px;
+	color: #000000;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	background: rgb(254,255,255); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(254,255,255,1) 0%, rgba(210,235,249,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(254,255,255,1)), color-stop(100%,rgba(210,235,249,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(254,255,255,1) 0%,rgba(210,235,249,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(254,255,255,1) 0%,rgba(210,235,249,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(254,255,255,1) 0%,rgba(210,235,249,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(254,255,255,1) 0%,rgba(210,235,249,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#d2ebf9',GradientType=0 ); /* IE6-9 */
+border-radius: 10px; 
+-moz-border-radius: 10px; 
+-webkit-border-radius: 10px; 
+border: 1px solid #FCFCFC;
+padding-left: 30px;
+	padding-top: 40px;
+	padding-bottom: 30px;
+}
+.i {
+
+}
+.msgbox_bottom {
+	height: 76px;
+	color: #FFF;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #FFFFFF;
+}
+.msgbox_top {
+	height: 41px;
+	background-color: #FFFFFF;
+	font-size: 18px;
+	padding-top: 20px;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	font-weight: bold;
+	padding-left: 30px;
+	padding-bottom: 0;
+}

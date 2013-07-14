@@ -1,0 +1,50 @@
+/**
+* Box content para panel de admin Balero CMS
+* @author Anibal Gomez -lastprophet-
+**/
+
+.box_header {
+	/** gradient **/
+	background: rgb(255,255,255); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(229,229,229,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* W3C */
+
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+	/** esquinas redondeadas **/
+	width: 94%;
+	height: 40px;
+	-webkit-border-radius: 16px 15px 0px 0px;
+	-moz-border-radius: 16px 15px 0px 0px;
+	border-radius: 16px 15px 0px 0px;
+
+	border: 1px solid #D5DDE3;
+	background-color: #CFCFCF;
+	font-weight: bold;
+	padding-top: 20px;
+	font-size: small;
+	padding-left: 20px;
+
+}
+/** caja contenido **/
+.box_content {
+	width: 93%;
+	height: auto;
+	-webkit-border-radius: 0px 0px 15px 15px;
+	-moz-border-radius: 0px 0px 15px 15px;
+	border-radius: 0px 0px 15px 15px;
+	border: 1px solid #D5DDE3;
+	background-color: #FFFFFF;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 20px;
+	font-size: 16px;
+}
+/** centrar **/
+.box_header, .box_content {
+ 	margin-left: 37px ;
+  	margin-right: auto ;
+}

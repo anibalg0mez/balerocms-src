@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+* Configuración XML de Balero CMS.
+* NOTA: SI DESEA CONFIGURAR SU ARCHIVO "CONFIG" MANUALMENTE.
+
+  UTILIZE LOS SIGUIENTES ESTANDARES:
+  - yes: activado/verdadero
+  - no: desactivado/falso
+
+ NO SE PERMITEN LOS SIGUIENTES VALORES, 
+ EJEMPLO:
+ - Yes
+ - No
+ INCORRECTO
+ - yES
+ - nO
+ CORRECTO
+ - yes
+ - no
+* DE OTRA MANERA BALERO NO DETECTARA LA CONFIGURACIÓN.
+-->
+<config>
+	<database>
+		<dbhost>localhost</dbhost>
+		<dbuser>root</dbuser>
+		<!-- los campos en blanco se interpretan como "_blank" -->
+		<!-- de otra forma en el nucleo de Balero CMS XMLHandler nos mandara error si encuentra campos vacios -->
+		<!-- forma incorrecta <dbpass></dbpass> -->
+		<!-- forma correcta <dbpass>_blank</dbpass> -->
+		<dbpass>_blank</dbpass>
+		<dbname>balero_cms</dbname>
+	</database>
+	<admin>
+		<!-- datos del super usuario -->
+		<username>_blank</username>
+		<!-- pwd encriptado -->
+		<passwd>_blank</passwd>
+		<!-- datos admin -->
+		<firstname>Balero</firstname>
+		<lastname>CMS</lastname>
+		<!-- enviar avisos por correo -->
+		<newsletter>yes</newsletter>
+		<email>soporte@balerocms.com</email>
+	</admin>
+	<system>
+		<!-- instalador no ejecutado por primera vez -->
+		<firsttime>yes</firsttime>
+		<!-- balero cms instalado -->
+		<installed>no</installed>
+	</system>
+	<site>
+		<!-- Titulo de la página -->
+		<title>Balero CMS</title>
+		<!-- Direccion -->
+		<url>http://www.balerocms.com/</url>
+		<description>WEB creada con el software Balero CMS.</description>
+		<keywords>baler, cms, noticias, empresa, finanzas, blog</keywords>
+		<!-- basepath para urls amigables (se implementara en proximas versiones) -->
+		<basepath>http://localhost/BaleroCMS/BaleroCMS/</basepath>
+	</site>
+</config>

@@ -1,0 +1,4 @@
+# Redireccionar admin
+Options +FollowSymLinks
+RewriteEngine on
+RewriteRule admin.php index.php?app=admin

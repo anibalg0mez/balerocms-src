@@ -1,0 +1,35 @@
+/**
+* Hoja de estilos para Balero CMS -> MsgBox
+* Forma de uso: $objeto = new MsgBox("Titulo", "Mensaje");
+* Más info: http://balerocms.com
+*/
+
+.msgbox_middle {
+	height: auto;
+	background-image: url(../images/MsgBox_middle.png);
+	padding-left: 70px;
+	color: #FFF;
+	width: 100%;
+	background-repeat: repeat-y;
+}
+.i {
+
+}
+.msgbox_bottom {
+	height: 76px;
+	background-image: url(../images/MsgBox_bottom.png);
+	color: #FFF;
+	padding-left: 70px;
+	width: 100%;
+	background-repeat: no-repeat;
+}
+.msgbox_top {
+	background-image: url(../images/MsgBox_top.png);
+	height: 61px;
+	color: #FFF;
+	font-size: 23px;
+	padding-left: 70px;
+	padding-top: 20px;
+	width: 100%;
+	background-repeat: no-repeat;
+}
