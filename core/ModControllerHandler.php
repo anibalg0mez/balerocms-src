@@ -50,6 +50,13 @@ class ModControllerHandler {
 		try {
 		if(isset($_GET['sr'])) {
 				
+			/**
+			 *
+			 * Problem with CGI/Fast CGI as PHP Server API Fixed
+			 */
+				
+			$sr = $_GET['sr'];
+			
 			if(!isset($_GET['mod_controller'])) {
 				die();
 			}
@@ -65,7 +72,9 @@ class ModControllerHandler {
 				 * Ignorar metodos magicos
 				 **/
 	
-				if(($_GET['sr'] == $method_name) && _ 						
+				if($sr == $method_name) {
+					
+				/**					
 						($_GET['sr'] != "__construct") && _
 						($_GET['sr'] != "__call") && _
 						($_GET['sr'] != "__callStatic") && _
@@ -79,16 +88,18 @@ class ModControllerHandler {
 						($_GET['sr'] != "__toString") && _
 						($_GET['sr'] != "__invoke") && _
 						($_GET['sr'] != "__destruct")) {
+						
+						**/
 	
-					switch($_GET['sr']) {						
+					switch($sr) {						
 						// llama staticamente
 // 						appController::$_GET['sr']();
 // 						appModel::$_GET['sr']();
 // 						AppView::$_GET['sr']();
 						
 						// llamar dinamicamente
-						case $_GET['sr']:
-						$var->$_GET['sr']();
+						case $sr:
+						$var->$sr();
 						break;
 					
 						
