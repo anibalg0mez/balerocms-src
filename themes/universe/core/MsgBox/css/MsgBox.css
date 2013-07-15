@@ -11,6 +11,8 @@
 	color: #FFF;
 	width: 100%;
 	background-repeat: repeat-y;
+		margin-left: 3%;
+		margin-right: 3%;
 }
 .i {
 
@@ -22,6 +24,8 @@
 	padding-left: 70px;
 	width: 100%;
 	background-repeat: no-repeat;
+		margin-left: 3%;
+		margin-right: 3%;
 }
 .msgbox_top {
 	background-image: url(../images/MsgBox_top.png);
@@ -32,4 +36,6 @@
 	padding-top: 20px;
 	width: 100%;
 	background-repeat: no-repeat;
+		margin-left: 3%;
+		margin-right: 3%;
 }
