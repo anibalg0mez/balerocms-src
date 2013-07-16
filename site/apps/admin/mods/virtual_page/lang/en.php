@@ -23,7 +23,7 @@ define("_DISABLED_CONTENT", "Disabled content");
 define("_VIRTUAL_PAGE_CONTENT", "Content");
 define("_VIRTUAL_PAGE_TITLE", "Title");
 define("_VIRTUAL_PAGE_CREATE", "Create!");
-define("_VIRTUAL_PAGE_EDIT", "Editar");
+define("_VIRTUAL_PAGE_EDIT", "Edit");
 define("_VIRTUAL_PAGE_TIP_PREVIEW", "Click on the icon at the bottom right of the editor to make a preview of what you're writing.");
 define("_EDIT_VIRTUAL_PAGE", "Edit virtual page");
 define("_CONFIG_VIRTUAL_PAGE", "Config virtual page");
