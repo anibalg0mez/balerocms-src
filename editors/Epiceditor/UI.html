@@ -1,18 +1,18 @@
 <div id="epiceditor"></div>
-<input type="button" id="clear" name="clear" value="Limpiar">
-<input type="button" id="save" name="save" value="Guardar">
+<input type="button" id="clear" name="clear" value="Clear">
+<input type="button" id="save" name="save" value="Save">
 <input id="content" name="content" type="hidden">
 <script>
 var editor = new EpicEditor().load();
-/** Regresa el contenido en texto plano **/
+/** Returns plain text **/
 document.getElementById('save').onclick = function () {
 document.forms['blo_form'].elements["content"].value = editor.exportFile();
 }
 document.getElementById('clear').onclick = document.body.onload = function () {
   editor.importFile('', '');
 };
-/** Importa contenido dentro del editor
- *  Requiere de un boton llamado "edit_button" 
+/** Imports content editor
+ *  Rrequire "edit_button" name 
 **/
 document.body.onload = function () {
   editor.importFile('', document.forms['blo_form'].elements["import"].value); //Imports a file when the user clicks this button

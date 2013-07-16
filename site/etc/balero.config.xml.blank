@@ -1,61 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-* Configuración XML de Balero CMS.
-* NOTA: SI DESEA CONFIGURAR SU ARCHIVO "CONFIG" MANUALMENTE.
+* XML configuration of Balero CMS.
+* NOTE: EDIT THIS FILE MANUALLY
 
-  UTILIZE LOS SIGUIENTES ESTANDARES:
-  - yes: activado/verdadero
-  - no: desactivado/falso
+  OPTIONS:
+  - yes: true/activate
+  - no: false/desactivate
 
- NO SE PERMITEN LOS SIGUIENTES VALORES, 
- EJEMPLO:
+ WRONG PARAMETERS 
+ EXAMPLE:
  - Yes
  - No
- INCORRECTO
+ WRONG
  - yES
  - nO
- CORRECTO
+ CORRECT
  - yes
  - no
-* DE OTRA MANERA BALERO NO DETECTARA LA CONFIGURACIÓN.
+* Otherwise Balero can't read the config file.
 -->
 <config>
 	<database>
 		<dbhost>localhost</dbhost>
 		<dbuser>root</dbuser>
-		<!-- los campos en blanco se interpretan como "_blank" -->
-		<!-- de otra forma en el nucleo de Balero CMS XMLHandler nos mandara error si encuentra campos vacios -->
-		<!-- forma incorrecta <dbpass></dbpass> -->
-		<!-- forma correcta <dbpass>_blank</dbpass> -->
+		<!-- empty fields like "_blank" -->
+		<!-- otherwise Balero CMS's core (XMLHandler) sent an error with empty fields -->
+		<!-- wrong values <dbpass></dbpass> -->
+		<!-- correct values <dbpass>_blank</dbpass> -->
 		<dbpass>_blank</dbpass>
 		<dbname>balero_cms</dbname>
 	</database>
 	<admin>
-		<!-- datos del super usuario -->
+		<!-- admin god -->
 		<username>_blank</username>
-		<!-- pwd encriptado -->
+		<!-- pwd encrypt -->
 		<passwd>_blank</passwd>
-		<!-- datos admin -->
+		<!-- admin data -->
 		<firstname>Balero</firstname>
 		<lastname>CMS</lastname>
-		<!-- enviar avisos por correo -->
+		<!-- newsletter -->
 		<newsletter>yes</newsletter>
 		<email>soporte@balerocms.com</email>
 	</admin>
 	<system>
-		<!-- instalador no ejecutado por primera vez -->
+		<!-- is first time -->
 		<firsttime>yes</firsttime>
-		<!-- balero cms instalado -->
+		<!-- balero cms installed -->
 		<installed>no</installed>
 	</system>
 	<site>
-		<!-- Titulo de la página -->
+		<!-- title page -->
 		<title>Balero CMS</title>
 		<!-- Direccion -->
 		<url>http://www.balerocms.com/</url>
-		<description>WEB creada con el software Balero CMS.</description>
-		<keywords>baler, cms, noticias, empresa, finanzas, blog</keywords>
-		<!-- basepath para urls amigables (se implementara en proximas versiones) -->
+		<description>Powered by Balero CMS.</description>
+		<keywords>baler, cms, news, company, blog</keywords>
+		<!-- basepath for url friendly
+		 (in future releases) -->
 		<basepath>http://localhost/BaleroCMS/BaleroCMS/</basepath>
 	</site>
 </config>
