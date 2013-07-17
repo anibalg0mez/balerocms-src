@@ -29,8 +29,8 @@ body {
 	float: left;
 	font-family: 			"Segoe UI", "Lucida Grande", "Helvetica Neue", sans-serif;
 	font-size: 				15px;
-	margin-left: 1px;
-	margin-right: 1px;
+	margin-left: 5%;
+	margin-right: 5%;
 }
 #footer {
 	position: relative;/* this gives IE6 hasLayout to properly clear */

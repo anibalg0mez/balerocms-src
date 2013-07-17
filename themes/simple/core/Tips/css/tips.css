@@ -6,15 +6,17 @@
 /*-----------------------------------------------------------------------------------------------*/
 
 		
-			/* Rounded-cornered divs -*/
+			
+/* Rounded-cornered divs -*/
 			.roundedBox {
 			position:relative; 
-			padding:17px; 
+			/**padding-bottom:17px;**/ 
 			/**margin:10px 0;**/
-			width: 100%;
-			margin-left: 4%;
-			margin-right: 0;
+			width: 98%;
 			margin-top: 10px;
+			padding-top: 17px;
+			padding-bottom: 17px;
+			padding-left: 2%;
 			}
 				/*- All the corners -*/
 				.corner {position:absolute; width:17px; height:17px;}

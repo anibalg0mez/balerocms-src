@@ -20,31 +20,30 @@
 	-webkit-border-radius: 16px 15px 0px 0px;
 	-moz-border-radius: 16px 15px 0px 0px;
 	border-radius: 16px 15px 0px 0px;
-
+	padding-left: 2%;
 	border: 1px solid #D5DDE3;
 	background-color: #CFCFCF;
 	font-weight: bold;
 	padding-top: 20px;
 	font-size: small;
-	padding-left: 20px;
+	
 
 }
 /** caja contenido **/
 .box_content {
-	width: 93%;
+	width: 94%;
 	height: auto;
 	-webkit-border-radius: 0px 0px 15px 15px;
 	-moz-border-radius: 0px 0px 15px 15px;
 	border-radius: 0px 0px 15px 15px;
 	border: 1px solid #D5DDE3;
 	background-color: #FFFFFF;
-	padding-left: 15px;
-	padding-right: 15px;
+	padding-left: 2%;
+
 	padding-top: 20px;
 	font-size: 16px;
 }
 /** centrar **/
 .box_header, .box_content {
- 	margin-left: 37px ;
-  	margin-right: auto ;
+ 	margin-left: 2% ;
 }
