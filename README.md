@@ -6,6 +6,8 @@ Balero CMS
 
 ==========
 
+www.balerocms.com
+
 anibalgomez@icloud.com
 
 support@balerocms.com
