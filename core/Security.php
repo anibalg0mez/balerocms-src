@@ -26,6 +26,7 @@ class Security {
 	
 	public function noJS($var) {
 		$script_str = $var;
+		$script_str = str_replace("'", "", $script_str);
 		//return preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $var);
 		$script_str = htmlspecialchars_decode($script_str);
 		$search_arr = array('<script', '</script>');
