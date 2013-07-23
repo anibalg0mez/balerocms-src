@@ -2,3 +2,5 @@
 Options +FollowSymLinks
 RewriteEngine on
 RewriteRule admin.php index.php?app=admin
+# Off Index Of
+ Options -Indexes 

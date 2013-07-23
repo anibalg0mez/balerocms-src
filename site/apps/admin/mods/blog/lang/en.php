@@ -10,6 +10,7 @@ define("_BLOG_POST_EMPTY_TITLE", "Your title post is empty!");
 define("_ADD_NEW_POST", "Add new post");
 define("_WAS_DELETED_OK", "was removed successfully.");
 define("_DELETING_POST_ERROR", "Error while trying deleting post!");
+define("_ADDED_SUCESSFULLY", "Your post has been posted sucessfully!");
 define("_SAVED_SUCESSFULLY", "Your post has been saved sucessfully!");
 define("_ID_DONT_EXIST", "¿What are you trying? The ID does not exist.");
 define("_NEW_POST", "New post");

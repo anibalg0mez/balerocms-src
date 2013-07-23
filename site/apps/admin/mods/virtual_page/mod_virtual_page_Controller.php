@@ -65,6 +65,8 @@ class mod_virtual_page_Controller {
 		
 		if(isset($_POST['submit'])) {
 			
+			$sec = new Security();
+			
 			/**
 			 *
 			 * @$plain_text Obtener el texto plano de el contenido que nos pasa el usuario.
@@ -79,7 +81,7 @@ class mod_virtual_page_Controller {
 			 */
 			
 			//$plain_text = htmlspecialchars($_POST['content']);
-			$plain_text = $_POST['content'];
+			$plain_text = $sec->noJS($_POST['content']);
 			
 			/**
 			 * 
@@ -100,7 +102,7 @@ class mod_virtual_page_Controller {
 				}elseif(empty($_POST['virtual_title'])) {
 					$this->modView->errorMessage(_PAGE_POST_EMPTY_TITLE);
 				} else {
-					$this->modModel->add_page_model($_POST['virtual_title'], $plain_text, $_POST['a']);
+					$this->modModel->add_page_model($sec->shield($_POST['virtual_title']), $plain_text, $_POST['a']);
 					$this->modView->sucessMessage(_ADDED_SUCESSFULLY);
 				}
 			} catch (Exception $e) {
@@ -156,7 +158,7 @@ class mod_virtual_page_Controller {
 					throw new Exception(_PAGE_POST_EMPTY_TITLE);
 				}
 				
-				$this->modModel->update_virtual_content($_POST['id'], $_POST['virtual_title'], $_POST['content'], $_POST['a']);
+				$this->modModel->update_virtual_content($_POST['id'], $id->shield($_POST['virtual_title']), $id->noJS($_POST['content']), $_POST['a']);
 				
 				$this->modView->sucessMessage(_SAVING_CONTENT_OK);
 			}

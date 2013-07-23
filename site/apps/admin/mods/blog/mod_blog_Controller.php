@@ -64,6 +64,9 @@ class mod_blog_Controller {
 		
 		if(isset($_POST['submit'])) {
 			
+			$objSec = new Security();
+			$post_title = $objSec->shield($_POST['title']);
+			
 			/**
 			 *
 			 * @$plain_text Obtener el texto plano de el contenido que nos pasa el usuario.
@@ -78,7 +81,7 @@ class mod_blog_Controller {
 			 */
 			
 			//$plain_text = htmlspecialchars($_POST['content']);
-			$plain_text = $_POST['content'];
+			$plain_text = $objSec->noJS($_POST['content']);
 			
 			/**
 			 * 
@@ -99,11 +102,11 @@ class mod_blog_Controller {
 				}elseif(empty($_POST['title'])) {
 					$this->modView->errorMessage(_BLOG_POST_EMPTY_TITLE);
 				} else {
-					$this->modModel->add_post($_POST['title'], $plain_text);
-					$this->modView->sucessMessage("El post fue agregado correctamente! =)");
+					$this->modModel->add_post($post_title, $plain_text);
+					$this->modView->sucessMessage(_ADDED_SUCESSFULLY);
 				}
 			} catch (Exception $e) {
-				$this->modView->errorMessage("Error al agregar nuevo Post! =( " . $e->getMessage());
+				$this->modView->errorMessage(_BLOG_POST_ERROR . $e->getMessage());
 			}
 			
 		}
@@ -206,6 +209,7 @@ class mod_blog_Controller {
 				
 				
 			if(isset($_POST['submit'])) {
+				
 				if(empty($_POST['title'])) {
 					throw new Exception(" "._BLOG_POST_EMPTY_TITLE." ");
 				}
@@ -214,7 +218,7 @@ class mod_blog_Controller {
 				}
 				$objShield = new Security();
 				$id = $objShield->shield($_GET['id']);
-				$this->modModel->edit_post($id, $_POST['title'], $_POST['content']);
+				$this->modModel->edit_post($id, $objShield->shield($_POST['title']), $objShield->noJS($_POST['content']));
 				
 				$this->modView->sucessMessage(_SAVED_SUCESSFULLY);
 			}	

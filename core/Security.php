@@ -16,6 +16,31 @@ class Security {
 	
 	private $var;
 
+	
+	/**
+	 * 
+	 * We need HTML tags like '<' or '>'
+	 * but not the javascript tags
+	 * 
+	 */
+	
+	public function noJS($var) {
+		$script_str = "";
+		//return preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $var);
+		$script_str = htmlspecialchars_decode($script_str);
+		$search_arr = array('<script', '</script>');
+		$script_str = str_ireplace($search_arr, $search_arr, $script_str);
+		$split_arr = explode('<script', $script_str);
+		$remove_jscode_arr = array();
+		foreach($split_arr as $key => $val) {
+			$newarr = explode('</script>', $split_arr[$key]);
+			$remove_jscode_arr[] = ($key == 0) ? $newarr[0] : $newarr[1];
+		}
+		
+		return implode('', $remove_jscode_arr);
+		
+	}
+	
 	/**
 	 * Blindar variable
 	**/

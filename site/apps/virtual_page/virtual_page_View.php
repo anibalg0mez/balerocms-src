@@ -55,6 +55,10 @@ class virtual_page_View extends configSettings {
 	
 	public function print_virtual_page($db_array = array()) {
 	
+		if(!is_array($db_array)) {
+			die();
+		}
+		
 		$html = "";
 	
 		foreach ($db_array as $page) {

@@ -136,7 +136,7 @@ class mod_blog_View extends mod_blog_Model {
 	public function edit_view($id) {
 		
 			
-		$this->mod_name = "Editar post";
+		$this->mod_name = _EDIT_POST;
 
 		$editor = new Form("index.php?app=admin&mod_controller=blog&sr=edit_post&id=$id");
 			

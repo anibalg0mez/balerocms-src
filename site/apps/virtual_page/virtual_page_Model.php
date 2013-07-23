@@ -74,10 +74,17 @@ class virtual_page_Model extends configSettings {
 	
 	public function get_virtual_page($id) {
 	
+		try {
+		
 		$virtual_pages = array();
 		$this->db->query("SELECT * FROM virtual_page WHERE id = '$id'");
 		$this->db->get();
 		$virtual_pages = $this->db->rows;
+		
+		} catch (Exception $e) {
+			$virtual_pages = array();
+			die("WTF");
+		}
 	
 		unset($this->db->rows);
 		return $virtual_pages;
