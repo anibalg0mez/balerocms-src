@@ -27,7 +27,7 @@ class installer_Controller {
 			// instalar
 			
 			$chmod = substr(decoct(fileperms(LOCAL_DIR . "/site/etc/balero.config.xml")),3);
-			if($chmod < "666") {
+			if($chmod != "777") {
 				$MsgBox = new MsgBox(_ERROR, _CHMOD_ERROR);
 				$this->objView->content .= $MsgBox->Show();
 			}
