@@ -25,6 +25,13 @@ class installer_Controller {
 			// Iniciar vista
 			$this->objView = new installer_View();
 			// instalar
+			
+			$chmod = substr(decoct(fileperms(LOCAL_DIR . "/site/etc/balero.config.xml")),3);
+			if($chmod < "666") {
+				$MsgBox = new MsgBox(_ERROR, _CHMOD_ERROR);
+				$this->objView->content .= $MsgBox->Show();
+			}
+			
 			$this->objView->installButton();
 		} catch (Exception $e) {
 			$this->objView = new installer_View();

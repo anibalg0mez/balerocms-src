@@ -36,6 +36,7 @@ define("_PERMISSIONS_ERROR", "ERROR DE PERMISOS");
 define("_PERMISSIONS_ERROR_MESSAGE", "Requiero de permisos CHMOD 777");
 define("_ERROR_CREATING_DATABASE", "ERROR CREANDO BASE DE DATOS");
 define("_ERROR_CREATING_DATABASE_MESSAGE", "Un error ocurrio creando la base de datos:");
-
+define("_ERROR", "ERROR");
+define("_CHMOD_ERROR", "Permisos incorrectos del archivo (/site/etc/balero.config.xml), cambialos a chmod 755.");
 
 
