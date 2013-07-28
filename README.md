@@ -2,12 +2,20 @@ Balero CMS
 ==========
 
 * docs: docs.balerocms.com
-* developer: developer.balerocms.com
+
+==========
+
+Features in the next versions
+
+ * Pretty URL's
+ * Multi-Language Support
 
 ==========
 
 www.balerocms.com
 
-anibalgomez@icloud.com
-
 support@balerocms.com
+
+==========
+
+anibalgomez@icloud.com
