@@ -22,7 +22,7 @@ ul, ul ul {
 
 }
 .menu > li > a {
-	background-color: #616975;
+	background-color: #003d9a;
 
 	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#727a86', EndColorStr='#505864');
 
@@ -56,7 +56,8 @@ ul, ul ul {
 	border-bottom: 1px solid #33373d;
 }
 .menu > li > a:hover, .menu > li > a.active {
-	background-color: #35afe3;
+	background-color: #3d629a;
+	/**
 	background-image: -webkit-gradient(linear, left top, left bottom, from(rgb(69, 199, 235)),to(rgb(38, 152, 219)));
 	background-image: -webkit-linear-gradient(top, rgb(69, 199, 235), rgb(38, 152, 219));
 	background-image: -moz-linear-gradient(top, rgb(69, 199, 235), rgb(38, 152, 219));
@@ -68,6 +69,8 @@ ul, ul ul {
 	-webkit-box-shadow: inset 0px 1px 0px 0px #6ad2ef;
 	-moz-box-shadow: inset 0px 1px 0px 0px #6ad2ef;
 	box-shadow: inset 0px 1px 0px 0px #6ad2ef;
+	**/
+	
 }
 .menu > li > a.active {
 	border-bottom: 1px solid #1a638f;
@@ -94,12 +97,12 @@ ul, ul ul {
 	position: absolute;
 	right: 1em;
 	top: 50%; 
-	background: #48515c;
+	background: white;
 	line-height: 1em;
 	height: 1em;
 	padding: .4em .6em;
 	margin: -.8em 0 0 0; 
-	color: #fff;
+	color: #3d629a;
 	text-indent: 0;
 	text-align: center;
 	-webkit-border-radius: .769em;
@@ -112,7 +115,7 @@ ul, ul ul {
 	font-weight: 500;
 }
 .menu > li > a:hover span, .menu > li a.active span {
-	background: #2173a1;
+	background: white;
 }
 .menu > li > ul li a:before{
 	content: '▶';

@@ -196,13 +196,18 @@ class Pagination {
 	
 		if($_GET['page'] != $this->pages) {
 
-			
+			try {
+				if($_GET['page'] > $this->pages) {
+					throw new Exception();
+				}
 				$next = "<li><a href='" . $this->print_url() . "page=" . ($_GET['page'] + 1) . "'>" . "&gt&gt" . "</a></li>";
+			} catch (Exception $e) {
+				$next = "";
+			}
 			
 				// retorna (String)
 				return $next;
-			
-			
+				
 		}
 	
 	}
@@ -215,8 +220,18 @@ class Pagination {
 	
 		if($_GET['page'] != 1) {
 		
-			$prev = "<li><a href='". $this->print_url() ."page=" . ($_GET['page'] - 1) . "'>" . " &lt;&lt;" . "</a></li>";
-	
+			try {
+			
+				if($_GET['page'] > $this->pages) {
+					throw new Exception();
+				}
+				
+				$prev = "<li><a href='". $this->print_url() ."page=" . ($_GET['page'] - 1) . "'>" . " &lt;&lt;" . "</a></li>";
+			
+			} catch (Exception $e) {
+				$next = "";
+			}
+			
 			// retorna (String)
 			return $prev;
 		

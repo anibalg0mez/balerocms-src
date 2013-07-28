@@ -40,7 +40,7 @@ a img { /* this selector removes the default blue border displayed in some brows
 	width: 100%;
 	/**max-width: 1260px;/* a max-width may be desirable to keep this layout from getting too wide on a large monitor. This keeps line length more readable. IE6 does not respect this declaration. */
 	min-width: 780px;/* a min-width may be desirable to keep this layout from getting too narrow. This keeps line length more readable in the side columns. IE6 does not respect this declaration. */
-	background-color: #FFF; /* the auto value on the sides, coupled with the width, centers the layout. It is not needed if you set the .container's width to 100%. */
+	background-color: #ffffff; /* the auto value on the sides, coupled with the width, centers the layout. It is not needed if you set the .container's width to 100%. */
 	overflow: hidden; /* this declaration makes the .container clear all floated columns within it. */
 	margin-top: 0;
 	margin-bottom: 0;
@@ -62,7 +62,7 @@ a img { /* this selector removes the default blue border displayed in some brows
 .sidebar1 {
 	float: left;
 	width: 15%;
-	background-color: #616975;
+	background-color: #003d9a;
 	padding-bottom: 10px;
 	height: 1200px;
 	color: #9CA3AD;
@@ -246,3 +246,49 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#499bea', end
 }
 
 /** fin de pag-bar **/
+
+/**
+* Box header and content
+**/
+
+/**
+* Box content para panel de admin Balero CMS
+* @author Anibal Gomez -lastprophet-
+**/
+
+.box_header {
+	/** gradient **/
+	background-color: #003d9a;
+
+	/** esquinas redondeadas **/
+	width: 94%;
+	height: 40px;
+	-webkit-border-radius: 16px 15px 0px 0px;
+	-moz-border-radius: 16px 15px 0px 0px;
+	border-radius: 16px 15px 0px 0px;
+	padding-left: 2%;
+	border: 1px solid #003d9a;
+	font-weight: bold;
+	padding-top: 20px;
+	font-size: small;
+	color: white;
+
+}
+/** caja contenido **/
+.box_content {
+	width: 94%;
+	height: auto;
+	-webkit-border-radius: 0px 0px 15px 15px;
+	-moz-border-radius: 0px 0px 15px 15px;
+	border-radius: 0px 0px 15px 15px;
+	border: 1px solid #D5DDE3;
+	background-color: #FFFFFF;
+	padding-left: 2%;
+
+	padding-top: 20px;
+	font-size: 16px;
+}
+/** centrar **/
+.box_header, .box_content {
+ 	margin-left: 2% ;
+}
