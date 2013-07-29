@@ -12,9 +12,9 @@ Features in the next versions
 
 ==========
 
-www.balerocms.com
-
-support@balerocms.com
+ * https://twitter.com/CMSBalero
+ * support@balerocms.com
+ * www.balerocms.com
 
 ==========
 
