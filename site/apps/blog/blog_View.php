@@ -105,7 +105,9 @@ class blog_View extends configSettings {
 			try {
 			$post = $this->truncate_word($row['message'], $limit);
 			if($word_count > $limit) {
-				$post .= "(<a href=\"index.php?app=blog&sr=full_post&id=".$row['id']."\" class=\"more\">Más...</a>)";
+				// dynamic
+				//$post .= "(<a href=\"index.php?app=blog&sr=full_post&id=".$row['id']."\" class=\"more\">". _MORE ."</a>)";
+				$post .= "(<a href=\"./blog/full_post/".$row['id']."\" class=\"more\">". _MORE ."</a>)";
 			}
 			$render_html = Markdown::defaultTransform($post);
 			$this->content .= $tips->blue($row['title']) . "<br />" . $tips->white($render_html) . "<br />" . $tips->green($row['info']);
