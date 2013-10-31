@@ -62,7 +62,7 @@ a img { /* this selector removes the default blue border displayed in some brows
 .sidebar1 {
 	float: left;
 	width: 15%;
-	background-color: #003d9a;
+	background-color: #EBEBEB;
 	padding-bottom: 10px;
 	height: 1200px;
 	color: #9CA3AD;
@@ -258,7 +258,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#499bea', end
 
 .box_header {
 	/** gradient **/
-	background-color: #003d9a;
+	background-color: #3d629a;
 
 	/** esquinas redondeadas **/
 	width: 94%;

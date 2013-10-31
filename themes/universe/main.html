@@ -2,12 +2,13 @@
 <html>
 <head>
 <title>{title}</title>
+<!--  basepath -->
+<base href="{basepath}">
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 <meta name="description" content="{description}">
 <meta name="keywords" content="{keywords}">
 <meta name="author" content="Balero CMS (c) 2013 Anibal Gomez">
 <link href="themes/universe/css/main.css" rel="stylesheet" type="text/css">
-<link href="themes/universe/css/links.css" rel="stylesheet" type="text/css">
 <link rel="shortcut icon" href="favicon.ico">
 <!-- extra css -->
 <!--  Msg Box -->
@@ -30,21 +31,23 @@
   
   <div id="navbar">
 <ul class="nav-fade">
-   <li><a href="index.php">Home</a></li>
+   <li><a href="./">Home</a></li>
    <li><a href="http://balerocms.com/docs">Documentation</a></li>
    <li><a href="http://balerocms.com/download">Download</a></li>
-   <li><a href="index.php?app=admin">Admin</a></li>
+   <li><a href="./admin">Admin</a></li>
 </ul>
   </div>
-  <div id="navbar">
-	<ul class="nav-fade">
-   	{virtual_pages}
-	</ul>
-  </div>
+
   <div id="subHeader">
-  <div id="sLoganTop">THE NEW CONTENT MANAGEMENT SYSTEM</div>
-  <div id="sLoganBottom">SIMPLE, EASY, AND INFINITELY EXTENDIBLE</div>
+  <div id="sLoganTop">SIMPLE, EASY, AND INFINITELY EXTENDIBLE</div>
   </div>
+
+      <div id="navbar2">
+  <ul class="nav-fade2">
+    {virtual_pages}
+  </ul>
+  </div>
+
       <div id="content">
          {content}
       </div>
@@ -72,15 +75,13 @@
       <ul id="footer_links">
       <li><a href="http://balerocms.com">Balero CMS Official</a></li>
       <li><a href="http://balerocms.com/docs">Documentation</a></li>
-      <li><a href="http://developer.balerocms.com/">Developers Documentation</a></li>
-      <li><a href="http://forum.balerocms.com/">Forums</a></li>
       </ul>
             <p>Social</p>
       <a href="https://twitter.com/CMSBalero"><img src="./themes/universe/images/t-mini.png" width="30" height="30"></a>
       <a href="https://www.facebook.com/balerocms"><img src="./themes/universe/images/fb-mini.png" width="30" height="30"></a>
       <p>Follow on <a href="https://github.com/BaleroCMS">GitHub</a>.</p>
             <p>Support</p>
-      <p>support@balerocms.com</p>
+      <p><a href="mailto:support@balerocms.com">support@balerocms.com</a></p>
       <!-- end static content -->
       </div>
     <div id="copyright">Site built with <a href="http://www.balerocms.com/">BaleroCMS®</a> Software. (c) 2013 All rights reserved. Theme Universe developed with HTML 5 and CSS 3.</div>

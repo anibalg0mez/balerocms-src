@@ -22,7 +22,7 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 	
 	public $content = "";
 	
-	public $editor_headers;
+	public $basepath;
 	
 	/**
 	 * 
@@ -40,7 +40,6 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		 */
 		
 	
-		$this->loadModelvars();
 		
 	}
 	
@@ -60,7 +59,7 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		$editor->RadioButton(_DISABLED_CONTENT, "0", "a", 0);
 		$editor->Label(_VIRTUAL_PAGE_CONTENT);
 		$editor->TextField(_VIRTUAL_PAGE_TITLE, "virtual_title", "");
-		$editor->Editor($this->editor);
+		$editor->TextArea(_VIRTUAL_PAGE_CONTENT, "content", "");
 		$editor->SubmitButton(_VIRTUAL_PAGE_CREATE);
 		
 		$this->content .= $editor->Show();
@@ -98,7 +97,7 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		$editor->HiddenField("id", $id);
 		$editor->Label(_VIRTUAL_PAGE_CONTENT);
 		$editor->TextField(_VIRTUAL_PAGE_TITLE, "virtual_title", $db->return_virtual_title($id));
-		$editor->Editor($this->editor);
+		$editor->TextArea(_VIRTUAL_PAGE_CONTENT, "content", $db->return_virtual_content($id));
 		$editor->HiddenField("import", $db->return_virtual_content($id));
 		$editor->SubmitButton(_VIRTUAL_PAGE_EDIT);
 	
@@ -128,6 +127,7 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		// tramos configuracion (variables)
 		$cfg = new configSettings();
 		$cfg->LoadSettings();
+		$this->basepath = $cfg->basepath;
 		
 		// nueva variable de tipo objeto
 		$objTemplate = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/mods/virtual_page/html/tree.html");
@@ -254,7 +254,7 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		 */
 		
 		$array = array(
-				'editor_headers'=>$this->editor_headers,
+				'basepath'=>$this->basepath,
 				'content'=>$this->content,
 				'mod_name'=>$this->mod_name,
 				'mod_menu'=>$this->menu

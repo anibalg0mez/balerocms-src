@@ -40,7 +40,7 @@
 		<lastname>CMS</lastname>
 		<!-- newsletter -->
 		<newsletter>yes</newsletter>
-		<email>soporte@balerocms.com</email>
+		<email>@</email>
 	</admin>
 	<system>
 		<!-- is first time -->
@@ -55,8 +55,7 @@
 		<url>http://www.balerocms.com/</url>
 		<description>Powered by Balero CMS.</description>
 		<keywords>baler, cms, news, company, blog</keywords>
-		<!-- basepath for url friendly
-		 (in future releases) -->
-		<basepath>http://localhost/BaleroCMS/BaleroCMS/</basepath>
+		<!-- basepath for url friendly -->
+		<basepath>_blank</basepath>
 	</site>
 </config>

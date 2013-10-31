@@ -15,6 +15,9 @@
 /**
  * 
  * @author lastprophet
+ * ------------------------------------
+ * MySQL / MariaDB Class (19-oct-2013)
+ * ------------------------------------
  * Clase MySQLi compatible con salida para la "Vista".
  * Implementada en Balero CMS.
  */

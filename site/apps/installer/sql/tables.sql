@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS `blog` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=135 ;
 
 INSERT INTO `blog` (`id`, `title`, `message`, `info`) VALUES
-(1, 'Â¡CONGRATULATIONS!', 'Balero CMS hans been installed.\r\nThis message is from your database, you can edit this message in your [Admin Control Panel](?app=admin).\r\n\r\nThanks for using Balero CMS, visit the official page. Dont forget read the documentation.\r\n', 'admin @ 2013-07-06 04:57:51'),
-(2, 'MARKDOWN', 'This is a H1\r\n=============\r\n\r\nThis is a H2\r\n-------------\r\n\r\n# This is a H1\r\n\r\n## This is a H2\r\n\r\n###### This is a H6\r\n\r\n> First level.\r\n>\r\n> > Second level.\r\n>\r\n> Back to the first level.\r\n\r\nÂ¿More? Check the markdown syntax.', 'admin @ 2013-07-06 05:03:48');
+(1, 'CONGRATULATIONS!', 'Balero CMS hans been installed.\r\nThis message is from your database, you can edit this message in your [Admin Control Panel](?app=admin).\r\n\r\nThanks for using Balero CMS, visit the official page. Dont forget read the documentation.\r\n', 'admin @ 2013-07-06 04:57:51'),
+(2, 'MARKDOWN', 'This is a H1\r\n=============\r\n\r\nThis is a H2\r\n-------------\r\n\r\n# This is a H1\r\n\r\n## This is a H2\r\n\r\n###### This is a H6\r\n\r\n> First level.\r\n>\r\n> > Second level.\r\n>\r\n> Back to the first level.\r\n\r\nMore? Check the markdown syntax.', 'admin @ 2013-07-06 05:03:48');
 
 CREATE TABLE IF NOT EXISTS `box_content` (
   `id` int(10) NOT NULL AUTO_INCREMENT,

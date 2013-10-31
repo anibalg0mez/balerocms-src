@@ -187,22 +187,7 @@ class Form {
 		
 		$this->form .= $tmp;
 	}
-	
-	/**
-	 * Editores
-	 */
-	
-	public function Editor($name) {
-		switch ($name) {
-			case "Epiceditor":
-			$filename = LOCAL_DIR . "/editors/Epiceditor/UI.html";
-			$html = file_get_contents($filename);
-			break;
-		}
-		
-		$this->form .= $html;
-		
-	}
+
 	
 	/**
 	 * Mstrar en pantalla

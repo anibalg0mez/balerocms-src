@@ -47,11 +47,14 @@ class virtual_page_Controller {
 				$query_content = $this->objModel->get_virtual_page($id);
 				$md = new Markdown();
 				$this->objView->content .= $md->defaultTransform($this->objView->print_virtual_page($query_content));
+			} else {
+				throw new Exception();
 			}
 			
 			
 		} catch (Exception $e) {
-			
+			$msgbox = new MsgBox(_VP, _VP_DONT_EXIST);
+			$this->objView->content .= $msgbox->Show();
 		}
 		
 		$this->objView->Render();	

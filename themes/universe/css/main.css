@@ -19,8 +19,16 @@ body {
 }
 #navbar {
 	width: 100%;
-	height: 50px;
+	height: 40px;
 	text-align: center;
+}
+#navbar2 {
+	width: 100%;
+	height: 60px;
+	text-align: left;
+	float:left;
+	background-color:#000;
+	margin-bottom: 40px;
 }
 #content {
 	/* height: 600px; */
@@ -49,7 +57,7 @@ body {
 
 #subHeader {
 	background-image: url(../../../themes/universe/images/subheader_bg.png);
-	height: 312px;
+	height: 275px;
 	width: 100%;
 	float: left;
 }
@@ -71,13 +79,14 @@ body {
 	background-image: url(../../../themes/universe/images/universe-3_03.png);
 }
 #sLoganTop {
-	font-style: italic;
+	font-style: bold;
 	color: #FFF;
-	font-size: 14px;
-	padding-top: 170px;
+	font-size: small;
+	padding-top: 40px;
 	padding-right: 0px;
 	padding-bottom: 0px;
 	padding-left: 20px;
+	font-family: "Arial";
 }
 #sLoganBottom {
 	font-style: italic;
@@ -105,3 +114,190 @@ body {
 .more {
 	font-weight: bold;
 }
+
+
+/*
+* LINKS
+*/
+
+/*
+* Links de nav-bar
+*/
+
+.nav-fade li {
+   background: #FFFFFF;
+   padding: 3px 8px;
+   display: inline-block;
+   transition: background .25s ease-in-out;
+   -moz-transition: background .25s ease-in-out;
+   -webkit-transition: background .25s ease-in-out;
+   -moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-khtml-border-radius: 10px;
+	font-family: 			"Segoe UI", "Lucida Grande", "Helvetica Neue", sans-serif;
+	font-size: 				15px;
+   }
+
+.nav-fade li:hover {
+	background: #000000;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-khtml-border-radius: 10px;
+	font-family: 			"Segoe UI", "Lucida Grande", "Helvetica Neue", sans-serif;
+	font-size: 				15px;
+}
+
+/*
+* Links de nav-bar2
+*/
+
+.nav-fade2 a {
+		color: #FFFFFF;
+}
+
+.nav-fade2 li {
+	background: #000000;
+   padding: 3px 8px;
+   display: inline-block;
+   transition: background .25s ease-in-out;
+   -moz-transition: background .25s ease-in-out;
+   -webkit-transition: background .25s ease-in-out;
+   -moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-khtml-border-radius: 10px;
+	font-family: 			"Segoe UI", "Lucida Grande", "Helvetica Neue", sans-serif;
+	font-size: 				15px;
+	padding-left: 20px;
+	padding-right: 20px;
+   }
+
+.nav-fade2 li:hover {
+	background: #4f4e4e;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-khtml-border-radius: 10px;
+	font-family: 			"Segoe UI", "Lucida Grande", "Helvetica Neue", sans-serif;
+	font-size: 				15px;
+}
+
+/** Barra de paginacion **/
+
+/**
+* Creado por anibal gomez -balero cms- 2013
+* Tema: universe
+* http://www.balerocms.com
+**/
+
+#nav {
+	margin: 50px 0 0 -15px;
+}
+
+.pag-bar li a {
+	color: #FFFFFF;
+}
+
+
+.pag-bar li {
+	
+	
+background: rgb(125,126,125); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(125,126,125,1) 0%, rgba(14,14,14,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(125,126,125,1)), color-stop(100%,rgba(14,14,14,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=0 ); /* IE6-9 */
+
+color: #FFFFFF;
+
+border-radius: 5px; 
+-moz-border-radius: 5px; 
+-webkit-border-radius: 5px; 
+border: 1px solid #000000;
+	
+   margin-left: 4px;
+   margin-right: 4px;
+   padding: 1px 5px 1px 5px;;
+   display: inline-block;
+	font-family: 			"Segoe UI", "Lucida Grande", "Helvetica Neue", sans-serif;
+	font-size: 				15px;
+   }
+
+.pag-bar li:hover {
+
+	background: rgb(181,189,200); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(181,189,200,1) 0%, rgba(130,140,149,1) 36%, rgba(40,52,59,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(181,189,200,1)), color-stop(36%,rgba(130,140,149,1)), color-stop(100%,rgba(40,52,59,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(181,189,200,1) 0%,rgba(130,140,149,1) 36%,rgba(40,52,59,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(181,189,200,1) 0%,rgba(130,140,149,1) 36%,rgba(40,52,59,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(181,189,200,1) 0%,rgba(130,140,149,1) 36%,rgba(40,52,59,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(181,189,200,1) 0%,rgba(130,140,149,1) 36%,rgba(40,52,59,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', endColorstr='#28343b',GradientType=0 ); /* IE6-9 */
+	
+	font-family: 			"Segoe UI", "Lucida Grande", "Helvetica Neue", sans-serif;
+	font-size: 				15px;
+}
+
+/** fin de pag-bar **/
+
+a {
+	color: #000000;
+	/* First we need to help some browsers along for this to work.
+     Just because a vendor prefix is there, doesn't mean it will
+     work in a browser made by that vendor either, it's just for
+     future-proofing purposes I guess. */
+	-o-transition: .5s;
+	-ms-transition: .5s;
+	-moz-transition: .5s;
+	-webkit-transition: .5s;
+	/* ...and now for the proper property */
+	transition: .5s;
+	text-decoration: none;
+	font-family: "Segoe UI", "Lucida Grande", "Helvetica Neue", sans-serif;
+	font-size: 15px;
+}
+a:hover { 
+	color: #FFFFFF; 
+	text-decoration: none;
+	font-family: 			"Segoe UI", "Lucida Grande", "Helvetica Neue", sans-serif;
+	font-size: 				15px;
+	}
+#copyright a {
+	color: #00CCFF;
+	-o-transition: .5s;
+	-ms-transition: .5s;
+	-moz-transition: .5s;
+	-webkit-transition: .5s;
+	/* ...and now for the proper property */
+	transition: .5s;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+}
+#copyright a:hover {
+	color: #FFFFFF;
+	text-decoration: none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	}
+#footer_links li, #footer a {
+	color: #00CCFF;
+	-o-transition: .5s;
+	-ms-transition: .5s;
+	-moz-transition: .5s;
+	-webkit-transition: .5s;
+	/* ...and now for the proper property */
+	transition: .5s;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+}
+#foter_links li, #footer a:hover {
+	color: #FFFFFF;
+	text-decoration: none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	}

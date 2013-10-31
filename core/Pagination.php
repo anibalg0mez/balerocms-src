@@ -16,8 +16,14 @@
  * @author Anibal Gomez -lastprophet-
  * Es simple, clase para paginar los resultados.
  * (Muchas veces ni yo mismo entiendo lo que programo).
+ * ========================================================
+ * v.0.3 pretty and dynamic URL support
+ * 
+ * $this->print_url prints dynamic URL
+ * $this->print_pretty prints pretty URL
  *
  */
+
 
 class Pagination {
 	
@@ -79,6 +85,12 @@ class Pagination {
 	 * SELECT * FROM tabla LIMIT $min, $max
 	 */
 	
+	/**
+	 * 
+	 * @return number
+	 * @method method min() SELECT * FROM 0, min
+	 */
+	
 	public function min() {
 	
 		// si hay error empezamos a paginar desde LIMIT 0, x
@@ -114,6 +126,12 @@ class Pagination {
 	 * SELECT * FROM tabla LIMIT $min, $max
 	 */
 	
+	/**
+	 * 
+	 * @return number
+	 * @method method max() not tested, this is a beta method, do not use.
+	 */
+	
 	public function max() {
 		
 		if(!isset($_GET['page'])) {
@@ -140,6 +158,15 @@ class Pagination {
 		
 	}
 	
+	public function pretty_start($app) {
+		
+		$start = "<a href='". $this->print_pretty($app) ."/page-1'>" . _PAGINATION_HOME . "</a>";
+		
+		// retorna (String)
+		return $start;
+		
+	}
+	
 	/**
 	 * Link Final
 	 */
@@ -153,8 +180,22 @@ class Pagination {
 		
 	}
 	
+	public function pretty_end($app) {
+	
+		$end = "<a href='". $this->print_pretty($app) ."/page-$this->pages'>" . _PAGINATION_LAST . "</a>";
+	
+		// retorna (String)
+		return $end;
+	
+	}
+	
 	/**
 	 * Mostrar barra de navegacion/paginacion completa
+	 */
+	
+	/**
+	 * 
+	 * dynamic nav
 	 */
 	
 	public function nav() {
@@ -188,6 +229,8 @@ class Pagination {
 		
 	}
 	
+
+	
 	/**
 	 * Link siguiente
 	 */
@@ -212,22 +255,45 @@ class Pagination {
 	
 	}
 	
+	public function pretty_next($app) {
+	
+		if($_GET['page'] != $this->pages) {
+	
+			try {
+				if($_GET['page'] > $this->pages) {
+					throw new Exception();
+				}
+				$next = "<li><a href='" . $this->print_pretty($app) . "/page-" . ($_GET['page'] + 1) . "'>" . "&gt&gt" . "</a></li>";
+			} catch (Exception $e) {
+				$next = "";
+			}
+				
+			// retorna (String)
+			return $next;
+	
+		}
+	
+	}
+	
 	/**
 	 * Link anterior
 	 */
 	
 	public function prev() {
 	
+		$prev = "";
+		
 		if($_GET['page'] != 1) {
 		
 			try {
 			
 				if($_GET['page'] > $this->pages) {
+					$prev = "";
 					throw new Exception();
+				} else {
+					$prev = "<li><a href='". $this->print_url() ."page=" . ($_GET['page'] - 1) . "'>" . " &lt;&lt;" . "</a></li>";
 				}
 				
-				$prev = "<li><a href='". $this->print_url() ."page=" . ($_GET['page'] - 1) . "'>" . " &lt;&lt;" . "</a></li>";
-			
 			} catch (Exception $e) {
 				$next = "";
 			}
@@ -239,6 +305,32 @@ class Pagination {
 	
 	}
 		
+	public function pretty_prev($app) {
+	
+		$prev = "";
+	
+		if($_GET['page'] != 1) {
+	
+			try {
+					
+				if($_GET['page'] > $this->pages) {
+					$prev = "";
+					throw new Exception();
+				} else {
+					$prev = "<li><a href='". $this->print_pretty($app) ."/page-" . ($_GET['page'] - 1) . "'>" . " &lt;&lt;" . "</a></li>";
+				}
+	
+			} catch (Exception $e) {
+				$next = "";
+			}
+				
+			// retorna (String)
+			return $prev;
+	
+		}
+	
+	}
+	
 	/**
 	 * Manejar $_GET[page]
 	 */
@@ -300,6 +392,15 @@ class Pagination {
 	
 	/**
 	 * Determinar que URL imprimir y como imprimirla
+	 */
+	
+	/**
+	 * 
+	 * Prints dynamic URL
+	 * for pretty urls off
+	 * or
+	 * for balero's back-end view
+	 * 
 	 */
 	
 	public function print_url() {
@@ -364,5 +465,89 @@ class Pagination {
 		return $var_url;
 		
 	}
+	
+	/**
+	 * 
+	 * Prints pretty URL
+	 * for pretty urls on
+	 * or
+	 * for front-end view
+	 * 
+	 */
+	
+	/**
+	 * Added pretty_nav
+	 */
+	
+	public function pretty_nav($app) {
+	
+		// calcular pagina incompleta
+		//$this->res = ($this->pages % 2);
+	
+		//while($this->pages > 1) {
+		while($this->pages > 1) {
+			$nav = "<div id=\"nav\">";
+			$nav .= "<ul class=\"pag-bar\">";
+			$nav .= "<li>" . $this->pretty_start($app) . "</li>";
+			$nav .= $this->pretty_prev($app);
+	
+			for($i = 1; $i < $this->pages+1; $i++) {
+				if($i == $_GET['page']) {
+					$nav .= "" . $i . "";
+				} else {
+					$nav .= "<li><a href='" . $this->print_pretty($app) . "/page-$i'>" . $i . "</a></li>";
+				}
+			}
+	
+			$nav .= $this->pretty_next($app);
+			$nav .= "<li>" . $this->pretty_end($app) . "</li>";
+			$nav .= "</ul>";
+			$nav .= "</div>";
+	
+			// retorna (String)
+			return $nav;
+		}
+	
+	}
+	
+	public function print_pretty($app) {
+		
+		/**
+		 * Call recursive
+		 */
+		
+		$url = "";
+		
+		$url = $this->clean_parameter($app);
+			
+		return $url;
+		
+	}
+	
+	/**
+	 * 
+	 * @var Who is calling pagination bar?
+	 * Pagination recursive for pretty URL
+	 * 
+	 */
+	
+	public function clean_parameter($var) {
+		
+		// url completa
+		$url = $_SERVER["REQUEST_URI"];
+		
+		$find_var = strpos($url, $var);
+		
+		if($find_var === false) {
+				
+			// no encontre var 
+			return $var;
+			
+		}
+		
+		return $var;
+		
+	}
+	
 	
 }

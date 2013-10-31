@@ -1,21 +1,32 @@
 Balero CMS
 ==========
 
-* docs: docs.balerocms.com
+* Balero CMS Documentation:
+
+http://docs.balerocms.com/
+
+* API Documentation:
+
+http://api.balerocms.com/
 
 ==========
 
-Features in the next versions
+v.0.3
 
- * Pretty URL's
+ * Pretty URL's support
+
+Next version
+
  * Multi-Language Support
 
 ==========
 
+ * www.balerocms.com
  * https://twitter.com/CMSBalero
  * support@balerocms.com
- * www.balerocms.com
 
 ==========
+
+Friendly contact:
 
 anibalgomez@icloud.com

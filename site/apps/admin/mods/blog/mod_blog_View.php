@@ -42,7 +42,6 @@ class mod_blog_View extends mod_blog_Model {
 		 */
 		
 	
-		$this->loadModelvars();
 		
 	}
 	
@@ -55,18 +54,20 @@ class mod_blog_View extends mod_blog_Model {
 
 		$this->mod_name = _ADD_NEW_POST;
 		
+		// dynamic
+		//$editor = new Form("index.php?app=admin&mod_controller=blog&sr=new_post");
 		$editor = new Form("index.php?app=admin&mod_controller=blog&sr=new_post");
 		$editor->Label(_NEW_POST);
 		$editor->TextField(_POST_TITLE, "title", "");
-		$editor->Editor($this->editor);
+		$editor->TextArea(_POST_MESSAGE, "content", "");
 		$editor->SubmitButton(_OK_MESSAGE);
 		
 		$this->content .= $editor->Show();
 		
 		$tip = new Tips();
-		$tip_type2 = $tip->blue(_EDITOR_PREVIEW_MESSAGE_TIP);
+		//$tip_type2 = $tip->blue(_EDITOR_PREVIEW_MESSAGE_TIP);
 		$tip_type2_2 = $tip->green(_MARKDOWN_REFERENCE);
-		$this->content .= $tip_type2;
+		//$this->content .= $tip_type2;
 		$this->content .= $tip_type2_2;
 		
 	}
@@ -153,14 +154,14 @@ class mod_blog_View extends mod_blog_Model {
 		
 		$editor->Label(_EDIT_POST_CONTENT);
 		$editor->TextField(_POST_TITLE, "title", $title);
-		$editor->Editor("Epiceditor");
+		$editor->TextArea(_POST_MESSAGE, "content", $import);
 			
 			
 		$editor->HiddenField("import", $import);
 		$editor->SubmitButton(_OK_MESSAGE);
 		$this->content .= $editor->Show();
 
-		$this->sucessMessage(_BLOG_POST_ERROR);
+		$this->sucessMessage(_BLOG_POST_MESSAGE);
 			
 		$this->Render();
 		
@@ -252,6 +253,8 @@ class mod_blog_View extends mod_blog_Model {
 	
 	public function Render() {
 		
+		$cfg = new configSettings();
+		
 		/**
 		 * 
 		 * Diccionario (variables de la plantilla).
@@ -261,7 +264,8 @@ class mod_blog_View extends mod_blog_Model {
 				'editor_headers'=>$this->editor_headers,
 				'content'=>$this->content,
 				'mod_name'=>$this->mod_name,
-				'mod_menu'=>$this->menu
+				'mod_menu'=>$this->menu,
+				'basepath'=>$cfg->basepath
 				);
 		
 		/**

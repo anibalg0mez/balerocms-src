@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Balero Panel</title>
-		{editor_headers}
+		<base href="{basepath}">
 		<link rel="stylesheet" href="site/apps/admin/themes/default/css/styles.css">
 		<link rel="stylesheet" href="site/apps/admin/themes/default/css/layout.css">
 		<script src="site/apps/admin/themes/default/js/jquery-min-1.7.1.js"></script>
@@ -34,8 +34,8 @@ ul.nav a { zoom: 1; }  /** the zoom property gives IE the hasLayout trigger it n
 	<ul class="menu">
 		<li class="item1"><a href="#">Home</a>
 			<ul>
-				<li class="subitem"><a href="index.php?app=admin">Back-End</a></li>
-				<li class="subitem"><a href="index.php" target="_blank">Front-End</a></li>
+				<li class="subitem"><a href="./admin">Back-End</a></li>
+				<li class="subitem"><a href="./" target="_blank">Front-End</a></li>
 			</ul>
 		</li>
 		
@@ -51,13 +51,12 @@ ul.nav a { zoom: 1; }  /** the zoom property gives IE the hasLayout trigger it n
 		
 		<li class="item"><a href="#">Session</a>
 			<ul>
-				<li class="subitem"><a href="index.php?app=admin&sr=logout">Logout</a></li>
+				<li class="subitem"><a href="./logout">Logout</a></li>
 			</ul>
 		</li>
 		<li class="item"><a href="#">Help</a>
 			<ul>
-				<li class="subitem"><a href="http://balerocms.com/docs">Docs</a></li>
-				<li class="subitem"><a href="http://developer.balerocms.com/">Developer</a></li>
+				<li class="subitem"><a href="http://balerocms.com/docs">Documentation</a></li>
 				<li class="subitem"><a href="http://balerocms.com/donation">Donate <span>&#9829;</span></a></li>
 			</ul>
 		</li>

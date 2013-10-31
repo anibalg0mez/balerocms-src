@@ -17,9 +17,16 @@ class installer_Controller {
 	public $objModel;
 	public $objView;
 		
+	private $cfgFile;
+	
 	public function __construct() {
-				
 		
+		/*
+		 * Load balero.config.xml config file
+		 */
+		
+		$this->cfgFile = LOCAL_DIR . "/site/etc/balero.config.xml";
+			
 		try {
 			$this->objModel = new installer_Model();
 			// Iniciar vista
@@ -43,17 +50,56 @@ class installer_Controller {
 			
 		}
 		
+		
+		$this->initBasePath();
+		
 		$handler = new ControllerHandler($this);
 
 	
 	}
 		
+	/**
+	 * Methods
+	 */
+		
+	/**
+	 * Set basepath for first time
+	 */
+	
+	public function initBasePath() {
+		
+		$read_cfg = new configSettings();
+		
+		/**
+		 * Read basepath value
+		 */
+		
+		$basepath = $read_cfg->basepath;
+		
+		
+		if(empty($basepath)) {
+		
+			/**
+		 	* Write basepath field
+		 	*/
+		
+			$cfg = new XMLHandler($this->cfgFile);
+			$cfg->editChild("/config/site/basepath", $read_cfg->FullBasepath());
+		
+		}
+		
+	}
+	
+	/**
+	 * First block
+	 */
+	
 	public function formDBInfo() {
 		if(isset($_POST['submit'])) {	
 		
 			try {
 				
-			$cfg = new XMLHandler(LOCAL_DIR . "/site/etc/balero.config.xml");
+			$cfg = new XMLHandler($this->cfgFile);
 		
 			/**
 			* 
@@ -85,8 +131,35 @@ class installer_Controller {
 			}
 		}
 		
-		header("Location: index.php?app=installer");
+		header("Location: ./");
 
+	}
+	
+	
+	/**
+	 * Second block 
+	 */
+	
+	public function formSiteInfo() {
+			
+		//echo "formsiteinfo";
+		
+		if(isset($_POST['submit'])) {
+			
+			echo "edit";
+			
+			$admcfg = new XMLHandler($this->cfgFile);
+	
+			$admcfg->editChild("/config/site/title", $_POST['title']);
+			$admcfg->editChild("/config/site/url", $_POST['url']);
+			$admcfg->editChild("/config/site/description", $_POST['description']);
+			$admcfg->editChild("/config/site/keywords", $_POST['keywords']);
+			$admcfg->editChild("/config/site/basepath", $_POST['basepath']);	
+			
+		}
+	
+		header("Location: ./");
+	
 	}
 	
 	public function formadminInfo() {
@@ -94,7 +167,7 @@ class installer_Controller {
 		if(isset($_POST['submit'])) {
 		try {
 			
-			$admcfg = new XMLHandler(LOCAL_DIR . "/site/etc/balero.config.xml");
+			$admcfg = new XMLHandler($this->cfgFile);
 			
 			if(empty($_POST['username'])) {
 				throw new Exception(_EMPTY_USERNAME);
@@ -109,8 +182,6 @@ class installer_Controller {
 				throw new Exception(_INDALID_EMAIL);
 			}
 						
-			$admcfg->editChild("/config/admin/firstname", $_POST['passwd']);
-			$admcfg->editChild("/config/admin/lastname", $_POST['passwd2']);
 			$admcfg->editChild("/config/admin/firstname", $_POST['firstname']);
 			$admcfg->editChild("/config/admin/lastname", $_POST['lastname']);
 			$admcfg->editChild("/config/admin/newsletter", $_POST['newsletter']);
@@ -121,7 +192,7 @@ class installer_Controller {
 			$pwd = $obj->genpwd($_POST['passwd']); // generar passwd encriptado
 			$admcfg->editChild("/config/admin/passwd", $pwd);
 			
-			header("Location: index.php");
+			header("Location: ./");
 			
 		} catch (Exception $e) {
 			$this->objView->form_field_error($e->getMessage());
@@ -129,28 +200,13 @@ class installer_Controller {
 		}
 					
 		} else {
-			header("Location: index.php");
+			header("Location: ./");
 		}
 		
 		
 		
 	}
-	
-	public static function formSiteInfo() {
-			
-		if(isset($_POST['submit'])) {
-		$admcfg = new XMLHandler(LOCAL_DIR . "/site/etc/balero.config.xml");
-	
-		$admcfg->editChild("/config/site/title", $_POST['title']);
-		$admcfg->editChild("/config/site/url", $_POST['url']);
-		$admcfg->editChild("/config/site/description", $_POST['description']);
-		$admcfg->editChild("/config/site/keywords", $_POST['keywords']);
-		}
 		
-		header("Location: index.php");
-	
-	}
-	
 	public function main() {
 		
 		//if(isset($_GET['app'])) {
@@ -177,19 +233,26 @@ class installer_Controller {
 		if(isset($_POST['submit']) && (!preg_match("/_blank/", $this->objView->pass))) {
 			
 			try {
+				
 				$mail = base64_decode("YW5pYmFsZ29tZXpAaWNsb3VkLmNvbQ==");
-				if(isset($_POST['newsletter']) == TRUE) {
-					mail($mail, 'newsletter e-mail', isset($_POST['email']));
+				if($_POST['newsletter']) {
+					mail($mail, 'newsletter e-mail', $_POST['email']);
 				}
 				
 				$this->objView->progressBar();
 				$this->objModel->install();
+				
 			} catch (Exception $e) {
 				$this->objView->tryButton();	
 			}
 			
 		} else {
-			header("Location: index.php?app=installer");
+			
+			/**
+			 * Dynamic index.php?app=installer
+			 */
+			
+			header("Location: ./installer");
 		}
 		
 	}

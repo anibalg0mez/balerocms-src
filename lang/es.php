@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * Constantes principales de lenguaje del sistema
+ */
+
+/**
  * Core Lang
  */
 

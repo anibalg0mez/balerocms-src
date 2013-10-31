@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * Main launguage constants of your system
+ */
+
+/**
  * Core Lang
  */
 

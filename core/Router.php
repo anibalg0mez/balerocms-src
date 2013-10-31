@@ -74,11 +74,11 @@ class Router {
 			}
 			
 		}
-	
+				
 		/**
 		 * Router (controlador) de secciones (app)
 		 */
-
+		
 		if(isset($_GET['app'])) {
 			if(empty($_GET['app'])) {
 				header("Location: index.php");
@@ -98,9 +98,12 @@ class Router {
 				 */
 				
 				case "admin":
-				$this->admin_router();
+				$this->admin_router(); // login inside this method
 				break;
 				
+				case "logout";
+				$this->logout();
+				break;
 				
 				/**
 				 * Procesar controladores de las apps (secciones).
@@ -118,6 +121,11 @@ class Router {
 			}
 			
 		} else {
+			
+			/**
+			 * default app or home
+			 */
+			
 				$ldr = new autoloader("blog"); // cargar clases para la app
 				$app = new blog_Controller();
 		}
@@ -125,6 +133,10 @@ class Router {
 		
 	}
 		
+	/**
+	 * Router has the login page inside BlowFish class
+	 */
+	
 	public function admin_router() {
 		
 		if(!isset($_COOKIE['admin_god_balero'])) {
@@ -136,7 +148,8 @@ class Router {
 				if($_POST['usr'] == $cfg->user && $verify == TRUE) {
 					$value = base64_encode($cfg->user . ":" . $cfg->pass);
 					setcookie("admin_god_balero",$value, time()+3600*24);
-					header("Location: index.php?app=admin");
+					//header("Location: index.php?app=admin");
+					header("Location: ./admin");
 				} else {
 					$this->message = _LOGIN_ERROR;
 				}
@@ -163,10 +176,13 @@ class Router {
 			}
 			
 		} else {
+			
 			$cfg = new configSettings();
-			$login = new Blowfish();
+			$login = new Blowfish();			
 			$login->message = $this->message;
-			echo $login->login_form("site/apps/admin/themes/default/login.html");
+			$login->basepath = $cfg->basepath;			
+			echo $login->login_form(LOCAL_DIR . "/site/apps/admin/themes/default/login.html");
+		
 		}
 			
 	}
@@ -225,6 +241,32 @@ class Router {
 			}
 		}
 	}
+	
+	public function logout() {
+		if(isset($_COOKIE['admin_god_balero'])) {
+			
+			try {
+				
+				/**
+				 * Delete cookie admin
+				 */
+				
+				setcookie("admin_god_balero", "", time()-3600);
+				//header("Location: index.php?app=admin");
+				header("Location: ./admin");
+				
+			} catch (Exception $e) {
+				
+				/**
+				 * forzar
+				 */
+				
+				setcookie("admin_god_balero", "", time()-1);
+				
+			}
+			
+		}
+	} // end logout
 	
 	
 }

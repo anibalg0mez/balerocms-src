@@ -49,6 +49,14 @@ class ThemeLoader {
 		 */
 		
 		function renderPage($array) {
+			
+			
+			/**
+			 * Debug
+			 */
+			
+			// echo "renderPage test";
+			
 			$template = "";
 			$this->array = $array;
 			if(!file_exists($this->file)) {

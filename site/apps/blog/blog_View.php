@@ -64,7 +64,8 @@ class blog_View extends configSettings {
 				'keywords'=>$this->keywords,
 				'description'=>$this->description,
 				'content'=>$this->content,
-				'virtual_pages'=>$vp->print_virtual_pages_title()
+				'virtual_pages'=>$vp->print_virtual_pages_title(),
+				'basepath'=>$this->basepath
 				);
 		
 		/**

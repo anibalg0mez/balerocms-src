@@ -93,15 +93,10 @@ class admin_Controller {
 		
 	}
 	
-	public function logout() {
-		if(isset($_COOKIE['admin_god_balero'])) {
-			setcookie("admin_god_balero", "", time()-3600);
-			header("Location: index.php?app=admin");
-		} else {
-			// forzar
-			setcookie("admin_god_balero", "", time()-3600);
-			$this->objView->content .= _COOKIE_ERROR;
-		}
+	public function prueba() {
+		
+		echo "test";
+		
 	}
 	
 	public function get_regs_in_controller($name) {

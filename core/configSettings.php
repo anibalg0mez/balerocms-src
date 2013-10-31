@@ -34,7 +34,7 @@ class configSettings {
 	
 	/**
 	 *
-	 * Banderas
+	 * Banderas / Flags
 	 */
 	
 	public $firsttime;
@@ -51,6 +51,11 @@ class configSettings {
 	
 	public $firstname;
 	public $lastname;
+	
+	/**
+	 * 
+	 * Site Info vars
+	 */
 	
 	public $title;
 	public $description;
@@ -90,6 +95,11 @@ public function LoadSettings() {
 	//echo LOCAL_DIR . "/site/etc/balero.config.xml";
 
 	try {
+		
+		/**
+		 * Loading vars from XML
+		 */
+		
 		$xml = new XMLHandler(LOCAL_DIR . "/site/etc/balero.config.xml");
 
 		$this->dbhost = $xml->Child("database", "dbhost");
@@ -112,6 +122,12 @@ public function LoadSettings() {
 		$this->url = $xml->Child("site", "url");
 		$this->description = $xml->Child("site", "description");
 		$this->keywords = $xml->Child("site", "keywords");
+		
+		/**
+		 * Loading Basepath var
+		 */
+		
+		$this->basepath = $xml->Child("site", "basepath");
 
 	} catch (Exception $e) {
 		$title = "ERROR IN CLASS: " . get_class($this);
@@ -120,5 +136,27 @@ public function LoadSettings() {
 	}
 
 }
+
+/**
+ * Get Full Basepath
+ */
+
+public function FullBasepath() {
+
+	/**
+	 * Based on: http://stackoverflow.com/questions/6768793/php-get-the-full-url
+	 */
+
+	$s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
+	$protocol = substr(strtolower($_SERVER["SERVER_PROTOCOL"]), 0, strpos(strtolower($_SERVER["SERVER_PROTOCOL"]), "/")) . $s;
+	$port = ($_SERVER["SERVER_PORT"] == "80") ? "" : (":".$_SERVER["SERVER_PORT"]);
+	$uri = $protocol . "://" . $_SERVER['SERVER_NAME'] . $port . $_SERVER['REQUEST_URI'];
+	$segments = explode('?', $uri, 2);
+	$url = str_replace("index.php", "", $segments[0]);
+
+	return $url;
+
+}
+
 
 }

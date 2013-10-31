@@ -91,7 +91,7 @@ class blog_Model extends configSettings {
 	public function get_post($min, $max) {
 				
 		
-			$this->db->query("SELECT * FROM blog LIMIT $min, $max");
+			$this->db->query("SELECT * FROM blog ORDER BY id DESC LIMIT $min, $max");
 			$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
 			
 			$this->rows = $this->db->rows;

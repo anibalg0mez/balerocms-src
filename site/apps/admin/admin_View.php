@@ -59,7 +59,8 @@ class admin_View extends configSettings {
 				'content'=>$this->content,
 				'mod_name'=>$this->mod_name,
 				'mod_menu'=>$this->menu,
-				'editor_headers'=>''
+				'editor_headers'=>'',
+				'basepath'=>$this->basepath
 				);
 		
 		/**
@@ -117,7 +118,9 @@ class admin_View extends configSettings {
 		
 		$pages = array('5', '10', '15');
 		
-		$form = new Form("index.php?app=admin");
+		// dynamic old way
+		//$form = new Form("index.php?app=admin");
+		$form = new Form("./admin");
 		$form->Label("<h3>"._APPEARANCE."</h3>");
 		$form->DropDown($themes, _THEME. ": ", "themes", $default_theme); // universe (selected)
 		$form->Label("<h3>"._PAGINATION."</h3>");

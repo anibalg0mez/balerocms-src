@@ -46,7 +46,9 @@ class virtual_page_View extends configSettings {
 		}
 		
 		foreach ($this->objTheme->get_virtual_pages() as $page) {
-			$html .= "<li><a href=\"index.php?app=virtual_page&id=".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+			// dynamic
+			//$html .= "<li><a href=\"index.php?app=virtual_page&id=".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+			$html .= "<li><a href=\"./virtual_page/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
 		}
 		
 		return $html;
@@ -85,7 +87,8 @@ class virtual_page_View extends configSettings {
 				'keywords'=>$this->keywords,
 				'description'=>$this->description,
 				'content'=>$this->content,
-				'virtual_pages'=>$this->print_virtual_pages_title()
+				'virtual_pages'=>$this->print_virtual_pages_title(),
+				'basepath'=>$this->basepath
 				);
 		
 		/**

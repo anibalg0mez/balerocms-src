@@ -42,6 +42,10 @@ class ControllerHandler {
 		 *
 		 * Controlador interno (sr) de una app (sección)
 		 * Ejemplo: index.php?app=blog&sr=subrutina
+		 * ==============================================
+		 * v0.3+ 
+		 * ==============================================
+		 * Ejemplo: /blog/subrutina
 		 */
 		
 		if(isset($_GET['sr'])) {

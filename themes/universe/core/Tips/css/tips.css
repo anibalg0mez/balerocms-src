@@ -29,7 +29,10 @@
 				
 							/*- Type0 - White -*/	
 			#type1 {background-color:#FFFFFF;;}
-				#type1 .corner {background-image:url(../images/corners-type0.gif);}
+				#type1 .corner {background-image:url(../images/corners-type0.gif);
+					font-family: 			"Segoe UI", "Lucida Grande", "Helvetica Neue", sans-serif;
+	font-size: 				15px;
+}
 			
 			/*- Type1 - Blue -*/	
 			#type1 {background-color:#CCDEDE;}

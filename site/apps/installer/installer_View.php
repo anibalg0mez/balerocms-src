@@ -36,7 +36,7 @@ class installer_View extends configSettings {
 		
 		/**
 		 *
-		 * @var unknown_type Bolero CMS.
+		 * @var unknown_type Balero CMS.
 		 * Creamos nuestro diccionario desde la vista.
 		 * Sintaxis de $array:
 		 * 		Primer y último valor sin coma al final:
@@ -50,13 +50,15 @@ class installer_View extends configSettings {
 				'keywords'=>$this->keywords,
 				'description'=>$this->description,
 				'content'=>$this->content,
-				'WARNING_MESSAGE'=>'NO PUEDO SELECCIONAR LA BASE DE DATOS',
-				'virtual_pages'=>''
+				'virtual_pages'=>'',
+				'basepath'=>$this->basepath
 				);
 		
 		/**
 		 * 
-		 * Renderizamos nuestra página.
+		 * Render our page.
+		 * Default theme for installer "universe"
+		 * 
 		 */
 
 		$objTheme = new ThemeLoader(LOCAL_DIR . "/themes/universe/main.html");		
@@ -71,12 +73,59 @@ class installer_View extends configSettings {
 	 */
 	
 	/**
-	 * Formulario de datos del portal
+	 * First block: Database config
+	 */
+	
+	/**
+	 * v.0.3+
+	 * Pretty URLs by default.
+	 * Dynamic URLs has been disabled.
+	 */
+	
+	public function formDBInfo() {
+	
+		
+		/* 
+		 * Dynamic URL: index.php?app=installer&sr=formDBInfo 
+		 */
+		
+		$DBform = new Form("./installer/formDBInfo");
+		// Etiqueta (opcional) // Nombre //Valor
+		// Ejemplo:
+		// Inserte nombre // btnSubmit // Valor inicial
+		$DBform->TextField(_DB_HOST, "dbhost", $this->dbhost);
+		$DBform->TextField(_DB_USER, "dbuser", $this->dbuser);
+		$DBform->PasswordField(_DB_PASS, "dbpass", $this->dbpass);
+		$DBform->TextField(_DB_NAME, "dbname", $this->dbname);
+		$DBform->SubmitButton(_SEND);
+	
+	
+		$DBMsgBox = new MsgBox(_DB_CONFIG, $DBform->Show());
+		$this->content .= $DBMsgBox->Show();
+	
+	}
+	
+	
+	/**
+	 * Second block
 	 */
 	
 	public function formSiteInfo() {
 		
-		$adminInfo = new Form("index.php?app=installer&sr=formSiteInfo");
+		if(empty($this->basepath)) {
+			$cfg = new configSettings();
+			$basepath = $cfg->FullBasepath();
+		} else {
+			$basepath = $this->basepath;
+		}
+		
+		/**
+		 * Dynamic URL: index.php?app=installer&sr=formSiteInfo
+		 */
+		
+		$adminInfo = new Form("./installer/formSiteInfo");
+		$adminInfo->TextField(_BASEPATH, "basepath", $basepath);
+		$adminInfo->Label(_NOTE_BASEPATH);
 		$adminInfo->TextField(_TITLE, "title", $this->title);
 		$adminInfo->TextField(_URL, "url", $this->url);
 		$adminInfo->TextArea(_DESCRIPTION, "description", $this->description);
@@ -94,7 +143,11 @@ class installer_View extends configSettings {
 	
 	public function formadminInfo() {
 		
-		$adminInfo = new Form("index.php?app=installer&sr=formadminInfo");
+		/**
+		 * Dynamic URL: index.php?app=installer&sr=formadminInfo
+		 */
+		
+		$adminInfo = new Form("./installer/formadminInfo");
 	
 		$adminInfo->TextField(_ADMIN, "username", $this->user);
 		$adminInfo->PasswordField(_PASS, "passwd", "");
@@ -110,28 +163,7 @@ class installer_View extends configSettings {
 		
 	}
 	
-	/**
-	 * Formulario de datos de la BD
-	 */
-	
-	public function formDBInfo() {
 		
-		$DBform = new Form("index.php?app=installer&sr=formDBInfo");
-		// Etiqueta (opcional) // Nombre //Valor
-		// Ejemplo:
-		// Inserte nombre // btnSubmit // Valor inicial
-		$DBform->TextField(_DB_HOST, "dbhost", $this->dbhost);
-		$DBform->TextField(_DB_USER, "dbuser", $this->dbuser);
-		$DBform->PasswordField(_DB_PASS, "dbpass", $this->dbpass);
-		$DBform->TextField(_DB_NAME, "dbname", $this->dbname);
-		$DBform->SubmitButton(_SEND);
-		
-		
-		$DBMsgBox = new MsgBox(_DB_CONFIG, $DBform->Show());
-		$this->content .= $DBMsgBox->Show();
-		
-	}
-	
 	public function installButton() {
 
 		try {		
@@ -144,7 +176,11 @@ class installer_View extends configSettings {
 				throw new Exception();
 			}
 			
-			$install = new Form("index.php?app=installer&sr=progressBar");
+			/**
+			 * Dynamic URL: index.php?app=installer&sr=progressBar
+			 */
+			
+			$install = new Form("./installer/progressBar");
 			$install->SubmitButton(_INSTALL_TITLE);
 		
 			$iMsgBox = new MsgBox(_INSTALL_BUTTON, $install->Show());
@@ -158,7 +194,11 @@ class installer_View extends configSettings {
 	
 	public function tryButton() {
 	
-		$install = new Form("index.php?app=installer&sr=tryAgain");
+		/**
+		 * Dynamic URL index.php?app=installer&sr=tryAgain
+		 */
+		
+		$install = new Form("./installer/tryAgain");
 		$install->SubmitButton("FORCE INSTALL");
 	
 		$iMsgBox = new MsgBox(_ERROR_INSTALLING, $install->Show());
@@ -172,8 +212,22 @@ class installer_View extends configSettings {
 
 	public function progressBar() {
 		
-		$loading = file_get_contents(LOCAL_DIR . "/site/apps/installer/html/progress-bar/UI.html");
-		echo $loading;
+		/**
+		 * Load basepath for installer
+		 */
+		
+		$array = array(
+				'basepath'=>$this->basepath
+		);
+		
+		/**
+		 * progress-bar UI
+		 */
+		
+		//echo "progressbar";
+		
+		$loading = new ThemeLoader(LOCAL_DIR . "/site/apps/installer/html/UI.html");
+		echo $loading->renderPage($array);
 		
 	}
 	
@@ -193,7 +247,7 @@ class installer_View extends configSettings {
 	
 	public function unknow_database_connect() {
 	
-			$msg = new MsgBox(_INSTALLER_ERROR, _INSTALLER_ERROR_MESSAGE);
+			$msg = new MsgBox(_INSTALLER_WARNING, _INSTALLER_WARNING_MESSAGE);
 		$this->content .= $msg->Show();
 		
 	}

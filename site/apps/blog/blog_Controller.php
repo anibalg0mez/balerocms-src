@@ -38,11 +38,6 @@ class blog_Controller {
 	**/
 
 	public function main() {
-	
-		if(!isset($_GET['app'])) {
-			header("Location: index.php?app=blog");
-			die();
-		}
 		
 		// rows totales
 		$total_rows = $this->objModel->total_post();
@@ -70,8 +65,11 @@ class blog_Controller {
 		// mostrar post
 		$this->objView->print_post();
 		
-		// barra de paginacion
-		$this->objView->content .= $p->nav();
+		// barra de paginacion (dynamic url)
+		//$this->objView->content .= $p->nav();
+		
+		// barra de paginacion (pretty url)
+		$this->objView->content .= $p->pretty_nav("blog");
 		
 		//echo "total post" . $this->objModel->total_post();
 		
@@ -107,9 +105,9 @@ class blog_Controller {
 		
 	}
 	
-	public function test_app() {
+	public function test() {
 		
-		$this->objView->content .= "prueba";
+		echo "test";
 	}
 	
 }

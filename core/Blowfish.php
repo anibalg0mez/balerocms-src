@@ -23,6 +23,7 @@
 /**
  *
  * Balero CMS implementa el sistema llamado BlowFish Login :) :) :)
+ * v.0.3 login form view in Blofish Class
  * @author lastprophet
  *
  */
@@ -33,7 +34,8 @@ class Blowfish {
 	private $pwd_string;
 	
 	public $message;
-
+	public $basepath;
+	
 // referencias en esta pagina
 //http://www.the-art-of-web.com/php/blowfish-crypt/#.UbTIRBx38Yw
 // verificar                  //el pwd encriptado
@@ -71,15 +73,42 @@ class Blowfish {
 		
 	}
 	
+	/**
+	 * 
+	 * require ThemeLoder class
+	 */
+	
 	public function login_form($view) {
-
-		if(isset($view)) {
-			$login = file_get_contents($view);
-			$login = str_replace("{message}", $this->message, $login);
-		}
+			
 		
-		return $login;
+		/**
+		 * Debug
+		 */
 		
+		//echo $view;
+		
+			/**
+			 *
+			 * Login view {vars}
+			 */
+			
+			$array = array(
+					'message'=>$this->message,
+					'basepath'=>$this->basepath
+			);
+			
+			
+			/**
+			 *
+			 * Render page
+			*/
+			
+		
+			//require_once(LOCAL_DIR . "/core/ThemeLoader.php");
+			
+			$objTheme = new ThemeLoader($view);
+			return $objTheme->renderPage($array);
+			
 	}
 	
 	/**
@@ -88,6 +117,7 @@ class Blowfish {
 	
 	public function __destruct() {
 		$this->pwd;
+		unset($this->array);
 	}
 
 	

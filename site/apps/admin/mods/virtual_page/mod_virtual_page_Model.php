@@ -32,13 +32,6 @@ class mod_virtual_page_Model extends configSettings {
 		
 	}
 	
-	public function loadModelvars() {
-		
-		$this->editor = "Epiceditor";
-		$this->editor_headers = file_get_contents(LOCAL_DIR . "/editors/". $this->editor ."/editor_headers.html");
-		
-	}
-	
 
 	/**
 	* Metodos
