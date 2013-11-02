@@ -20,7 +20,7 @@
  * (Editar)
  */
 
-error_reporting(-1); // developer by default
+error_reporting(0); // developer by default
 
 /**
  * 
