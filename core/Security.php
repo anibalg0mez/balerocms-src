@@ -12,12 +12,6 @@
  *
 **/
 
-
-/**
- * 11-nov-2013 XSS Injection Hotfix
- * Thanks to the people who report this bug
- */
-
 class Security {
 	
 	private $var;
@@ -32,22 +26,11 @@ class Security {
 	
 	public function noJS($var) {
 		$script_str = $var;
-		
-		$strings = array("'",
-				"\"",
-				".",
-				"..",
-				"/",
-				"%20",
-				"<",
-				">",
-				"<script>",
-				"</script>"
-		);
-		
+		$script_str = str_replace("'", "", $script_str);
 		//return preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $var);
 		$script_str = htmlspecialchars_decode($script_str);
-		$script_str = str_replace($strings, "", $script_str);
+		$search_arr = array('<script', '</script>');
+		$script_str = str_ireplace($search_arr, $search_arr, $script_str);
 		$split_arr = explode('<script', $script_str);
 		$remove_jscode_arr = array();
 		foreach($split_arr as $key => $val) {
@@ -90,20 +73,17 @@ class Security {
 	
 	public function Level2($str) {
 		
-		$strings = array("'",
-						"\"",
-						".",
-						"..",
-						"/",
-						"%20"
-						);
-		
 		/**
 		 * 
 		 * Remover caracteres potencialmente peligrosos
 		 */
 		
-		$this->var = str_replace($strings, "", $this->var);
+		$this->var = str_replace("'", "", $str);
+		$this->var = str_replace(".", "", $str);
+		$this->var = str_replace("..", "", $str);
+		$this->var = str_replace("/", "", $str);
+		$this->var = str_replace("%20", "", $str);
+		$this->var = str_replace("__", "", $str);
 		return $this->var;
 	}
 	
