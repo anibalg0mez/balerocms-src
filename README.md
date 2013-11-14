@@ -30,3 +30,8 @@ Next version
 Friendly contact:
 
 anibalgomez@icloud.com
+==========
+Development Environment:
+
+* Fedora/KDE
+ * Eclipse
