@@ -62,7 +62,26 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		$editor->TextArea(_VIRTUAL_PAGE_CONTENT, "content", "");
 		$editor->SubmitButton(_VIRTUAL_PAGE_CREATE);
 		
-		$this->content .= $editor->Show();
+		/**
+		 * Build html tab block
+		*/
+		
+		$htmltab = "";
+		$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/UI.html");
+		
+		$array = array(
+				'code' => "*",
+				'content' => $editor->Show()
+		);
+		
+		$htmltab .= $tab->renderPage($array);
+		
+		$this->content .= "<div class=\"set set-1\">";
+		$this->content .= $htmltab;
+		$this->content .= "</div>";
+			
+		$js = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/js.html");
+		$this->content .= $js->renderPage(array());
 		
 		$tip = new Tips();
 		$tip_type2 = $tip->blue(_VIRTUAL_PAGE_TIP_PREVIEW);
@@ -101,7 +120,85 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		$editor->HiddenField("import", $db->return_virtual_content($id));
 		$editor->SubmitButton(_VIRTUAL_PAGE_EDIT);
 	
-		$this->content .= $editor->Show();
+		/**
+		 * Build html tab block
+		*/
+		
+		$htmltab = "";
+		$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/UI.html");
+		
+		$array = array(
+				'code' => "*",
+				'content' => $editor->Show()
+		);
+		
+		$htmltab .= $tab->renderPage($array);
+		
+
+		/**
+		 * Build lang tabs
+		 */
+		
+		$settings = new configSettings();
+		$settings->LoadSettings();
+		
+		if($settings->multilang == "yes") {
+		
+			$model = new mod_virtual_page_Model();
+		
+			$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/UI.html");
+		
+			$objLangs = new mod_languages_Model();
+			$langs = $objLangs->get_lenguages();
+		
+			$i = 0;
+			foreach ($langs as $row) {
+		
+				$i++;
+				//$model->return_post_title_multilang($_GET['id'], $row['code']);
+				//$model->return_post_content_multilang($_GET['id'], $row['code']);
+
+				$editor = new Form("index.php?app=admin&mod_controller=virtual_page&sr=page_multilang&id=$id");
+				$editor->Label($row['label']);
+				if($db->return_value($id) == 1) {
+					$editor->RadioButton(_ENABLED_CONTENT, "1", "a", 1);
+					$editor->RadioButton(_DISABLED_CONTENT, "0", "a", 0);
+				} else {
+					$editor->RadioButton(_ENABLED_CONTENT, "1", "a", 0);
+					$editor->RadioButton(_DISABLED_CONTENT, "0", "a", 1);
+				}
+				$editor->HiddenField("id", $id);
+				$editor->Label(_VIRTUAL_PAGE_CONTENT);
+				$model->return_virtual_title_multilang($id, $row['code']);
+				$editor->TextField(_VIRTUAL_PAGE_TITLE, "virtual_title", $model->virtual_title);
+				$model->return_virtual_content_multilang($id, $row['code']);
+				$editor->TextArea(_VIRTUAL_PAGE_CONTENT, "virtual_content", $model->virtual_content);
+				$editor->HiddenField("import", $model->virtual_content);
+				$editor->HiddenField("code", $row['code']);
+				$editor->SubmitButton(_VIRTUAL_PAGE_EDIT);
+				
+				$array = array(
+						'code' => $row['code'],
+						'content' => $editor->Show()
+				);
+					
+				/**
+				 * Build html tab block
+				*/
+		
+				$htmltab .= $tab->renderPage($array);
+		
+				
+			} // for each
+				
+		} // end if
+		
+		$this->content .= "<div class=\"set set-1\">";
+		$this->content .= $htmltab;
+		$this->content .= "</div>";
+		
+		$js = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/js.html");
+		$this->content .= $js->renderPage(array());
 	
 		$tip = new Tips();
 		$tip_type2 = $tip->blue(_VIRTUAL_PAGE_TIP_PREVIEW);
@@ -265,7 +362,7 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		 * Renderizamos nuestra página.
 		 */
 
-		$objTheme = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/themes/default/panel.html");		
+		$objTheme = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/html/panel.html");		
 		echo $objTheme->renderPage($array);
 		
 	

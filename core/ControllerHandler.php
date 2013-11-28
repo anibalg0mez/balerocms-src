@@ -16,7 +16,7 @@
 /**
  * 
  * @author lastprophet
- * Automaticar el controlador 
+ * Automatizar el controlador 
  * obtener metodos de una clase (Ignorar metodos magicos de PHP)
  * http://php.net/manual/en/function.get-class-methods.php
  *
@@ -117,7 +117,7 @@ class ControllerHandler {
 			}
 		}
 	
-	} // fin de manager()
+	} // fin de init()
 	
 	
 }

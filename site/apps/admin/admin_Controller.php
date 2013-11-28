@@ -16,6 +16,13 @@ class admin_Controller {
 	public $objModel;
 	public $objView;
 	
+	/**
+	 * 
+	 * Catch value from other class
+	 */
+	
+	protected $menu;
+	
 		
 	/**
 	* Los cargamos en el constructor
@@ -23,10 +30,12 @@ class admin_Controller {
 
 	public function __construct($menu) {
 		
+		$this->menu = $menu;
+		
 		try {
 			$this->objModel = new admin_Model();
 			$this->objView = new admin_View();
-			$this->objView->menu = $menu;
+			$this->objView->menu = $this->menu;
 			
 		} catch (Exception $e) {
 			
@@ -43,9 +52,13 @@ class admin_Controller {
 	public function main() {
 	
 		try {
-		$this->settings_controller();
-		$this->objView->settings_view();
-		$this->objView->Render();	
+			
+			$this->settings_controller();
+			
+			/**
+			 * Wait for view
+			 */
+			
 		} catch (Exception $e) {
 			
 		}
@@ -58,6 +71,8 @@ class admin_Controller {
 		
 	
 	public function settings_controller() {
+		
+		$this->objModel->deleteExpired();
 		
 		if(isset($_POST['submit'])) {
 			
@@ -76,14 +91,27 @@ class admin_Controller {
 			$admcfg->editChild("/config/site/description", $_POST['description']);
 			$admcfg->editChild("/config/site/keywords", $_POST['keywords']);
 			
+			/**
+			 * Get refresh view (reloading view)
+			 */
+			
+			unset($this->objView);
+			$this->objView = new admin_View();
+			$this->objView->menu = $this->menu;
 			$ok = new Tips();
 			$this->objView->content .= $ok->green(_DATA_OK);
+			
+			/**
+			 * Wait for render() method
+			 */
 			
 			} catch (Exception $e) {
 				$ok = new Tips();
 				$ok->green(_DATA_ERROR . " " . $e->getMessage());
 			}
 		}
+		
+		$this->objView->settings_view();
 
 	}
 	

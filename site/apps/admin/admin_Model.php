@@ -53,6 +53,11 @@ class admin_Model extends configSettings {
 			$theme = $e->getMessage();
 		}
 		
+		/**
+		 * clean db->rows before return 
+		 */
+		
+		unset($this->db->rows);
 		return $theme;
 	}
 	
@@ -92,6 +97,12 @@ class admin_Model extends configSettings {
 			$pages = $e->getMessage();
 		}
 		
+		
+		/**
+		 * clean db->rows before return 
+		 */
+		
+		unset($this->db->rows);
 		return $pages;
 	}
 	
@@ -126,6 +137,18 @@ class admin_Model extends configSettings {
 	}
 
 	
+	/**
+	 * Delete old virtual cookies
+	 */
+	
+	public function deleteExpired() {
+		
+		date_default_timezone_set('UTC');
+		//$delete = date("Y-m-d", strtotime("+1 day"));
+		$delete = date("Y-m-d");
+		//echo $delete;
+		$this->db->query("DELETE FROM cookie WHERE expire < '".$delete."'");
+	}
 	
 	# Método destructor del objeto
  	public function __destruct() {

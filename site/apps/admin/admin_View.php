@@ -22,13 +22,13 @@ class admin_View extends configSettings {
 	
 	public $menu;
 	
-	
+	public $languages;
 	
 	public function __construct() {
 		
 		$this->LoadSettings();
 		
-		$this->mod_name = _WELCOME . " "  . $this->user;
+		$this->mod_name = _WELCOME . " "  . $this->user . " (" . $this->email . ")";
 		
 		/**
 		 *
@@ -59,7 +59,6 @@ class admin_View extends configSettings {
 				'content'=>$this->content,
 				'mod_name'=>$this->mod_name,
 				'mod_menu'=>$this->menu,
-				'editor_headers'=>'',
 				'basepath'=>$this->basepath
 				);
 		
@@ -68,7 +67,7 @@ class admin_View extends configSettings {
 		 * Renderizamos nuestra página.
 		 */
 
-		$objTheme = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/themes/default/panel.html");		
+		$objTheme = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/html/panel.html");		
 		echo $objTheme->renderPage($array);
 		
 	
@@ -109,15 +108,17 @@ class admin_View extends configSettings {
 		 */
 		
 		$model_settings = new admin_Model();
+		
+		
 		$default_theme = $model_settings->get_default_theme();
 		// url friendly prox versiones
 		//$url_friendly_status = $model_settings->get_url_friendly_status();
-		$pagination = $model_settings->get_pagination();
+		$pagination = $model_settings->get_pagination();		
 		
 		$themes = $this->get_themes();
 		
-		$pages = array('5', '10', '15');
-		
+		$pages = array('4', '8', '12');
+				
 		// dynamic old way
 		//$form = new Form("index.php?app=admin");
 		$form = new Form("./admin");
@@ -144,7 +145,14 @@ class admin_View extends configSettings {
 		
 		$msg = new MsgBox(_NOTE, _BASIC_MSG);
 		$this->content .= $msg->Show();
+		
+		/**
+		 * Render page
+		 */
+		
+		$this->Render();
+
 	}
-	
+
 	
 } // fin clase

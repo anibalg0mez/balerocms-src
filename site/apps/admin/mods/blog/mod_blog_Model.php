@@ -12,7 +12,20 @@ class mod_blog_Model extends configSettings {
 	public $editor;
 	public $rows;
 	
+	/**
+	 * 
+	 * Multilang post message content
+	 */
+	
+	public $message;
 		
+	/**
+	 *
+	 * Multilang post title content
+	 */
+	
+	public $title;
+	
 	public function __construct() {
 		
 		$this->tabla_name = "blog"; // SELECT * FROM "blog"
@@ -40,6 +53,8 @@ class mod_blog_Model extends configSettings {
 	
 	public function add_post($title, $message) {
 				
+		date_default_timezone_set('UTC');
+		
 		try {
 
 			//$query = $this->db->query("INSERT INTO blog title, message, info VALUES " . $title . $message,
@@ -48,20 +63,46 @@ class mod_blog_Model extends configSettings {
 			$date = $this->user . " @ " . date("Y-m-d H:i:s");
 	
 			$query = $this->db->query("INSERT INTO blog (title, message, info) VALUES ('".$title."', '".$message."', '".$date."')");
-			
+				
 		} catch (Exception $e) {
 			$e->getMessage();
 		}
 		
 		unset($this->db->rows);
 		
-		
+	}
+	
+	public function add_post_multilang($post_id, $title, $message, $code, $id) {
+	
+		date_default_timezone_set('UTC');
+	
+		try {
+
+			/**
+			 * If exist post update row
+			 * if not, add new register (post)
+			 */
+			
+			$date = $this->user . " @ " . date("Y-m-d H:i:s");
+			$query = $this->db->query("INSERT INTO blog_multilang (post_id, title, message, info, code, id) 
+									VALUES ('".$post_id.";".$code."', '".$title."', '".$message."', '".$date."', '".$code."', '".$id."')
+									ON DUPLICATE KEY UPDATE 
+									title = '".$title."', 
+									message = '".$message."',
+									info = '".$date."'");
+						
+		} catch (Exception $e) {
+			$e->getMessage();
+		}
+	
+		unset($this->db->rows);
+	
 	}
 	
 	public function get_post($min, $limit) {
 				
 		
-			$this->db->query("SELECT * FROM blog LIMIT $min, $limit");
+			$this->db->query("SELECT * FROM blog ORDER BY id DESC LIMIT $min, $limit");
 			$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
 			
 			if(empty($this->db->rows)) {
@@ -135,10 +176,90 @@ class mod_blog_Model extends configSettings {
 	
 	}
 	
+	/**
+	 * 
+	 * Multilang
+	 */
+	
+	public function return_post_content_multilang($id, $code) {
+	
+		
+		/**
+		 * Find post multilang by id;code
+		 * Ex: 188;en
+		 */
+		try {
+		$this->db->query("SELECT * FROM blog_multilang WHERE post_id='".$id.";".$code."'");
+		$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
+		
+		/**
+		 * No results
+		 */
+		
+		if(empty($this->db->rows)) {
+			throw new Exception();
+		}
+		
+		foreach ($this->db->rows as $row) {
+			
+			if(empty($row['message'])) {
+				throw new Exception();
+			}
+			
+			if($row['id'] == $id && !empty($row['message'])) {
+				$this->message = $row['message'];
+			}
+		}
+		
+		} catch (Exception $e) {
+			$this->message = "";
+		}
+	
+
+		unset($this->db->rows);
+		
+	}
+	
+	public function return_post_title_multilang($id, $code) {
+	
+		
+		/**
+		 * Find post multilang by id;code
+		 * Ex: 188;en
+		 */
+		try {
+		$this->db->query("SELECT * FROM blog_multilang WHERE post_id='".$id.";".$code."'");
+		$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
+		
+		if(empty($this->db->rows)) {
+			throw new Exception();
+		}
+		
+		foreach ($this->db->rows as $row) {
+			
+			if(empty($row['title'])) {
+				throw new Exception();
+			}
+			
+			if($row['id'] == $id && !empty($row['title'])) {
+				$this->title = $row['title'];
+			}
+		}
+		
+		
+		} catch (Exception $e) {
+			$this->title = "";
+		}
+	
+		unset($this->db->rows);
+	
+	}
+	
 	public function delete_query($id) {
 		$objShield = new Security();
 		$_id = $objShield->shield($id);
 		$this->db->query("DELETE FROM blog WHERE id='$_id'");
+		$this->db->query("DELETE FROM blog_multilang WHERE id='$_id'");
 		unset($this->db->rows);
 	}
 		

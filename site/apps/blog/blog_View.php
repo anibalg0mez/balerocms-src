@@ -25,7 +25,17 @@ class blog_View extends configSettings {
 	
 	public $objTheme;
 	
+	public $count;
+	
+	public $page;
+	
+	public $lang;
+	
+	public $printVirtualPages; // multilang or default
+	
 	public function __construct() {
+		
+		$this->page = "Blog";
 		
 		$this->objTheme = new blog_Model();
 		$this->theme = $this->objTheme->theme();
@@ -53,19 +63,25 @@ class blog_View extends configSettings {
 	
 	public function Render() {
 
+		$lang = new Language();
+		$lang->app = "blog";
+		$lang->defaultLang = $this->objTheme->getLang();
+		
 		// incluir clases fuera de este directorio		
 		$ldr = new autoloader("virtual_page");
 		
 		// trae paginas virtuales
-		$vp = new virtual_page_View();
+		//$vp = new virtual_page_View();
 		
 		$array = array(
 				'title'=>$this->title,
 				'keywords'=>$this->keywords,
 				'description'=>$this->description,
 				'content'=>$this->content,
-				'virtual_pages'=>$vp->print_virtual_pages_title(),
-				'basepath'=>$this->basepath
+				'virtual_pages'=>$this->printVirtualPages,
+				'basepath'=>$this->basepath,
+				'page'=>$this->page,
+				'langs'=>$lang->langList($this->objTheme->getLangList())
 				);
 		
 		/**
@@ -81,42 +97,86 @@ class blog_View extends configSettings {
 	
 	public function print_post() {
 		
-		//				recorrer datos almacenados en $rows[]
-		//				lo hacemos desde la vista:
-		
-		// Renderizamos los post con la clase para mostrar tips.
-		$tips = new Tips();
-		
+		$this->count = 0;
 		// debug
 		//var_dump($this->rows);
 		
 		$word_count = 0;
 		
+		$tpl = new ThemeLoader(LOCAL_DIR . "/site/apps/blog/html/index.html");
+		
 		foreach ($this->rows as $row) {
+			
+			$this->page = htmlentities($row['title']);
+			
+			//$blocks = 3;
 			
 			/**
 			 * 
 			 * Llamar la clase Markdown.
 			 */
 			
-			$limit = 1000;
+			$limit = 300;
 			$word_count = strlen($row['message']);
 			
 			try {
+				
+				/**
+				 * Truncate post content
+				 */
+				
 			$post = $this->truncate_word($row['message'], $limit);
-			if($word_count > $limit) {
-				// dynamic
-				//$post .= "(<a href=\"index.php?app=blog&sr=full_post&id=".$row['id']."\" class=\"more\">". _MORE ."</a>)";
-				$post .= "(<a href=\"./blog/full_post/".$row['id']."\" class=\"more\">". _MORE ."</a>)";
+			
+			/**
+			 * Print "More..." link
+			 */
+			
+			if(!isset($_GET['id'])) {
+				if($word_count > $limit) {
+					// dynamic
+					//$post .= "(<a href=\"index.php?app=blog&sr=full_post&id=".$row['id']."\" class=\"more\">". _MORE ."</a>)";
+					$post .= "<a class=\"more\" href=\"./blog/".$this->lang."/id-".$row['id']."\">". _MORE ."</a>";
+				} 
 			}
+			
+			/**
+			 * Returns post's rendered content
+			 */
+			
 			$render_html = Markdown::defaultTransform($post);
-			$this->content .= $tips->blue($row['title']) . "<br />" . $tips->white($render_html) . "<br />" . $tips->green($row['info']);
+			
+			/**
+			 * Render post from HTML template
+			 * post.html 
+			 */
+			
+			/**
+			 * Smart blog only for test (beta)
+			 */
+			
+			//$blocks = $this->block($this->count, 3);
+			//$this->count++;
+			
+			$vars = array("blog_title" => $row['title'],
+						"blog_message" => $render_html,
+						"blog_info" => $row['info'],
+						//"blocks" => $blocks
+						);
+			
+
+			
+			/**
+			 * Prints rendered post and template vars
+			 */
+			
+			$this->content .= $tpl->renderPage($vars);
+			
 			
 			} catch (Exception $e) {
-			
+				
 			}
 			
-		}
+		} // end loop
 		
 		
 	}
@@ -135,23 +195,35 @@ class blog_View extends configSettings {
 	public function full_post_view($array) {
 		
 		$markdown = new Markdown();
-		$box = new Tips();
+		
+		$tpl = new ThemeLoader(LOCAL_DIR . "/site/apps/blog/html/full_post.html");
 		
 		foreach ($array as $row) {
-			$this->content .= $box->green($row['title']);
-			$this->content .= $box->white($markdown->defaultTransform($row['message']));
+			
+			$title = $row['title'];
+			$this->page = htmlspecialchars($title);
+			$message = $markdown->defaultTransform($row['message']);
+			
+			$vars = array("blog_title" => $row['title'],
+					"blog_message" => $message,
+					"blog_info" => $row['info']);
+				
+			$this->content .= $tpl->renderPage($vars);
 		}
 		
 	}
 	
 	public function truncate_word($string, $limit) {
 	
-		$truncate_string = substr($string, 0, $limit);
-	
-		$new_string = $truncate_string . "...";
+		if(strlen($string) > $limit) {
+			$truncate_string = substr($string, 0, $limit);
+			$new_string = $truncate_string . "...";
+		} else {
+			$new_string = $string;
+		}
 	
 		return $new_string;
-	
+		
 	}
 	
 	public function message($message) {
@@ -159,6 +231,24 @@ class blog_View extends configSettings {
 		return $msg->red($message);
 	}
 	
+	/**
+	 * 
+	 * Implementing smart blog
+	 * Multi column (only for test)
+	 * @param unknown $count
+	 * @param unknown $break
+	 * @return string|unknown
+	 */
 	
+	public function block($count, $break) {
+		echo $count;
+		if($count == $break) {
+			$this->count = 0-1;
+			return "<div class=clear></div>";
+		} else {
+			return $break;
+		}
+		
+	}
 	
 } // fin clase

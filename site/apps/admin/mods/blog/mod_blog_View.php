@@ -12,7 +12,7 @@
  *
 **/
 
-class mod_blog_View extends mod_blog_Model {
+class mod_blog_View extends configSettings {
 	
 	public $mod_name = "Comenzar";
 	
@@ -21,8 +21,6 @@ class mod_blog_View extends mod_blog_Model {
 	 */
 	
 	public $content = "";
-	
-	public $editor_headers;
 	
 	/**
 	 * 
@@ -41,7 +39,8 @@ class mod_blog_View extends mod_blog_Model {
 		 * en el panel izquierdo del menu. Ejemplo Blog (70)
 		 */
 		
-	
+	$this->LoadSettings();
+		
 		
 	}
 	
@@ -51,18 +50,43 @@ class mod_blog_View extends mod_blog_Model {
 		/**
 		 * @$this->mod_name Nombre de el módulo (Aparecera en el header del contededor)
 		 **/
-
+		
 		$this->mod_name = _ADD_NEW_POST;
 		
-		// dynamic
-		//$editor = new Form("index.php?app=admin&mod_controller=blog&sr=new_post");
-		$editor = new Form("index.php?app=admin&mod_controller=blog&sr=new_post");
-		$editor->Label(_NEW_POST);
-		$editor->TextField(_POST_TITLE, "title", "");
-		$editor->TextArea(_POST_MESSAGE, "content", "");
-		$editor->SubmitButton(_OK_MESSAGE);
+		/**
+		 * Build default lang tab
+		 */
 		
-		$this->content .= $editor->Show();
+		$htmltab = "";
+		$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/UI.html");
+		
+		// default or non-multilanguage form
+		$frmDefault = new Form("index.php?app=admin&mod_controller=blog&sr=new_post");
+		$frmDefault->Label(_LANG_DEFAULT);
+		$frmDefault->Label(_NEW_POST);
+		$frmDefault->TextField(_POST_TITLE, "title", "");
+		$frmDefault->TextArea(_POST_MESSAGE, "content", "");
+		$frmDefault->SubmitButton(_OK_MESSAGE);
+		
+		$array = array(
+				'code' => "*",
+				'content' => $frmDefault->Show()
+		);
+		
+		$htmltab .= $tab->renderPage($array);
+		
+		
+		
+		/**
+		 * Build html tab block
+		 */
+			
+		$this->content .= "<div class=\"set set-1\">";
+		$this->content .= $htmltab;
+		$this->content .= "</div>";
+			
+		$js = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/js.html");
+		$this->content .= $js->renderPage(array());
 		
 		$tip = new Tips();
 		//$tip_type2 = $tip->blue(_EDITOR_PREVIEW_MESSAGE_TIP);
@@ -139,14 +163,18 @@ class mod_blog_View extends mod_blog_Model {
 			
 		$this->mod_name = _EDIT_POST;
 
+		/**
+		 * Build default lang tab
+		 */
+		
+		$htmltab = "";
+		$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/UI.html");
+		
+		
 		$editor = new Form("index.php?app=admin&mod_controller=blog&sr=edit_post&id=$id");
 			
-		// traer datos de vmodelo
-		
+		// traer datos de modelo
 		$model_edit = new mod_blog_Model();
-		
-		
-		
 		// regresa el titulo del post unicamente por ID
 		$title = $model_edit->return_post_title($id);
 		// importar contenido en el editor , todo lo que este dentro de un campo llamado "import" por ID
@@ -155,12 +183,73 @@ class mod_blog_View extends mod_blog_Model {
 		$editor->Label(_EDIT_POST_CONTENT);
 		$editor->TextField(_POST_TITLE, "title", $title);
 		$editor->TextArea(_POST_MESSAGE, "content", $import);
-			
-			
 		$editor->HiddenField("import", $import);
 		$editor->SubmitButton(_OK_MESSAGE);
-		$this->content .= $editor->Show();
+		
+		$array = array(
+				'code' => "*",
+				'content' => $editor->Show()
+		);
+		
+		$htmltab .= $tab->renderPage($array);
+		
+		/**
+		 * Build lang tabs
+		 */
+		
+		if($this->multilang == "yes") {
+				
+			$model = new mod_blog_Model();
+				
+			$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/UI.html");
+		
+			$objLangs = new mod_languages_Model();
+			$langs = $objLangs->get_lenguages();
+		
+			$i = 0;
+			foreach ($langs as $row) {
 
+				
+				
+				$i++;
+				$model->return_post_title_multilang($_GET['id'], $row['code']);
+				$model->return_post_content_multilang($_GET['id'], $row['code']);
+				
+				$editor = new Form("index.php?app=admin&mod_controller=blog&sr=post_multilang&id=$id");
+				$editor->Label($row['label'] . " " . _VERSION);
+				$editor->TextField(_POST_TITLE, "title", $model->title);
+				$editor->TextArea(_POST_MESSAGE, "content", $model->message);
+				$editor->HiddenField("import", $import);
+				$editor->HiddenField("code", $row['code']);
+				$editor->SubmitButton(_OK_MESSAGE);
+		
+				$array = array(
+						'code' => $row['code'],
+						'content' => $editor->Show()
+				);
+					
+				/**
+				 * Build html tab block
+				*/
+		
+				$htmltab .= $tab->renderPage($array);
+		
+				
+			} // for each
+					
+		} // end if
+		
+		/**
+		 * Build html tab block
+		*/
+			
+		$this->content .= "<div class=\"set set-1\">";
+		$this->content .= $htmltab;
+		$this->content .= "</div>";
+			
+		$js = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/js.html");
+		$this->content .= $js->renderPage(array());
+		
 		$this->sucessMessage(_BLOG_POST_MESSAGE);
 			
 		$this->Render();
@@ -261,7 +350,6 @@ class mod_blog_View extends mod_blog_Model {
 		 */
 		
 		$array = array(
-				'editor_headers'=>$this->editor_headers,
 				'content'=>$this->content,
 				'mod_name'=>$this->mod_name,
 				'mod_menu'=>$this->menu,
@@ -273,7 +361,7 @@ class mod_blog_View extends mod_blog_Model {
 		 * Renderizamos nuestra página.
 		 */
 
-		$objTheme = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/themes/default/panel.html");		
+		$objTheme = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/html/panel.html");		
 		echo $objTheme->renderPage($array);
 		
 	

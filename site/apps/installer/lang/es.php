@@ -2,6 +2,7 @@
 
 //define("", "");
 
+define("_PAGE", "Instalador");
 define("_UNKNOW_DATABASE", "Unknow database");
 define("_EMPTY_USERNAME", "* Nombre de usuario vacío");
 define("_EMPTY_PASSWORD", "* Contraseña vacía");
@@ -41,3 +42,9 @@ define("_CHMOD_ERROR", "Permisos incorrectos del archivo '/site/etc/balero.confi
 define("_WARNING","Aviso");
 define("_BASEPATH", "Directorio base");
 define("_NOTE_BASEPATH", "Note: Inserta tu URL base o deja en blanco para obtener automáticamente.");
+define("_TITLE", "Titulo");
+define("_URL", "URL");
+define("_DESCRIPTION", "Descripción");
+define("_TAGS", "Tags");
+define("_OK", "Aceptar");
+define("_NOTE", "Nota");

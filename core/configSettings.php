@@ -69,6 +69,12 @@ class configSettings {
 	
 	public $newsletter;
 	
+	/**
+	 * Multilanguage
+	 */
+	
+	public $multilang;
+	
 	public function __construct() {
 				
 		$this->LoadSettings(); // Cargar datos XML
@@ -128,6 +134,8 @@ public function LoadSettings() {
 		 */
 		
 		$this->basepath = $xml->Child("site", "basepath");
+		
+		$this->multilang = $xml->Child("site", "multilang");
 
 	} catch (Exception $e) {
 		$title = "ERROR IN CLASS: " . get_class($this);

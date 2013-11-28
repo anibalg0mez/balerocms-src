@@ -12,7 +12,7 @@
  *
 **/
 
-class mod_blog_Controller {
+class mod_blog_Controller extends configSettings {
 	
 	public $modModel;
 	public $modView;
@@ -59,9 +59,7 @@ class mod_blog_Controller {
 	
 	// controlador new_post
 	public function new_post() {
-		
-		
-		
+
 		if(isset($_POST['submit'])) {
 			
 			$objSec = new Security();
@@ -109,15 +107,10 @@ class mod_blog_Controller {
 				$this->modView->errorMessage(_BLOG_POST_ERROR . $e->getMessage());
 			}
 			
-		}
+		} // end if
 		
-		try {
 			$this->modView->new_post_view();
 			$this->modView->Render();
-		} catch(Exception $e) {
-			
-		}
-		
 	}
 			
 
@@ -199,17 +192,18 @@ class mod_blog_Controller {
 	 * Controlador edit post
 	 */
 	
+	
 	public function edit_post() {
-			
-			try {
-				
-				/**
-				 * Acción para guardar la edición del post
-				 */
-				
-				
+
+		try {
+		
+			/**
+			 * Acción para guardar la edición del post
+			 */
+		
+		
 			if(isset($_POST['submit'])) {
-				
+		
 				if(empty($_POST['title'])) {
 					throw new Exception(" "._BLOG_POST_EMPTY_TITLE." ");
 				}
@@ -219,37 +213,87 @@ class mod_blog_Controller {
 				$objShield = new Security();
 				$id = $objShield->shield($_GET['id']);
 				$this->modModel->edit_post($id, $objShield->shield($_POST['title']), $objShield->noJS($_POST['content']));
-				
 				$this->modView->sucessMessage(_SAVED_SUCESSFULLY);
-			}	
-			
+			}
+				
 			/**
 			 * Fin de acción para guardar la edición del post
 			 */
-
-			
+		
+				
 			/**
 			 * Acción para mostrar (importar) el editor cargado con el contenido que le corresponde
 			 */
-				
+		
 			$objShield = new Security();
 			$id = $objShield->shield($_GET['id']);
-			
+				
 			$this->modView->edit_view($id);
-
-			
+		
+				
 			/**
 			 * Fin de acción para mostrar (importar) el editor cargado con el contenido que le corresponde
-			 */
-
+			*/
+		
+				
+		} catch (Exception $e) {
+			$id = new Security();
+			$_id = $id->shield($_GET['id']);
+			$this->modView->errorMessage($e->getMessage());
+			$this->modView->edit_view($_id);
+		}
 			
-			} catch (Exception $e) {
-				$id = new Security();
-				$_id = $id->shield($_GET['id']);
+	}
+	
+	/**
+	 * add or edit multilang post
+	 */
+	
+	public function post_multilang() {
+		
+		$objShield = new Security();
+		
+		if(isset($_POST['code'])) {
+		
+		/**
+		 * Add multi-lang pages
+		 */
+		
+			$title = $_POST['title'];
+			$content = $_POST['content'];
+			
+			try {
+				//$this->modModel->edit_post_multilang($_GET['id'], $objShield->shield($title), $objShield->noJS($content));
+				//$this->modView->sucessMessage(_EDIT_MULTI_SUCESS);
+				
+				$this->modModel->add_post_multilang($_GET['id'], $objShield->shield($title), $objShield->noJS($content), $_POST['code'], $_GET['id']);
+				$this->modView->sucessMessage(_ADD_MULTI_SUCESS);
+				
+				
+			} catch (Exception $e) {				
+				
 				$this->modView->errorMessage($e->getMessage());
-				$this->modView->edit_view($_id);
-			}	
-			
+			}
+		
+		} //end if
+		
+		$this->modView->edit_view($_GET['id']);
+		
+	}
+	
+	/**
+	 * save as multilanguage post
+	 */
+	
+	public function setLangHeaders($code, $content) {
+		
+		$plain_text = "";
+		$openHeaders = "#-/-#-/-#[" . $code . "]#-/-#-/-#\n";
+		$closeHeaders = "\n#-/-#-/-#[/" . $code . "]#-/-#-/-#";
+		$plain_text = $openHeaders . $content . $closeHeaders;
+		
+		return $plain_text;
+		
 	}
 	
 }

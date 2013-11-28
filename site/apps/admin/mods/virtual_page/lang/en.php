@@ -5,6 +5,7 @@
  * Blog's module language
  */
 
+define("_VPADD_MULTI_SUCESS", "Sucess.");
 define("_PAGE_POST_ERROR", "Click on the 'Save' button before sending your content!");
 define("_PAGE_POST_EMPTY_TITLE", "Your virtual page title is empty!");
 define("_NO_RESULTS", "No results");

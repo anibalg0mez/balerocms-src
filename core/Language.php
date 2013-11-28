@@ -14,42 +14,101 @@
 
 class Language {
 	
-	public $lang;
+	/**
+	 * 
+	 * default lang from this class
+	 */
 	
-	public function __construct() {
-		$lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-		$this->lang = $lang;
-		//echo "lang: " . $lang;
-	}
+	public $defaultLang;
+	
 	
 	/**
-	 * init() core lang
+	 * Default language files
 	 */
+	
+	public $defaultFile;
+	
+	public function __construct() {
+			
+		$this->defaultFile = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+		//$this->init();
+		
+	
+	}
 	
 	public function init() {
 		
-		$path = LOCAL_DIR . "/lang/";
 		
-		switch ($this->lang) {
-			case $this->lang:
-			$this->include_lang($path . $this->lang . ".php");
-			break;
-				
-			default:
-			$this->include_lang($path . "en" . ".php");
-		}
+		$this->defaultLang = "main";
 
+		/**
+		 * Core language
+		 */
+		
+		$path = LOCAL_DIR . "/core/lang/";
+		
+		switch ($this->defaultFile) {
+			case $this->defaultFile:
+				$this->include_lang($path, $this->defaultFile . ".php");
+				break;
+		}
+		
+	}
+	
+	/**
+	 *
+	 * for init() method
+	 */
+	
+	public function include_lang($path, $lang) {
+		if(file_exists($path . $lang)) {
+			include_once($path . $lang);
+		} else {
+			include_once($path . "en.php");
+		}
 	}
 	
 	/**
 	 * 
-	 * for init() method 
+	 * Ins
 	 */
 	
-	public function include_lang($path) {
-		if(file_exists($path)) {
-			include_once($path);
+	/**
+	 * 
+	 * @param array $langArray
+	 * @param string $in
+	 * @return language if exist, if not returns main as main language
+	 */
+	
+	public function setLang($langArray, $in) {
+		
+		$this->defaultFile = $in;
+		
+		try {
+			for ($i = 0; $i < count($langArray); $i++) {
+				if($langArray[$i] == $in) {
+					$this->defaultLang = $in;
+				}
+			}
+		} catch (Exception $e) {
+			$this->defaultLang = "main";
 		}
+		
+		return $this->defaultLang;
+		
+	}
+	
+	/**
+	 * 
+	 * Outs
+	 */
+	
+	/**
+	 * Get default lang from the virtual cookie
+	 */
+	
+	public function getLang() {
+		return $this->defaultLang;
 	}
 	
 	/**
@@ -60,13 +119,14 @@ class Language {
 	public function init_mods_lang($mod) {
 		$path = LOCAL_DIR . "/site/apps/admin/mods/" . $mod . "/lang/";
 		
-		switch ($this->lang) {
-			case $this->lang;
-			$this->include_lang($path . $this->lang . ".php");
+		
+		switch ($this->defaultLang) {
+			case $this->defaultLang;
+			$this->include_lang($path, $this->defaultLang . ".php");
 			break;
 			
 			default:
-			$this->include_lang($path . "en" . ".php");
+			$this->include_lang($path, "en" . ".php");
 		}
 		
 	}
@@ -77,16 +137,50 @@ class Language {
 	 */
 	
 	public function init_apps_lang($app) {
-		$path = LOCAL_DIR . "/site/apps/" . $app . "/lang/";
 	
-		switch ($this->lang) {
-			case $this->lang;
-			$this->include_lang($path . $this->lang . ".php");
-			break;
-				
-			default:
-				$this->include_lang($path . "en" . ".php");
+		if(isset($_GET['lang'])) {
+			$this->defaultFile = $_GET['lang'];
 		}
+		
+		$path = LOCAL_DIR . "/site/apps/".$app."/lang/";		
+		
+		try {	
+	
+		$this->app = $app;
+		
+		switch ($this->defaultFile) {
+			case $this->defaultFile;
+			$this->include_lang($path, $this->defaultFile . ".php");
+			break;
+			
+		}
+		} catch (Exception $e) {
+			
+		}
+	
+	}
+	
+	
+	
+	/**
+	 *
+	 * @return Ambigous <string, unknown, mixed>
+	 * Lang form list method
+	 */
+	
+	public function langList($array) {
+		
+		$links = "<div id=\"langlabel\">" ._LANG . "</div>";
+	
+		for($i = 0; $i < count($array); $i++) {
+			if($array[$i] == $this->defaultLang) {
+				$links .= "<div class=\"on\"><a href=\"".$this->app."/setlang/lang-main\">".$array[$i]."</a></div>";
+			} else {
+				$links .= "<div class=\"off\"><a href=\"".$this->app."/setlang/lang-" . $array[$i] ."\">".$array[$i]."</a></div>";
+			}
+		}
+		
+		return $links;
 	
 	}
 	

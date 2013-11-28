@@ -13,6 +13,9 @@ class mod_virtual_page_Model extends configSettings {
 	public $rows;
 	
 		
+	public $virtual_title;
+	public $virtual_content;
+	
 	public function __construct() {
 		
 		
@@ -38,7 +41,10 @@ class mod_virtual_page_Model extends configSettings {
 	**/
 	
 	public function add_page_model($virtual_title, $virtual_content, $a) {
-				
+
+		date_default_timezone_set('UTC');
+		
+		
 		try {
 
 			//$query = $this->db->query("INSERT INTO blog title, message, info VALUES " . $title . $message,
@@ -110,10 +116,81 @@ class mod_virtual_page_Model extends configSettings {
 			$virtual_title = $row['virtual_title'];
 		}
 		
-		return $virtual_title;
-		
+		unset($this->db->rows);
+		return$virtual_title;
 	}
 	
+
+	public function return_virtual_title_multilang($id, $code) {
+	
+	
+		/**
+		 * Find post multilang by id;code
+		 * Ex: 188;en
+		 */
+		try {
+			$this->db->query("SELECT * FROM virtual_page_multilang WHERE page_id='".$id.";".$code."'");
+			$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
+	
+			if(empty($this->db->rows)) {
+				throw new Exception();
+			}
+	
+			foreach ($this->db->rows as $row) {
+					
+				if(empty($row['virtual_title'])) {
+					throw new Exception();
+				}
+					
+				if($row['id'] == $id && !empty($row['virtual_title'])) {
+					$this->virtual_title = $row['virtual_title'];
+				}
+			}
+	
+	
+		} catch (Exception $e) {
+			$this->virtual_title = "";
+		}
+	
+		unset($this->db->rows);
+	
+	}
+	
+	
+	public function return_virtual_content_multilang($id, $code) {
+	
+	
+		/**
+		 * Find post multilang by id;code
+		 * Ex: 188;en
+		 */
+		try {
+			$this->db->query("SELECT * FROM virtual_page_multilang WHERE page_id='".$id.";".$code."'");
+			$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
+	
+			if(empty($this->db->rows)) {
+				throw new Exception();
+			}
+	
+			foreach ($this->db->rows as $row) {
+					
+				if(empty($row['virtual_content'])) {
+					throw new Exception();
+				}
+					
+				if($row['id'] == $id && !empty($row['virtual_content'])) {
+					$this->virtual_content = $row['virtual_content'];
+				}
+			}
+	
+	
+		} catch (Exception $e) {
+			$this->virtual_content = "";
+		}
+	
+		unset($this->db->rows);
+	
+	}
 	
 	public function return_virtual_content($id) {
 	
@@ -122,12 +199,14 @@ class mod_virtual_page_Model extends configSettings {
 		$this->db->query($query);
 		$this->db->get();
 		
+		if(!empty($this->db->rows)) {
 		foreach ($this->db->rows as $row) {
 			$virtual_content = $row['virtual_content'];
 		}
+		}
 	
 		return $virtual_content;
-	
+		
 	}
 	
 	public function return_value($id) {
@@ -150,6 +229,7 @@ class mod_virtual_page_Model extends configSettings {
 	public function delete_page_confirm_model($id) {
 		try {
 			$this->db->query("DELETE FROM virtual_page WHERE id = '$id'");
+			$this->db->query("DELETE FROM virtual_page_multilang WHERE id = '$id'");	
 		} catch (Exception $e) {
 			throw new Exception(_ERROR_DELETING_PAGE . " " . _ID_DONT_EXIST . $e->getMessage());
 		}
@@ -158,6 +238,33 @@ class mod_virtual_page_Model extends configSettings {
 	
 	public function update_virtual_content($id, $title, $content, $active) {
 		$this->db->query("UPDATE virtual_page SET virtual_title = '$title', virtual_content = '$content', active = '$active' WHERE id = '$id'");	
+	}
+	
+	public function add_page_multilang($id, $title, $message, $active, $code, $id) {
+	
+		date_default_timezone_set('UTC');
+	
+		try {
+	
+			/**
+			 * If exist post update row
+			 * if not, add new register (post)
+			 */
+				
+			$date = date("Y-m-d");
+			$query = $this->db->query("INSERT INTO `virtual_page_multilang` (`page_id`, `virtual_title`, `virtual_content`, `date`, `active`, `visible`, `code`, `id`) 
+									VALUES ('".$id.";".$code."', '".$title."', '".$message."', '".$date."', '".$active."', '1', '".$code."', '".$id."')
+									ON DUPLICATE KEY UPDATE
+									virtual_title = '".$title."',
+									virtual_content = '".$message."',
+									date = '".$date."'");
+	
+		} catch (Exception $e) {
+			$e->getMessage();
+		}
+	
+		unset($this->db->rows);
+	
 	}
 	
 	# Método destructor del objeto

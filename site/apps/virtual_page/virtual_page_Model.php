@@ -21,6 +21,7 @@ class virtual_page_Model extends configSettings {
 	
 	public $rows; // pasar variable a vista
 	
+	public $code;
 
 	/**
 	* Conectar a la base de datos en el constructor.
@@ -114,10 +115,112 @@ class virtual_page_Model extends configSettings {
 		
 	}
 
+	public function get_virtual_pages_multilang($code) {
+	
+		$virtual_pages = array();
+		$this->db->query("SELECT * FROM virtual_page_multilang WHERE code = '$code'");
+		$this->db->get();
+	
+		if(empty($this->db->rows)) {
+			$virtual_pages = "";
+		} else {
+			$virtual_pages = $this->db->rows;
+		}
+	
+		unset($this->db->rows);
+		return $virtual_pages;
+	
+	}
+	
 	/**
 	* Metodos
 	**/
+	
+	public function getLangList() {
+		$array = array();
+		$this->db->query("SELECT * FROM languages");
+		$this->db->get();
+	
+		//print_r($this->db->rows);
+	
+		foreach ($this->db->rows as $row) {
+			$array[] = $row['code'];
+		}
+	
+		unset($this->db->rows);
+		return $array;
+	}
+	
+	/**
+	 *
+	 * @return default language
+	 */
+	
+	public function getLang() {
+	
+		$defaultLang = "";
+	
+		$this->db->query("SELECT * FROM cookie WHERE name = '".$_SERVER['REMOTE_ADDR']."'");
+		$this->db->get();
+	
+		foreach ($this->db->rows as $row) {
+			$defaultLang = $row['value'];
+			//echo $defaultLang;
+		}
+	
+		unset($this->db->rows);
+		return $defaultLang;
+	
+	}
+	
+	public function total_pages_multilang($code) {
+		$this->db->query("SELECT * FROM virtual_page_multilang WHERE code = '$code'");
+		$this->db->get();
+		$rows = $this->db->num_rows();
+		unset($this->db->rows);
+		return $rows;
+	}
 		
+	public function get_virtual_page_multilang($id, $code) {
+	
+		try {
+		
+		$virtual_pages = array();
+		$this->db->query("SELECT * FROM virtual_page_multilang WHERE id = '$id' AND code = '$code'");
+		$this->db->get();
+		$virtual_pages = $this->db->rows;
+		
+		} catch (Exception $e) {
+			$virtual_pages = array();
+			die("WTF");
+		}
+	
+		unset($this->db->rows);
+		return $virtual_pages;
+	
+	}
+	
+	public function limit() {
+	
+		$admin_god = 1;
+	
+		$this->db->query("SELECT * FROM custom_settings WHERE id = '$admin_god'");
+		$this->db->get();
+	
+		foreach ($this->db->rows as $row) {
+			$limit = $row['pagination'];
+		}
+	
+		/**
+		 * Siempre (siempre) debemos de matar la variable $rows despues de una consulta,
+		 * para limpiar los datos y esten limpios en la siguiente consulta.
+		 */
+	
+		unset($this->db->rows);
+		return $limit;
+	
+	}
+	
 	# Método destructor del objeto
  	public function __destruct() {
  		unset($this);

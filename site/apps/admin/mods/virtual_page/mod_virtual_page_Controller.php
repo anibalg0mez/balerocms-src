@@ -192,6 +192,42 @@ class mod_virtual_page_Controller {
 		
 	}
 
+	/**
+	 * add or edit multilang page
+	 */
 	
+	public function page_multilang() {
+	
+		$objShield = new Security();
+	
+		if(isset($_POST['code'])) {
+	
+			/**
+			 * Add multi-lang pages
+			 */
+	
+			$title = $_POST['virtual_title'];
+			$content = $_POST['virtual_content'];
+				
+			try {
+				//$this->modModel->edit_post_multilang($_GET['id'], $objShield->shield($title), $objShield->noJS($content));
+				//$this->modView->sucessMessage(_EDIT_MULTI_SUCESS);
+	
+				$this->modModel->add_page_multilang($_GET['id'], $objShield->shield($title), $objShield->noJS($content), $_POST['a'], $_POST['code'], $_GET['id']);
+				$this->modView->sucessMessage(_VPADD_MULTI_SUCESS);
+	
+	
+			} catch (Exception $e) {
+	
+				$this->modView->errorMessage($e->getMessage());
+			}
+	
+		} //end if
+	
+		$this->modView->edit_virtual_page_view($_GET['id']);
+	
+		$this->modView->Render();
+		
+	}
 	
 }

@@ -117,7 +117,7 @@ class mySQL {
 		$this->result = $this->conn->query($query);
 		
 			if(!$this->result) {
-				throw new Exception($this->conn->error);
+				throw new Exception();
 			}
 			
 		} catch(Exception $e) {
@@ -147,6 +147,10 @@ class mySQL {
 		
 		try {
 
+			if (!$this->result) {
+				throw new Exception(_QUERY_ERROR);
+			}
+				
 			/**
 			 * Almacenamos los resultados MySQLi en un array ($this->rows[])
 			 * Para poder exportarlo a la vista.
@@ -162,10 +166,7 @@ class mySQL {
    				//echo $row['id'] . $row['title'];
    			//}
 
-		
-			if (!$this->result) {
-				throw new Exception(_QUERY_ERROR);
-			}
+			
 		} catch (Exception $e) {
 			$e->getMessage();
 		}

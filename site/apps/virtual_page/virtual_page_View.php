@@ -25,6 +25,8 @@ class virtual_page_View extends configSettings {
 	
 	public $objTheme;
 	
+	public $page;
+	
 	public function __construct() {
 		
 		$this->objTheme = new virtual_page_Model();
@@ -48,11 +50,31 @@ class virtual_page_View extends configSettings {
 		foreach ($this->objTheme->get_virtual_pages() as $page) {
 			// dynamic
 			//$html .= "<li><a href=\"index.php?app=virtual_page&id=".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
-			$html .= "<li><a href=\"./virtual_page/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+			$html .= "<li><a href=\"./virtual_page/main/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
 		}
 		
 		return $html;
 		
+	}
+	
+	public function print_virtual_pages_title_multilang($code) {
+	
+		$html = "";
+	
+		$value = $this->objTheme->get_virtual_pages_multilang($code);
+	
+		if(empty($value)) {
+			return _NO_VIRTUAL_PAGES;
+		}
+	
+		foreach ($this->objTheme->get_virtual_pages_multilang($code) as $page) {
+			// dynamic
+			//$html .= "<li><a href=\"index.php?app=virtual_page&id=".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+			$html .= "<li><a href=\"./virtual_page/".$code."/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+		}
+	
+		return $html;
+	
 	}
 	
 	public function print_virtual_page($db_array = array()) {
@@ -64,6 +86,7 @@ class virtual_page_View extends configSettings {
 		$html = "";
 	
 		foreach ($db_array as $page) {
+			$this->page = htmlspecialchars($page['virtual_title']);
 			// markdown header 2
 			$html .= "## " . $page['virtual_title'] . "\n";
 			// markdown italic
@@ -82,13 +105,20 @@ class virtual_page_View extends configSettings {
 	
 	public function Render() {
 				
+		
+		$lang = new Language();
+		$lang->app = "blog"; // where is controller? -> blog_controller -> setlang
+		$lang->defaultLang = $this->objTheme->getLang();
+		
 		$array = array(
 				'title'=>$this->title,
 				'keywords'=>$this->keywords,
 				'description'=>$this->description,
 				'content'=>$this->content,
 				'virtual_pages'=>$this->print_virtual_pages_title(),
-				'basepath'=>$this->basepath
+				'basepath'=>$this->basepath,
+				'page'=>$this->page,
+				'langs'=>$lang->langList($this->objTheme->getLangList())
 				);
 		
 		/**
@@ -102,27 +132,15 @@ class virtual_page_View extends configSettings {
 	
 	}
 	
-	public function print_post() {
+	public function print_all_pages() {
 		
-		//				recorrer datos almacenados en $rows[]
-		//				lo hacemos desde la vista:
+		$this->content .= "<h3>" . _INDEXOF . "</h3>";
 		
-		// Renderizamos los post con la clase para mostrar tips.
-		$tips = new Tips();
 		
-		// debug
-		//var_dump($this->rows);
-		
-		foreach ($this->rows as $row) {
-			
-			/**
-			 * 
-			 * Llamar la clase Markdown.
-			 */
-			
+		foreach ($this->rows as $row) {			
+				
 			try {
-			$render_html = Markdown::defaultTransform($row['message']);
-			$this->content .= $tips->blue($row['title']) . "<br />" . $tips->white($render_html) . "<br />" . $tips->green($row['info']);
+			$this->content .= $row['virtual_title'];
 			} catch (Exception $e) {
 			
 			}

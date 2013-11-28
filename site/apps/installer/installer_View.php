@@ -21,13 +21,17 @@ class installer_View extends configSettings {
 
 	public $content = "";
 	
+	private $page;
+	
 	
 	public function __construct() {
 		
 		$this->LoadSettings(); //cargar datos XML
+		$this->page = _PAGE;
 		
 	}
 
+	
 	/**
 	 * Cargar la vista.
 	 */
@@ -47,11 +51,13 @@ class installer_View extends configSettings {
 		
 		$array = array(
 				'title'=>$this->title,
+				'page'=>$this->page,
 				'keywords'=>$this->keywords,
 				'description'=>$this->description,
 				'content'=>$this->content,
 				'virtual_pages'=>'',
-				'basepath'=>$this->basepath
+				'basepath'=>$this->basepath,
+				'langs'=>''
 				);
 		
 		/**

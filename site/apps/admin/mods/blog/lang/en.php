@@ -6,6 +6,11 @@
  * Blog's module language
  */
 
+define("_ADD_MULTI_SUCESS", "Multilanguage post has been added");
+define("_EDIT_MULTI_SUCESS", "Editing post sucessfully");
+define("_VERSION", "Version");
+define("_LANG_DEFAULT", "Default launguage");
+define("_BLOG_POST_ERROR", "Title or content is empty!");
 define("_BLOG_POST_MESSAGE", "You are editing the post!");
 define("_BLOG_POST_EMPTY_TITLE", "Your title post is empty!");
 define("_ADD_NEW_POST", "Add new post");

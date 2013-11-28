@@ -2,6 +2,7 @@
 
 //define("", "");
 
+define("_PAGE", "Installer");
 define("_UNKNOW_DATABASE", "Unknow database");
 define("_EMPTY_USERNAME", "* Empty username");
 define("_EMPTY_PASSWORD", "* Empty pass");
@@ -40,3 +41,9 @@ define("_ERROR", "ERROR");
 define("_CHMOD_ERROR", "Wrong chmod permissios, set permissions to chmod 777 during the installation to '/site/etc/balero.config.xml'.");
 define("_BASEPATH", "Basepath");
 define("_NOTE_BASEPATH", "Note: Insert your base URL or leave blank for automatically get.");
+define("_TITLE", "Title");
+define("_URL", "URL");
+define("_DESCRIPTION", "Description");
+define("_TAGS", "Tags");
+define("_OK", "OK");
+define("_NOTE", "Note");

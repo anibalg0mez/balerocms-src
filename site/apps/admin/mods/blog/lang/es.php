@@ -5,6 +5,11 @@
  * Blog's module language
  */
 
+define("_ADD_MULTI_SUCESS", "Post multilenguaje agregado con éxito");
+define("_EDIT_MULTI_SUCESS", "El post fue editado correctamente");
+define("_VERSION", "Versión");
+define("_LANG_DEFAULT", "Lenguaje por defecto");
+define("_BLOG_POST_ERROR", "Título o contenido vacío!");
 define("_BLOG_POST_MESSAGE", "Te encuentras editando el post!");
 define("_BLOG_POST_EMPTY_TITLE", "Título de post vacío!");
 define("_ADD_NEW_POST", "Agregar nuevo post");

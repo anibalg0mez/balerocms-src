@@ -26,19 +26,30 @@ class Security {
 	
 	public function noJS($var) {
 		$script_str = $var;
-		$script_str = str_replace("'", "", $script_str);
-		//return preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $var);
-		$script_str = htmlspecialchars_decode($script_str);
-		$search_arr = array('<script', '</script>');
-		$script_str = str_ireplace($search_arr, $search_arr, $script_str);
-		$split_arr = explode('<script', $script_str);
-		$remove_jscode_arr = array();
-		foreach($split_arr as $key => $val) {
-			$newarr = explode('</script>', $split_arr[$key]);
-			$remove_jscode_arr[] = ($key == 0) ? $newarr[0] : $newarr[1];
-		}
 		
-		return implode('', $remove_jscode_arr);
+		$search_arr = array("<script>",
+						"</script>".
+						"\">",
+						"<\"",
+						"@<script[^>]*?>.*?</script>@si",  // Strip out javascript
+               			"@<[\/\!]*?[^<>]*?>@si",            // Strip out HTML tags
+               			"@<style[^>]*?>.*?</style>@siU",    // Strip style tags properly
+               			"@<![\s\S]*?--[ \t\n\r]*>@",         // Strip multi-line comments including CDATA 
+						"src=",
+						"=\"",
+						"js:",
+						"javascript:",
+						"/\(.*\)/",
+						"<img",
+						);
+		
+		
+		$script_str = str_ireplace($search_arr, "", $script_str);
+		
+		$script_str = str_ireplace("\"", "&quot;", $script_str);
+		
+		
+		return $script_str;
 		
 	}
 	
@@ -73,17 +84,25 @@ class Security {
 	
 	public function Level2($str) {
 		
+		$this->var = $str;
+		
 		/**
 		 * 
 		 * Remover caracteres potencialmente peligrosos
 		 */
 		
-		$this->var = str_replace("'", "", $str);
-		$this->var = str_replace(".", "", $str);
-		$this->var = str_replace("..", "", $str);
-		$this->var = str_replace("/", "", $str);
-		$this->var = str_replace("%20", "", $str);
-		$this->var = str_replace("__", "", $str);
+		$array = array("<script>",
+						"</script>".
+						"\">",
+						"<\"",
+						"@<script[^>]*?>.*?</script>@si",  // Strip out javascript
+               			"@<[\/\!]*?[^<>]*?>@si",            // Strip out HTML tags
+               			"@<style[^>]*?>.*?</style>@siU",    // Strip style tags properly
+               			"@<![\s\S]*?--[ \t\n\r]*>@",         // Strip multi-line comments including CDATA 
+						"%20");
+		
+		$this->var = str_replace($array, "", $this->var);
+		
 		return $this->var;
 	}
 	

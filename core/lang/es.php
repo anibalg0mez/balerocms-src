@@ -9,6 +9,7 @@
  */
 
 //define("_", "");
+define("_LANG", "Seleccione lenguaje");
 define("_LOGIN_ERROR", "Usuario o Contraseña incorrectos! :(");
 define("_SECURITY_LOCK", "Candado de seguridad");
 define("_SECURITY_LOCK_MESSAGE", "Balero CMS se ha instalado correctamente, solo falta un paso para continuar. <br /> Por razones de seguridad necesitas eliminar el instalador (dentro de 'site/apps/installer').");
@@ -27,23 +28,3 @@ define("_THEME_DONT_EXIST", "El tema no existe");
 define("_FILE_DONT_EXIST", "Archivo no existe");
 define("_WARNING_LOADING_FILE", "Aviso: No puedo cargar archivo, asigna permisos CHMOD 777");
 define("_XML_ERROR_CHILD", "valor Child() no existe.");
-
-/**
- * Admin
- */
-
-define("_DATA_OK", "Datos guardados.");
-define("_DATA_ERROR", "Error guardando datos:");
-define("_COOKIE_ERROR", "Un error ocurrio al eliminar la cookie, necesitas eliminarla manualmente de tu navegador.");
-define("_WELCOME", "Bienvenido");
-define("_APPEARANCE", "Apariencia");
-define("_THEME", "Tema");
-define("_PAGINATION", "Paginación");
-define("_CONFIG", "Config");
-define("_TITLE", "Título");
-define("_TAGS", "Tags");
-define("_URL", "URL");
-define("_DESCRIPTION", "Descripción");
-define("_OK", "Hecho");
-define("_NOTE", "Nota");
-define("_BASIC_MSG", "Este es un sitio básico, recuerda que puedes extender tu sitio como lo desees, solo necesitas instalar más módulos.");

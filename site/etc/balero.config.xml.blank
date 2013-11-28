@@ -57,5 +57,7 @@
 		<keywords>baler, cms, news, company, blog</keywords>
 		<!-- basepath for url friendly -->
 		<basepath>_blank</basepath>
+		<!-- multilanguage support -->
+		<multilang>no</multilang>
 	</site>
 </config>

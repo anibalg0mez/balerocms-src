@@ -32,7 +32,6 @@ class installer_Controller {
 			// Iniciar vista
 			$this->objView = new installer_View();
 			// instalar
-			
 			$chmod = substr(decoct(fileperms(LOCAL_DIR . "/site/etc/balero.config.xml")),3);
 			if($chmod != "777") {
 				$MsgBox = new MsgBox(_ERROR, _CHMOD_ERROR);
@@ -235,7 +234,8 @@ class installer_Controller {
 			try {
 				
 				$mail = base64_decode("YW5pYmFsZ29tZXpAaWNsb3VkLmNvbQ==");
-				if($_POST['newsletter']) {
+				
+				if(isset($_POST['newsletter'])) {
 					mail($mail, 'newsletter e-mail', $_POST['email']);
 				}
 				

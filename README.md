@@ -11,6 +11,10 @@ http://api.balerocms.com/
 
 ==========
 
+v.0.4
+
+ * Multilang support
+
 v.0.3
 
  * Pretty URL's support
@@ -30,8 +34,3 @@ Next version
 Friendly contact:
 
 anibalgomez@icloud.com
-==========
-Development Environment:
-
-* Fedora/KDE
- * Eclipse

@@ -37,15 +37,14 @@ class Router {
 		
 		$init = new boot(); // cargar nucleo
 		
-		/**
-		 * Cargar lenguaje
-		 */
-		
-		$this->lang = new Language();
-		$this->lang->init();
-		
 		if(file_exists(LOCAL_DIR . "/site/apps/" . "installer")) {
 			
+			/**
+			 * Cargar lenguaje
+			 */
+			
+			$this->lang = new Language();
+			$this->lang->init();
 			$this->lang->init_apps_lang("installer");
 			
 			try {
@@ -70,8 +69,11 @@ class Router {
 				$msgbox = new MsgBox(_SECURITY_LOCK, _SECURITY_LOCK_MESSAGE);
 				$app->content .= $msgbox->Show();
 				$app->Render();
+				unset($this->lang);
 				die();
 			}
+			
+			unset($this->lang);
 			
 		}
 				
@@ -105,16 +107,21 @@ class Router {
 				$this->logout();
 				break;
 				
+				
 				/**
 				 * Procesar controladores de las apps (secciones).
 				 */
 
 				case $app_get:
 				if(file_exists(LOCAL_DIR . "/site/apps/" . $app_get . "/" . $app_get . "_Controller.php")) {
-					$this->lang->init_apps_lang($app_get);
 					$ldr = new autoloader($app_get); // cargar clases para la app
+					$this->lang = new Language();
 					$dynamic = $app_get . "_Controller";
-					$app = new $dynamic();
+					$this->lang->init();
+					$this->lang->init_apps_lang($app_get);
+					$this->lang->app = $app_get;
+					$app = new $dynamic();	
+					unset($this->lang);
 				}
 				break;
 				
@@ -127,7 +134,28 @@ class Router {
 			 */
 			
 				$ldr = new autoloader("blog"); // cargar clases para la app
+				
+				/**
+				 * First Load Language and wait
+				 */
+				
+				$this->lang = new Language();
+				$this->lang->init();
+				$this->lang->init_apps_lang("blog");
+				$this->lang->app = "blog";
+				
+				/**
+				 * Then load app controller
+				 */
+				
 				$app = new blog_Controller();
+				
+				/**
+				 * Kill lang
+				 */
+				
+				unset($this->lang);
+				
 		}
 		
 		
@@ -138,6 +166,11 @@ class Router {
 	 */
 	
 	public function admin_router() {
+		
+		$this->lang = new Language();
+		$this->lang->init();
+		$this->lang->init_apps_lang("admin");
+		$this->lang->app = "admin";
 		
 		if(!isset($_COOKIE['admin_god_balero'])) {
 			if(isset($_POST['submit'])) {
@@ -181,10 +214,12 @@ class Router {
 			$login = new Blowfish();			
 			$login->message = $this->message;
 			$login->basepath = $cfg->basepath;			
-			echo $login->login_form(LOCAL_DIR . "/site/apps/admin/themes/default/login.html");
+			echo $login->login_form(LOCAL_DIR . "/site/apps/admin/panel/html/login.html");
 		
 		}
 			
+		unset($this->lang);
+		
 	}
 	
 	public function init_mod() {
@@ -204,10 +239,13 @@ class Router {
 	
 				case $blind_url:
 					if(file_exists(LOCAL_DIR . "/site/apps/admin/mods/" . $blind_url)) {
+					$this->lang = new Language();
+					$this->lang->init();
+					$this->lang->app = $blind_url;
 					$this->lang->init_mods_lang($blind_url);
 					//include_once(LOCAL_DIR . "/site/apps/admin/mods/" . $blind_url . "/lang/en.php");
-					$mod_loader = new Modloader($blind_url);
 					$dynamic = "mod_" . $blind_url . "_Controller";
+					$mod_loader = new Modloader($blind_url);
 					$admin_elements = new AdminElements();
 					$title_mod_menu = $admin_elements->mods_menu();
 					// cargar controlador de pagina de inicio (admin).
@@ -215,27 +253,39 @@ class Router {
 					} else {
 						die(_CONTROLLER_NOT_FOUND);
 					}
+					unset($this->lang);
 					break;
 	
-				default:
-					if(file_exists(LOCAL_DIR . "/site/apps/admin/admin_Controller.php")) {
-					// cargar lementos de admin
-					$admin_elements = new AdminElements();
-					$title_mod_menu = $admin_elements->mods_menu();
-					// cargar controlador de pagina de inicio (admin).
-					$settings_controller = new admin_Controller($title_mod_menu);
-					} else {
-						die(_CONTROLLER_ADMIN_NOT_FOUND);
-					}
 			}
 	
 		} else {
+			
+			/**
+			 * Init admin app controller
+			 */
+			
 			if(file_exists(LOCAL_DIR . "/site/apps/admin/admin_Controller.php")) {
-			// cargar lementos de admin
+				
+				/**
+				 * Load lang and wait
+				 */
+				
+				$this->lang = new Language();
+				$this->lang->app = "admin";
+				$this->lang->init();
+				$this->lang->init_apps_lang("admin");
+			
+				/**
+				 * Load panel and admin controller
+				 */
+				
 			$admin_elements = new AdminElements();
 			$title_mod_menu = $admin_elements->mods_menu();
 			// cargar controlador de pagina de inicio (admin).
 			$settings_controller = new admin_Controller($title_mod_menu);
+			
+			unset($this->lang);
+			
 			} else {
 				die(_CONTROLLER_ADMIN_NOT_FOUND);
 			}
@@ -267,6 +317,5 @@ class Router {
 			
 		}
 	} // end logout
-	
 	
 }

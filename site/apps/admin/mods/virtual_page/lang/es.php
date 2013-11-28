@@ -5,6 +5,7 @@
  * Blog's module language
  */
 
+define("_VPADD_MULTI_SUCESS", "Éxito.");
 define("_PAGE_POST_ERROR", "Clic en el botón 'Guardar' antes de enviar tu contenido!");
 define("_PAGE_POST_EMPTY_TITLE", "Título de página virtual vacío!");
 define("_NO_RESULTS", "No hay resultados");
