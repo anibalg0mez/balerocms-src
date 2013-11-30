@@ -88,17 +88,15 @@ class mod_blog_View extends configSettings {
 		$js = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/js.html");
 		$this->content .= $js->renderPage(array());
 		
-		$tip = new Tips();
-		//$tip_type2 = $tip->blue(_EDITOR_PREVIEW_MESSAGE_TIP);
-		$tip_type2_2 = $tip->green(_MARKDOWN_REFERENCE);
-		//$this->content .= $tip_type2;
+		$tip = new MsgBox("", _MARKDOWN_REFERENCE);
+		$tip_type2_2 = $tip->Show();
 		$this->content .= $tip_type2_2;
 		
 	}
 	
 	public function sucessMessage($message) {
-		$v_message = new Tips();
-		$string_var_message = $v_message->green($message);
+		$v_message = new MsgBox("", $message);
+		$string_var_message = $v_message->Show($message);
 		
 		/**
 		 * 
@@ -111,8 +109,8 @@ class mod_blog_View extends configSettings {
 	}
 	
 	public function errorMessage($message) {
-		$v_message = new Tips();
-		$string_var_message = $v_message->red($message);
+		$v_message = new MsgBox("", $message);
+		$string_var_message = $v_message->Show();
 	
 		/**
 		 *

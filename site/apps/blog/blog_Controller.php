@@ -54,11 +54,16 @@ class blog_Controller extends ControllerHandler {
 	public function main() {
 		
 		if(isset($_GET['id'])) {
-						
+
+			$ldr = new autoloader("virtual_page");
+			$vp = new virtual_page_View();
+			$this->objView->printVirtualPages = $vp->print_virtual_pages_title_multilang($this->lang);
+			
 			$this->objModel->get_fullpost($_GET['id']);
 			$this->objView->rows = $this->objModel->rows;
 			$this->objView->more = "";
-			$this->objView->print_post();
+			//$this->objView->print_post();
+			$this->objView->full_post_view($this->objModel->rows);
 			
 		} else {
 		
@@ -185,10 +190,27 @@ class blog_Controller extends ControllerHandler {
 					$min = $p->min();
 					$this->objModel->code = $_GET['sr'];
 					if(isset($_GET['id'])) {
+						
+						$this->objModel->code = $this->objModel->getLang();
+						
+						if(($this->objModel->code == "main") OR ($this->objModel->code == "")) {
+							throw new Exception();
+						}
+						
+						$this->lang = $this->objModel->code;
+						$this->objView->lang = $this->lang;
+						$this->objModel->get_post_multilang($min, $limit);
+						$ldr = new autoloader("virtual_page");
+						$vp = new virtual_page_View();
+						$this->objView->printVirtualPages = $vp->print_virtual_pages_title_multilang($this->lang);
+						
+						
 						$this->objModel->get_fullpost_multilang($_GET['id']);
 						$this->objView->rows = $this->objModel->rows;
-						$this->objView->print_post();
+						//$this->objView->print_post();
+						$this->objView->full_post_view($this->objModel->rows);
 					} else {
+						
 						$this->objModel->get_post_multilang($min, $limit);
 						$this->objView->rows = $this->objModel->rows;
 						$this->objView->print_post();

@@ -9,6 +9,7 @@
  */
 
 //define("_", "");
+define("_NO_VIRTUAL_PAGES", "No hay páginas virtuales");
 define("_LANG", "Seleccione lenguaje");
 define("_LOGIN_ERROR", "Usuario o Contraseña incorrectos! :(");
 define("_SECURITY_LOCK", "Candado de seguridad");

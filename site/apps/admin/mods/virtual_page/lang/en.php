@@ -29,7 +29,6 @@ define("_VIRTUAL_PAGE_TIP_PREVIEW", "Click on the icon at the bottom right of th
 define("_EDIT_VIRTUAL_PAGE", "Edit virtual page");
 define("_CONFIG_VIRTUAL_PAGE", "Config virtual page");
 define("_TREE_VIRTUAL_PAGE", "<h3>Tree virtual page's</h3>");
-define("_NO_VIRTUAL_PAGES", "No virtual pages");
 define("_VIRTUAL_PAGE_NOTE", "NOTE");
 define("_VIRTUAL_PAGE_NOTE_MESSAGE", "Remember this, this is your tree's list of the virtual sections of your page.");
 define("_VIRTUAL_PAGE_CONFIRM", "Confirm");

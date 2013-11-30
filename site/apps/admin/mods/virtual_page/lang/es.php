@@ -29,7 +29,6 @@ define("_VIRTUAL_PAGE_TIP_PREVIEW", "Clic en el icono de la parte inferior derec
 define("_EDIT_VIRTUAL_PAGE", "Editar página virtual");
 define("_CONFIG_VIRTUAL_PAGE", "Configurar página virtual");
 define("_TREE_VIRTUAL_PAGE", "<h3>Árbol de páginas virtuales</h3>");
-define("_NO_VIRTUAL_PAGES", "No hay páginas virtuales");
 define("_VIRTUAL_PAGE_NOTE", "NOTA");
 define("_VIRTUAL_PAGE_NOTE_MESSAGE", "Recuerda, éste es tu listado de las secciones de tu página.");
 define("_VIRTUAL_PAGE_CONFIRM", "Confirmar");

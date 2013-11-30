@@ -83,11 +83,11 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		$js = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/js.html");
 		$this->content .= $js->renderPage(array());
 		
-		$tip = new Tips();
-		$tip_type2 = $tip->blue(_VIRTUAL_PAGE_TIP_PREVIEW);
-		$tip_type2_2 = $tip->green(_MARKDOWN_REFERENCE);
+		$tip = new MsgBox(_VIRTUAL_PAGE_TIP_PREVIEW, _MARKDOWN_REFERENCE);
+		$tip_type2 = $tip->Show();
+		
 		$this->content .= $tip_type2;
-		$this->content .= $tip_type2_2;
+		
 		
 	}
 	
@@ -200,11 +200,9 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		$js = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/js.html");
 		$this->content .= $js->renderPage(array());
 	
-		$tip = new Tips();
-		$tip_type2 = $tip->blue(_VIRTUAL_PAGE_TIP_PREVIEW);
-		$tip_type2_2 = $tip->green(_MARKDOWN_REFERENCE);
+		$tip = new MsgBox("", _MARKDOWN_REFERENCE);
+		$tip_type2 = $tip->Show();
 		$this->content .= $tip_type2;
-		$this->content .= $tip_type2_2;
 	
 	}
 	
@@ -290,15 +288,14 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		$frm->SubmitButton(_VIRTUAL_PAGE_CONFIRM, "submit");
 		$frm->SubmitButton(_VIRTUAL_PAGE_CANCEL, "cancel");
 		
-		$msg = new Tips();
-		$this->content .= $msg->red(_VIRTUAL_PAGE_CONFIRM_MESSAGE);
-		$this->content .= $frm->Show();
+		$msg = new MsgBox(_VIRTUAL_PAGE_CONFIRM_MESSAGE, $frm->Show());
+		$this->content .= $msg->Show();
 		
 	}
 	
 	public function sucessMessage($message) {
-		$v_message = new Tips();
-		$string_var_message = $v_message->green($message);
+		$v_message = new MsgBox(_ADDED_SUCESSFULLY, $message);
+		$string_var_message = $v_message->Show();
 		
 		/**
 		 * 
@@ -311,8 +308,8 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 	}
 	
 	public function errorMessage($message) {
-		$v_message = new Tips();
-		$string_var_message = $v_message->red($message);
+		$v_message = new MsgBox(_ERROR, $message);
+		$string_var_message = $v_message->Show();
 	
 		/**
 		 *
