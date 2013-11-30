@@ -98,16 +98,16 @@ class admin_Controller {
 			unset($this->objView);
 			$this->objView = new admin_View();
 			$this->objView->menu = $this->menu;
-			$ok = new Tips();
-			$this->objView->content .= $ok->green(_DATA_OK);
+			$ok = new MsgBox("", _DATA_OK);
+			$this->objView->content .= $ok->Show();
 			
 			/**
 			 * Wait for render() method
 			 */
 			
 			} catch (Exception $e) {
-				$ok = new Tips();
-				$ok->green(_DATA_ERROR . " " . $e->getMessage());
+				$ok = new MsgBox("", _DATA_ERROR . " " . $e->getMessage());
+				$ok->Show();
 			}
 		}
 		
