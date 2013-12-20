@@ -5,6 +5,7 @@
  * Lineas:
  * 1528
  * 21
+ * 44
  */
 
 #
@@ -40,7 +41,23 @@ class Markdown {
 	# This will work fine for derived classes too.
 	#
 		# Take parser class on which this function was called.
-		$parser_class = \get_called_class();
+		try {
+			
+			/**
+			 * Out of date
+			 */
+			
+			//$parser_class = get_called_class();
+			
+			/**
+			 * Works fine
+			 */
+			
+			$parser_class = get_class();
+			
+		} catch (Exception $e) {
+			
+		}
 
 		# try to take parser from the static parser list
 		static $parser_list;

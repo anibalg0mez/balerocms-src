@@ -45,6 +45,6 @@ define("_NOTE_BASEPATH", "Note: Inserta tu URL base o deja en blanco para obtene
 define("_TITLE", "Titulo");
 define("_URL", "URL");
 define("_DESCRIPTION", "Descripción");
-define("_TAGS", "Tags");
+define("_TAGS", "Tags (Eje.: blog, news, etc...)");
 define("_OK", "Aceptar");
 define("_NOTE", "Nota");

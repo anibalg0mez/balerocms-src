@@ -294,7 +294,7 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 	}
 	
 	public function sucessMessage($message) {
-		$v_message = new MsgBox(_ADDED_SUCESSFULLY, $message);
+		$v_message = new MsgBox("", $message);
 		$string_var_message = $v_message->Show();
 		
 		/**
@@ -308,7 +308,7 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 	}
 	
 	public function errorMessage($message) {
-		$v_message = new MsgBox(_ERROR, $message);
+		$v_message = new MsgBox("", $message);
 		$string_var_message = $v_message->Show();
 	
 		/**

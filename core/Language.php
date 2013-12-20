@@ -28,6 +28,14 @@ class Language {
 	
 	public $defaultFile;
 	
+	/**
+	 * Give multilang value
+	 */
+	
+	public $multilang = "no";
+	
+	
+	
 	public function __construct() {
 			
 		$this->defaultFile = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
@@ -164,21 +172,27 @@ class Language {
 	
 	/**
 	 *
+	 * @array language list (In)
 	 * @return Ambigous <string, unknown, mixed>
-	 * Lang form list method
+	 * Lang bar
 	 */
 	
 	public function langList($array) {
 		
-		$links = "<div id=\"langlabel\">" ._LANG . "</div>";
-	
-		for($i = 0; $i < count($array); $i++) {
-			if($array[$i] == $this->defaultLang) {
-				$links .= "<div class=\"on\"><a href=\"".$this->app."/setlang/lang-main\">".$array[$i]."</a></div>";
-			} else {
-				$links .= "<div class=\"off\"><a href=\"".$this->app."/setlang/lang-" . $array[$i] ."\">".$array[$i]."</a></div>";
+			if($this->multilang == "yes") {
+				if(is_array($array)) {
+					$links = "<div id=\"langbar\">";
+						$links .= "<div id=\"langlabel\">" ._LANG . "</div>";
+					for($i = 0; $i < count($array); $i++) {
+						if($array[$i] == $this->defaultLang) {
+							$links .= "<div class=\"on\"><a href=\"".$this->app."/setlang/lang-main\">".$array[$i]."</a></div>";
+						} else {
+							$links .= "<div class=\"off\"><a href=\"".$this->app."/setlang/lang-" . $array[$i] ."\">".$array[$i]."</a></div>";
+						}
+					}
+					$links .= "</div>";
+				}
 			}
-		}
 		
 		return $links;
 	

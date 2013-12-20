@@ -2,7 +2,7 @@
 
 /**
  *
- * controller.php
+ * installer_Controller.php
  * (c) Mar 2, 2013 lastprophet 
  * @author Anibal Gomez (lastprophet)
  * Balero CMS Open Source
@@ -26,7 +26,7 @@ class installer_Controller {
 		 */
 		
 		$this->cfgFile = LOCAL_DIR . "/site/etc/balero.config.xml";
-			
+		
 		try {
 			$this->objModel = new installer_Model();
 			// Iniciar vista
@@ -43,8 +43,10 @@ class installer_Controller {
 			$this->objView = new installer_View();
 			if(strpos($e->getMessage(), _UNKNOW_DATABASE)) {
 				$this->objView->unknow_database_error();
+				$this->objView->check = "";
 			} else {
 				$this->objView->unknow_database_connect();
+				$this->objView->check = "";
 			}
 			
 		}
@@ -120,8 +122,6 @@ class installer_Controller {
 
 			//http://www.orenyagev.com/application-configuration-and-php
 			
-
-			
 			$cfg->__destruct();
 				unset($cfg);
 			
@@ -130,7 +130,7 @@ class installer_Controller {
 			}
 		}
 		
-		header("Location: ./");
+		header("Location: index.php");
 
 	}
 	
@@ -145,7 +145,7 @@ class installer_Controller {
 		
 		if(isset($_POST['submit'])) {
 			
-			echo "edit";
+			//echo "edit";
 			
 			$admcfg = new XMLHandler($this->cfgFile);
 	
@@ -157,7 +157,7 @@ class installer_Controller {
 			
 		}
 	
-		header("Location: ./");
+		header("Location: index.php");
 	
 	}
 	
@@ -177,6 +177,7 @@ class installer_Controller {
 			if($_POST['passwd'] != $_POST['passwd2']) {
 				throw new Exception(_PASSWORDS_DONT_MATCH);
 			}
+			
 			if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 				throw new Exception(_INDALID_EMAIL);
 			}
@@ -191,15 +192,16 @@ class installer_Controller {
 			$pwd = $obj->genpwd($_POST['passwd']); // generar passwd encriptado
 			$admcfg->editChild("/config/admin/passwd", $pwd);
 			
-			header("Location: ./");
+			header("Location: index.php");
 			
 		} catch (Exception $e) {
+			$this->objView->check = "";
 			$this->objView->form_field_error($e->getMessage());
 			$this->main();
 		}
 					
 		} else {
-			header("Location: ./");
+			header("Location: index.php");
 		}
 		
 		
@@ -252,7 +254,7 @@ class installer_Controller {
 			 * Dynamic index.php?app=installer
 			 */
 			
-			header("Location: ./installer");
+			header("Location: index.php?app=installer");
 		}
 		
 	}

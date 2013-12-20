@@ -21,10 +21,20 @@ class installer_View extends configSettings {
 
 	public $content = "";
 	
+	/**
+	 * 
+	 * Check icon on top
+	 */
+	
+	public $check;
+	private $check_icon = "<img src=\"themes/universe/images/check-icon.png\">";
+	
 	private $page;
 	
 	
 	public function __construct() {
+		
+		$this->check = $this->check_icon;
 		
 		$this->LoadSettings(); //cargar datos XML
 		$this->page = _PAGE;
@@ -83,19 +93,18 @@ class installer_View extends configSettings {
 	 */
 	
 	/**
-	 * v.0.3+
-	 * Pretty URLs by default.
-	 * Dynamic URLs has been disabled.
+	 * v.0.5
+	 * Pretty URL off on installer app because
+	 * there are some incompatibilities in some servers
 	 */
 	
 	public function formDBInfo() {
 	
-		
 		/* 
 		 * Dynamic URL: index.php?app=installer&sr=formDBInfo 
 		 */
 		
-		$DBform = new Form("./installer/formDBInfo");
+		$DBform = new Form("index.php?app=installer&sr=formDBInfo");
 		// Etiqueta (opcional) // Nombre //Valor
 		// Ejemplo:
 		// Inserte nombre // btnSubmit // Valor inicial
@@ -105,10 +114,15 @@ class installer_View extends configSettings {
 		$DBform->TextField(_DB_NAME, "dbname", $this->dbname);
 		$DBform->SubmitButton(_SEND);
 	
+		try {
 	
-		$DBMsgBox = new MsgBox(_DB_CONFIG, $DBform->Show());
-		$this->content .= $DBMsgBox->Show();
+			$DBMsgBox = new MsgBox($this->check  . " " . _DB_CONFIG, $DBform->Show());
+			$this->content .= $DBMsgBox->Show();
 	
+		}	catch (Exception $e) {
+			
+		}
+		
 	}
 	
 	
@@ -118,18 +132,30 @@ class installer_View extends configSettings {
 	
 	public function formSiteInfo() {
 		
-		if(empty($this->basepath)) {
-			$cfg = new configSettings();
-			$basepath = $cfg->FullBasepath();
-		} else {
-			$basepath = $this->basepath;
+		try {
+			
+			if(empty($this->basepath)) {
+				$cfg = new configSettings();
+				$basepath = $cfg->FullBasepath();
+			} else {
+				$basepath = $this->basepath;
+			}
+			
+			if(empty($this->basepath) || empty($this->title) || empty($this->url) || empty($this->description) || empty($this->keywords)) {
+				throw new Exception();
+			}
+			
+			$this->check = $this->check_icon;
+			
+		} catch (Exception $e) {
+			$this->check = "";
 		}
 		
 		/**
 		 * Dynamic URL: index.php?app=installer&sr=formSiteInfo
 		 */
 		
-		$adminInfo = new Form("./installer/formSiteInfo");
+		$adminInfo = new Form("index.php?app=installer&sr=formSiteInfo");
 		$adminInfo->TextField(_BASEPATH, "basepath", $basepath);
 		$adminInfo->Label(_NOTE_BASEPATH);
 		$adminInfo->TextField(_TITLE, "title", $this->title);
@@ -138,7 +164,7 @@ class installer_View extends configSettings {
 		$adminInfo->TextField(_TAGS, "keywords", $this->keywords);
 		$adminInfo->SubmitButton(_OK);
 		
-		$portalMsgBox = new MsgBox(_SITE_INFO, $adminInfo->Show());
+		$portalMsgBox = new MsgBox($this->check . " " . _SITE_INFO, $adminInfo->Show());
 		$this->content .= $portalMsgBox->Show();
 		
 	}
@@ -149,11 +175,20 @@ class installer_View extends configSettings {
 	
 	public function formadminInfo() {
 		
+		try {
+			if(empty($this->user) || empty($this->pass) || empty($this->url) || empty($this->firstname) || empty($this->lastname) || empty($this->email)) {
+				throw new Exception();
+			}
+			$this->check = $this->check_icon;
+		} catch (Exception $e) {
+			$this->check = "";
+		}
+		
 		/**
 		 * Dynamic URL: index.php?app=installer&sr=formadminInfo
 		 */
 		
-		$adminInfo = new Form("./installer/formadminInfo");
+		$adminInfo = new Form("index.php?app=installer&sr=formadminInfo");
 	
 		$adminInfo->TextField(_ADMIN, "username", $this->user);
 		$adminInfo->PasswordField(_PASS, "passwd", "");
@@ -164,7 +199,7 @@ class installer_View extends configSettings {
 		$adminInfo->CheckBox(_NEWSLETTER, "newsletter", 1);
 		$adminInfo->SubmitButton(_OK);
 		
-		$admMsgBox = new MsgBox(_ADMIN_CONFIGURATION, $adminInfo->Show());
+		$admMsgBox = new MsgBox($this->check . " " . _ADMIN_CONFIGURATION, $adminInfo->Show());
 		$this->content .= $admMsgBox->Show();
 		
 	}
@@ -186,7 +221,7 @@ class installer_View extends configSettings {
 			 * Dynamic URL: index.php?app=installer&sr=progressBar
 			 */
 			
-			$install = new Form("./installer/progressBar");
+			$install = new Form("index.php?app=installer&sr=progressBar");
 			$install->SubmitButton(_INSTALL_TITLE);
 		
 			$iMsgBox = new MsgBox(_INSTALL_BUTTON, $install->Show());
@@ -204,7 +239,7 @@ class installer_View extends configSettings {
 		 * Dynamic URL index.php?app=installer&sr=tryAgain
 		 */
 		
-		$install = new Form("./installer/tryAgain");
+		$install = new Form("index.php?app=installer&sr=tryAgain");
 		$install->SubmitButton("FORCE INSTALL");
 	
 		$iMsgBox = new MsgBox(_ERROR_INSTALLING, $install->Show());

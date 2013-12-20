@@ -97,6 +97,9 @@ class blog_Model extends configSettings {
 			
 			$this->rows = $this->db->rows;
 			
+			if(empty($this->rows) OR !is_array($this->db->rows)) {
+				return false;
+			}
 			
 			//				recorrer datos almacenados en $rows[]
 			//				lo hacemos desde la vista:

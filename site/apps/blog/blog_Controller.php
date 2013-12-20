@@ -116,11 +116,29 @@ class blog_Controller extends ControllerHandler {
 		 	$this->objModel->get_post($min, $limit); //main lang
 		 }
 		 	
-		// resultado de la query en array
-		$this->objView->rows = $this->objModel->rows;
+		 
+		 try {
+		 	
+			// resultado de la query en array
+			$this->objView->rows = $this->objModel->rows;
 		
-		// mostrar post
-		$this->objView->print_post();
+			if(!$this->objModel->rows) {
+					throw new Exception();
+			}
+		
+			// mostrar post
+			$this->objView->print_post();
+		
+		 } catch (Exception $e) {
+		 	
+		 	/**
+			 * No registers to show message
+		 	 */
+		 	
+		 	$msgBox = new MsgBox(_BLOG_ERROR, _BLOG_ERROR_MESSAGE);
+		 	$this->objView->content .= $msgBox->Show();
+		 	
+		 }
 		
 		// barra de paginacion (dynamic url)
 		//$this->objView->content .= $p->nav();
@@ -256,6 +274,10 @@ class blog_Controller extends ControllerHandler {
 	
 	} // fin de init()
 	
+	
+	/**
+	 * We need one controller to manage this lang method class
+	 */
 	
 	public function setlang() {
 		

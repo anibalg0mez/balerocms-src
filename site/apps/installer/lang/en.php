@@ -44,6 +44,6 @@ define("_NOTE_BASEPATH", "Note: Insert your base URL or leave blank for automati
 define("_TITLE", "Title");
 define("_URL", "URL");
 define("_DESCRIPTION", "Description");
-define("_TAGS", "Tags");
+define("_TAGS", "Tags (Ex.: blog, news, etc...)");
 define("_OK", "OK");
 define("_NOTE", "Note");

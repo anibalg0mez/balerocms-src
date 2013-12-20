@@ -54,7 +54,7 @@
 		<!-- Direccion -->
 		<url>http://www.balerocms.com/</url>
 		<description>Powered by Balero CMS.</description>
-		<keywords>baler, cms, news, company, blog</keywords>
+		<keywords>_blank</keywords>
 		<!-- basepath for url friendly -->
 		<basepath>_blank</basepath>
 		<!-- multilanguage support -->

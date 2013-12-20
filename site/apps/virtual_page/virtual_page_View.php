@@ -107,6 +107,7 @@ class virtual_page_View extends configSettings {
 				
 		
 		$lang = new Language();
+		$lang->multilang = $this->multilang;
 		$lang->app = "blog"; // where is controller? -> blog_controller -> setlang
 		$lang->defaultLang = $this->objTheme->getLang();
 		

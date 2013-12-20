@@ -33,6 +33,11 @@ class MsgBox {
 	 */
 	
 	function __construct($title, $message) {
+		
+		/**
+		 * Necesita fix, panel admin usa por default en 'themes', corregir
+		 */
+		
 		$this->title = $title;
 		$this->message = $message;
 		$this->file = LOCAL_DIR . "/themes/universe/core/MsgBox/UI.html";

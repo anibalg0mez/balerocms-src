@@ -31,31 +31,10 @@ RewriteRule ^([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)$ $1/$2/$3/
 
 RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?app=$1
 
-# :::: Page parameter ::::
-# Ex: index.php?app=blog&sr=action& page=n or id=n
-# Read first this parameter!
-
-#RewriteRule ^([a-zA-Z0-9_-]+)/page-([a-zA-Z0-9_-]+)/$ index.php?app=$1&page=$2
-
-# :::: id parameter ::::
-# Ex: index.php?app=blog&sr=action& page=n or id=n
-
-#RewriteRule ^([a-zA-Z0-9_-]+)/id-([a-zA-Z0-9_-]+)/$ index.php?app=$1&id=$2
-
 # :::: Subroutine parameter ::::
 # Ex: index.php?app=blog&sr=action
 
 RewriteRule ^([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/$ index.php?app=$1&sr=$2
-
-# :::: Blog ID parameter (Full post) ::::
-# Ex: index.php?app=blog&sr=action&id=n
-
-#RewriteRule ^([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/$ index.php?app=$1&sr=$2&id=$3
-
-# :::: Blog multilang parameter w/ pagination ::::
-# Ex: index.php?app=blog&sr=es&page=2
-
-#RewriteRule ^([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/page-([a-zA-Z0-9_-]+)/$ index.php?app=$1&sr=$2&page=$3
 
 # $param1
 

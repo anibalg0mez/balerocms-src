@@ -64,6 +64,7 @@ class blog_View extends configSettings {
 	public function Render() {
 
 		$lang = new Language();
+		$lang->multilang = $this->multilang;
 		$lang->app = "blog";
 		$lang->defaultLang = $this->objTheme->getLang();
 		

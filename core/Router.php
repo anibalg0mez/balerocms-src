@@ -50,7 +50,12 @@ class Router {
 			try {
 				$xml = new XMLHandler(LOCAL_DIR . "/site/etc/balero.config.xml");
 			} catch (Exception $e) {
-				die(_CONFIG_FILE_ERROR);	
+				//die(_CONFIG_FILE_ERROR);
+				$theme = new ThemeLoader(LOCAL_DIR . "/site/apps/installer/html/cfgFileError.html");
+				echo $theme->renderPage(array(
+						"msg_error"=>_CONFIG_FILE_ERROR,
+						"refresh"=>_REFRESH));
+				die();	
 			}
 			
 			$installed = $xml->Child("system", "installed");

@@ -15,6 +15,12 @@
 **/
 
 /**
+ * Balero CMS Version
+ */
+
+define("_BALEROCMS_VERSION", "0.4.2");
+
+/**
  * Desarrolador / Developer (-1)
  * Usuario / User (0)
  * (Editar)
