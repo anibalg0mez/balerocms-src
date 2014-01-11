@@ -17,14 +17,8 @@
  * 
  * @author Anibal Gomez - lastprophet
  * Encriptar passwords en BlowFish con 'salt'.
- *
- */
-
-/**
- *
  * Balero CMS implementa el sistema llamado BlowFish Login :) :) :)
- * v.0.3 login form view in Blofish Class
- * @author lastprophet
+ * v.0.3+ login form view in Blofish Class
  *
  */
 

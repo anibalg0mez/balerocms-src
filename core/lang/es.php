@@ -30,3 +30,4 @@ define("_FILE_DONT_EXIST", "Archivo no existe");
 define("_WARNING_LOADING_FILE", "Aviso: No puedo cargar archivo, asigna permisos CHMOD 777");
 define("_XML_ERROR_CHILD", "valor Child() no existe.");
 define("_REFRESH", "Actualizar");
+define("_LOGIN_ATTEMPS", "Error de login!. Intenta de nuevo y espera 5 minutos!");

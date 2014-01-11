@@ -37,7 +37,7 @@ class Router {
 		
 		$init = new boot(); // cargar nucleo
 		
-		if(file_exists(LOCAL_DIR . "/site/apps/" . "installer")) {
+		if(file_exists(APPS_DIR . "installer")) {
 			
 			/**
 			 * Cargar lenguaje
@@ -51,7 +51,7 @@ class Router {
 				$xml = new XMLHandler(LOCAL_DIR . "/site/etc/balero.config.xml");
 			} catch (Exception $e) {
 				//die(_CONFIG_FILE_ERROR);
-				$theme = new ThemeLoader(LOCAL_DIR . "/site/apps/installer/html/cfgFileError.html");
+				$theme = new ThemeLoader(APPS_DIR . "installer/html/cfgFileError.html");
 				echo $theme->renderPage(array(
 						"msg_error"=>_CONFIG_FILE_ERROR,
 						"refresh"=>_REFRESH));
@@ -118,7 +118,7 @@ class Router {
 				 */
 
 				case $app_get:
-				if(file_exists(LOCAL_DIR . "/site/apps/" . $app_get . "/" . $app_get . "_Controller.php")) {
+				if(file_exists(APPS_DIR . $app_get . "/" . $app_get . "_Controller.php")) {
 					$ldr = new autoloader($app_get); // cargar clases para la app
 					$this->lang = new Language();
 					$dynamic = $app_get . "_Controller";
@@ -176,6 +176,12 @@ class Router {
 		$this->lang->init();
 		$this->lang->init_apps_lang("admin");
 		$this->lang->app = "admin";
+
+		//echo "cokie: " . $_COOKIE['counter'];
+		
+		if(isset($_COOKIE['counter']) && $_COOKIE['counter'] >= 5) {
+			die(_LOGIN_ATTEMPS);
+		}
 		
 		if(!isset($_COOKIE['admin_god_balero'])) {
 			if(isset($_POST['submit'])) {
@@ -189,13 +195,21 @@ class Router {
 					//header("Location: index.php?app=admin");
 					header("Location: ./admin");
 				} else {
+					if(!isset($_COOKIE['counter'])) {
+						setcookie("counter", 1, time()+120);
+					}
+					if(isset($_COOKIE['counter'])) {
+						$value = $_COOKIE['counter'];
+						setcookie("counter", $value+1, time()+120);
+						echo $_COOKIE['counter'];
+					}
 					$this->message = _LOGIN_ERROR;
 				}
 			}
 		}
 			
 		if(isset($_COOKIE['admin_god_balero'])) {
-			
+
 			$cfg = new configSettings();
 			$login = new Blowfish();
 			
@@ -219,7 +233,7 @@ class Router {
 			$login = new Blowfish();			
 			$login->message = $this->message;
 			$login->basepath = $cfg->basepath;			
-			echo $login->login_form(LOCAL_DIR . "/site/apps/admin/panel/html/login.html");
+			echo $login->login_form(APPS_DIR . "admin/panel/html/login.html");
 		
 		}
 			
@@ -243,7 +257,7 @@ class Router {
 			switch ($blind_url) {
 	
 				case $blind_url:
-					if(file_exists(LOCAL_DIR . "/site/apps/admin/mods/" . $blind_url)) {
+					if(file_exists(MODS_DIR . $blind_url)) {
 					$this->lang = new Language();
 					$this->lang->init();
 					$this->lang->app = $blind_url;
@@ -269,7 +283,7 @@ class Router {
 			 * Init admin app controller
 			 */
 			
-			if(file_exists(LOCAL_DIR . "/site/apps/admin/admin_Controller.php")) {
+			if(file_exists(APPS_DIR . "admin/admin_Controller.php")) {
 				
 				/**
 				 * Load lang and wait

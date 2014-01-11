@@ -15,18 +15,13 @@
 **/
 
 /**
- * Balero CMS Version
- */
-
-define("_BALEROCMS_VERSION", "0.4.2");
-
-/**
- * Desarrolador / Developer (-1)
+ * Debug Option
+ * Desarrollador / Developer (-1)
  * Usuario / User (0)
  * (Editar)
  */
 
-error_reporting(0); // developer by default
+error_reporting(0); // user mode by default
 
 /**
  * 
@@ -44,6 +39,20 @@ $dir = str_replace("\\", "/", $dir);
  */
 
 define("LOCAL_DIR", $dir);
+
+/**
+ * Apps directory
+ * (No editar)
+ */
+
+define("APPS_DIR", LOCAL_DIR . "/site/apps/");
+
+/**
+ * Admin mods directory
+ * (No editar)
+*/
+
+define("MODS_DIR", LOCAL_DIR . "/site/apps/admin/mods/");
 
 /**
  * 

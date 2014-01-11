@@ -267,7 +267,7 @@ class installer_View extends configSettings {
 		
 		//echo "progressbar";
 		
-		$loading = new ThemeLoader(LOCAL_DIR . "/site/apps/installer/html/UI.html");
+		$loading = new ThemeLoader(APPS_DIR . "installer/html/UI.html");
 		echo $loading->renderPage($array);
 		
 	}

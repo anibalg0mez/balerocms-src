@@ -47,6 +47,8 @@
 		<firsttime>yes</firsttime>
 		<!-- balero cms installed -->
 		<installed>no</installed>
+		<!-- balero cms version -->
+		<version>0.5</version>
 	</system>
 	<site>
 		<!-- title page -->

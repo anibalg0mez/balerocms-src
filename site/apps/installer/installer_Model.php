@@ -68,7 +68,7 @@ class installer_Model {
 	
 	public function install() {
 		// obtener las sentencias sql de el archivo tablas.sql
-		$query = file_get_contents(LOCAL_DIR . "/site/apps/installer/sql/tables.sql");
+		$query = file_get_contents(APPS_DIR . "installer/sql/tables.sql");
 		$this->db->create($query);
 		
 		$xml = new XMLHandler(LOCAL_DIR . "/site/etc/balero.config.xml");

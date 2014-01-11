@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
 <meta charset="utf-8">
-<title>Login</title>
+<title>Admin Login</title>
 <base href="{basepath}">
 <meta name="description" content="slick Login">
 <link rel="shortcut icon" href="favicon.ico">
@@ -12,14 +12,14 @@
 </head>
 <body>
 <div class="container">
-<h3>ADMIN</h3>
+<div id="login_icon"></div>
 <form id="slick-login" method="POST" action="./admin">
 <label for="username">username</label><input type="text" name="usr" class="placeholder" placeholder="Usr">
 <label for="password">password</label><input type="password" name="pwd" class="placeholder" placeholder="Pwd">
 <div class="message">{message}</div>
 <input type="submit" value="Log In" name="submit">
 </form>
-</div>
 <div class="copyright"><a href="./">Front-End</a> | <a href="http://balerocms.com/">Balero CMS powered</a>.</div>
+</div>
 </body>
 </html>

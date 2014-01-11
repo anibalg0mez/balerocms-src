@@ -104,7 +104,7 @@ class blog_View extends configSettings {
 		
 		$word_count = 0;
 		
-		$tpl = new ThemeLoader(LOCAL_DIR . "/site/apps/blog/html/index.html");
+		$tpl = new ThemeLoader(APPS_DIR . "blog/html/index.html");
 		
 		foreach ($this->rows as $row) {
 			
@@ -197,7 +197,7 @@ class blog_View extends configSettings {
 		
 		$markdown = new Markdown();
 		
-		$tpl = new ThemeLoader(LOCAL_DIR . "/site/apps/blog/html/full_post.html");
+		$tpl = new ThemeLoader(APPS_DIR . "blog/html/full_post.html");
 		
 		foreach ($array as $row) {
 			

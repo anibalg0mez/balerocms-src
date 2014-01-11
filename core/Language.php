@@ -141,7 +141,7 @@ class Language {
 	
 	/**
 	 * init() apps lang
-	 * @param String $app
+	 * @param String $app name
 	 */
 	
 	public function init_apps_lang($app) {
@@ -150,7 +150,7 @@ class Language {
 			$this->defaultFile = $_GET['lang'];
 		}
 		
-		$path = LOCAL_DIR . "/site/apps/".$app."/lang/";		
+		$path = APPS_DIR . $app."/lang/";		
 		
 		try {	
 	

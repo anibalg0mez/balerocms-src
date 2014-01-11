@@ -207,7 +207,11 @@ class Form {
 		//$this->label = $label;
 		//$this->field = $field;
 
-		$file = file_get_contents(LOCAL_DIR . "/themes/universe/core/Form/UI.html");
+		/**
+		 * Static UI files in core
+		 */
+		
+		$file = file_get_contents(LOCAL_DIR . "/core/html/Form/UI.html");
 		$file = str_replace("{label}", $label, $file);
 		$file = str_replace("{field}", $field, $file);
 		//echo $file;

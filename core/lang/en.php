@@ -30,3 +30,4 @@ define("_FILE_DONT_EXIST", "File does not exist");
 define("_WARNING_LOADING_FILE", "Warning: I can load the file, set chmod permissions to 777");
 define("_XML_ERROR_CHILD", "Child() value does not exist.");
 define("_REFRESH", "Refresh");
+define("_LOGIN_ATTEMPS", "Login failed!. Please try again and wait 5 minutes!");

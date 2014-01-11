@@ -38,8 +38,8 @@ class autoloader {
 	public function app($class) {
 	
 		$this->class = $class;
-		if(file_exists(LOCAL_DIR . "/site/apps/" . $this->app . "/" . $this->class . ".php")) {
-			require_once(LOCAL_DIR . "/site/apps/" . $this->app ."/" . $this->class . ".php");
+		if(file_exists(APPS_DIR . $this->app . "/" . $this->class . ".php")) {
+			require_once(APPS_DIR . $this->app ."/" . $this->class . ".php");
 		}
 
 	}
@@ -52,8 +52,8 @@ class autoloader {
 	public function all($class) {
 	
 		$this->class = $class;
-		if(file_exists(LOCAL_DIR . "/site/apps/" . $this->app . "/" . $this->class . ".php")) {
-			require_once(LOCAL_DIR . "/site/apps/" . $this->app ."/" . $this->class . ".php");
+		if(file_exists(APPS_DIR . $this->app . "/" . $this->class . ".php")) {
+			require_once(APPS_DIR . $this->app ."/" . $this->class . ".php");
 		}
 	
 	}

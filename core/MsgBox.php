@@ -23,6 +23,12 @@ class MsgBox {
 	
 	private $title = "";
 	private $message = "";
+	
+	/**
+	 * 
+	 * Static file in '/core/html' folder
+	 */
+	
 	private $file = "";
 	
 	
@@ -34,16 +40,15 @@ class MsgBox {
 	
 	function __construct($title, $message) {
 		
-		/**
-		 * Necesita fix, panel admin usa por default en 'themes', corregir
-		 */
-		
 		$this->title = $title;
 		$this->message = $message;
-		$this->file = LOCAL_DIR . "/themes/universe/core/MsgBox/UI.html";
-		$this->file = file_get_contents($this->file);
-		$this->file = str_replace("{title}", $this->title, $this->file);
-		$this->file = str_replace("{message}", $this->message, $this->file);
+		
+		/**
+		 * Loads Core UI Template
+		 */
+		
+		$this->file = LOCAL_DIR . "/core/html/MsgBox/UI.html";
+		
 	}
 	
 	/**
@@ -54,6 +59,11 @@ class MsgBox {
 	 */
 	
 	function Show() {
+				
+		$this->file = file_get_contents($this->file);
+		$this->file = str_replace("{title}", $this->title, $this->file);
+		$this->file = str_replace("{message}", $this->message, $this->file);
+		
 		return $this->file;
 	}
 	

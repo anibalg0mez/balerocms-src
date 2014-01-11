@@ -40,8 +40,8 @@ class Modloader {
 		$this->class = $class;
 		
 		$this->class = $class;
-		if(file_exists(LOCAL_DIR . "/site/apps/admin/mods/" . $this->mod . "/" . $this->class . ".php")) {
-			require_once(LOCAL_DIR . "/site/apps/admin/mods/" . $this->mod ."/" . $this->class . ".php");
+		if(file_exists(MODS_DIR . $this->mod . "/" . $this->class . ".php")) {
+			require_once(MODS_DIR . $this->mod ."/" . $this->class . ".php");
 		}
 		
 

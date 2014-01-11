@@ -2,6 +2,9 @@
 * Hoja de estilos para Balero CMS -> MsgBox
 * Forma de uso: $objeto = new MsgBox("Titulo", "Mensaje");
 * Más info: http://balerocms.com
+* 
+* Para modificar/editar -> /core/html/MsgBox/UI.html
+* 
 */
 
 .msgbox_middle {

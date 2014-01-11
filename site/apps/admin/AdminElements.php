@@ -33,7 +33,7 @@ class AdminElements {
 		$i = 0;
 		$string_acum = "";
 		
-		if ($handle = opendir(LOCAL_DIR . "/site/apps/admin/mods/")) {
+		if ($handle = opendir(MODS_DIR)) {
 		
 			// Código para debugear debugear
 			//echo "Directory handle: $handle\n";
@@ -46,11 +46,11 @@ class AdminElements {
 			
 				// DEBUG
 				//echo "$entry\n<br>"; // Debug
-				if(file_exists(LOCAL_DIR . "/site/apps/admin/mods/". $entry ."/html/mod_menu.html")) {
+				if(file_exists(MODS_DIR . $entry ."/html/mod_menu.html")) {
 					
-					$this->mod_menu = file_get_contents(LOCAL_DIR . "/site/apps/admin/mods/". $entry ."/html/mod_menu.html");
+					$this->mod_menu = file_get_contents(MODS_DIR . $entry ."/html/mod_menu.html");
 					
-					require_once(LOCAL_DIR . "/site/apps/admin/mods/" . $entry . "/mod_".$entry."_Model.php");
+					require_once(MODS_DIR . $entry . "/mod_".$entry."_Model.php");
 					$model = "mod_" . $entry . "_Model";
 					$regs[$i] = new $model();
 					//echo $regs[$i]->get_regs();

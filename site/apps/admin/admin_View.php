@@ -67,7 +67,7 @@ class admin_View extends configSettings {
 		 * Renderizamos nuestra página.
 		 */
 
-		$objTheme = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/html/panel.html");		
+		$objTheme = new ThemeLoader(APPS_DIR . "admin/panel/html/panel.html");		
 		echo $objTheme->renderPage($array);
 		
 	
