@@ -18,11 +18,16 @@ require_once(LOCAL_DIR . "/core/boot.php");
 class Router {
 	
 	public $local_name;
-	public $app;
 	
 	public $message;
 	
 	public $lang;
+	
+	/**
+	 * Public get variable controller
+	 */
+	
+	private $app;
 	
 	function __constructor() { 
 	
@@ -118,16 +123,8 @@ class Router {
 				 */
 
 				case $app_get:
-				if(file_exists(APPS_DIR . $app_get . "/" . $app_get . "_Controller.php")) {
-					$ldr = new autoloader($app_get); // cargar clases para la app
-					$this->lang = new Language();
-					$dynamic = $app_get . "_Controller";
-					$this->lang->init();
-					$this->lang->init_apps_lang($app_get);
-					$this->lang->app = $app_get;
-					$app = new $dynamic();	
-					unset($this->lang);
-				}
+				$this->app = $app_get;
+				$this->init_app();
 				break;
 				
 			}
@@ -241,10 +238,44 @@ class Router {
 		
 	}
 	
+	/**
+	 * init() app system
+	 * /site/apps/
+	 */
+	
+	public function init_app() {
+		
+		if(file_exists(APPS_DIR . $this->app . "/" . $this->app . "_Controller.php")) {
+			$ldr = new autoloader($this->app); // cargar clases para la app
+			$this->lang = new Language();
+			$dynamic = $this->app . "_Controller";
+			$this->lang->init();
+			$this->lang->init_apps_lang($this->app);
+			$this->lang->app = $this->app;
+			$app = new $dynamic();
+			unset($this->lang);
+		} else {
+			$msg = new MsgBox("error", "dont exist");
+			$theme = new ThemeLoader(LOCAL_DIR . "/themes/universe/main.html");
+			echo $theme->renderPage($array = array("content" => $msg->Show()));
+		}
+		
+		/**
+		 * Kill app
+		 */
+		
+		unset($this->app);
+		die();
+		
+	}
+	
+	/**
+	 * init() admin mods system
+	 * /site/apps/admin/mods/
+	 */
+	
 	public function init_mod() {
 	
-		
-		
 		/**
 		 * Buscar en esta carpeta los modulos modloader("carpeta");
 		 */

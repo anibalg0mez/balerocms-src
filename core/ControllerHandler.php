@@ -33,9 +33,6 @@ class ControllerHandler {
 	
 	}
 	
-	
-
-	
 	public function init($var) {
 	
 		/**
@@ -78,19 +75,19 @@ class ControllerHandler {
 				if(($sr == $method_name)) {	
 						
 						/**
- 						($sr != "__construct") && _
- 						($sr != "__call") && _
- 						($sr != "__callStatic") && _
- 						($sr != "__get") && _
- 						($sr != "__set") && _
- 						($sr != "__isset") && _
- 						($sr != "__unset") && _
- 						($sr != "__sleep") && _
- 						($sr != "__get") && _
- 						($sr != "__wakeup") && _
- 						($sr != "__toString") && _
- 						($sr != "__invoke") && _
- 						($sr != "__destruct")) {
+ 						//($sr != "__construct") && _
+ 						//($sr != "__call") && _
+ 						//($sr != "__callStatic") && _
+ 						//($sr != "__get") && _
+ 						//($sr != "__set") && _
+ 						//($sr != "__isset") && _
+ 						//($sr != "__unset") && _
+ 						//($sr != "__sleep") && _
+ 						//($sr != "__get") && _
+ 						//($sr != "__wakeup") && _
+ 						//($sr != "__toString") && _
+ 						//($sr != "__invoke") && _
+ 						//($sr != "__destruct")) {
  						**/
  						
 					switch($sr) {						
@@ -116,8 +113,7 @@ class ControllerHandler {
 					$var->main();
 			}
 		}
-	
+		
 	} // fin de init()
-	
 	
 }

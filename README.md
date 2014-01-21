@@ -26,6 +26,10 @@ CHANGELOG
 
 ==========
 
+	v.5.2
+  * Blog's multilang fixes
+  * Virtual page's multilang fixes
+
     v.0.5
   * Few changes in core architecture
   * New login page

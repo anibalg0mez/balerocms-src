@@ -21,7 +21,7 @@ class virtual_page_Model extends configSettings {
 	
 	public $rows; // pasar variable a vista
 	
-	public $code;
+	public $lang;
 
 	/**
 	* Conectar a la base de datos en el constructor.
@@ -62,31 +62,25 @@ class virtual_page_Model extends configSettings {
 		
 	}
 	
-	public function loadModelvars() {
-		
-		$this->rows = $this->db->rows;
-		
-	}
-	
 	/**
 	 * Obtener solo una pagina especifica
 	 * @return array
 	 */
 	
-	public function get_virtual_page($id) {
-	
-		try {
-		
-		$virtual_pages = array();
-		$this->db->query("SELECT * FROM virtual_page WHERE id = '$id'");
-		$this->db->get();
-		$virtual_pages = $this->db->rows;
-		
-		} catch (Exception $e) {
-			$virtual_pages = array();
-			die("WTF");
-		}
-	
+	public function get_virtual_page_by_id($id) {
+
+			if(empty($this->lang) || $this->lang == "main") {
+				$virtual_pages = array();
+				$this->db->query("SELECT * FROM virtual_page WHERE id = '$id'");
+				$this->db->get();
+				$virtual_pages = $this->db->rows;
+			} else {
+				$virtual_pages = array();
+				$this->db->query("SELECT * FROM virtual_page_multilang WHERE id = '$id' AND code = '".$this->lang."'");
+				$this->db->get();
+				$virtual_pages = $this->db->rows;
+			}
+			
 		unset($this->db->rows);
 		return $virtual_pages;
 	
@@ -101,36 +95,46 @@ class virtual_page_Model extends configSettings {
 	public function get_virtual_pages() {
 		
 		$virtual_pages = array();
-		$this->db->query("SELECT * FROM virtual_page WHERE active = '1'");
-		$this->db->get();
 		
-		if(empty($this->db->rows)) {
-			$virtual_pages = "";
+		if(empty($this->lang) || $this->lang == "main") {
+			
+			/**
+			 * Get Virtual Pages
+			 */
+			
+			$this->db->query("SELECT * FROM virtual_page WHERE active = '1'");
+			$this->db->get();
+		
+			if(empty($this->db->rows)) {
+				$virtual_pages = "";
+			} else {
+				$virtual_pages = $this->db->rows;
+			}
+		
+			unset($this->db->rows);
+			return $virtual_pages;
+			
 		} else {
-			$virtual_pages = $this->db->rows;
+			
+			/**
+			 * Get Multi-Lang Virtual Pages
+			 */
+			
+			$this->db->query("SELECT * FROM virtual_page_multilang WHERE code = '$this->lang'");
+			$this->db->get();
+				
+			if(empty($this->db->rows)) {
+				$virtual_pages = "";
+			} else {
+				$virtual_pages = $this->db->rows;
+			}
+				
+			unset($this->db->rows);
+			return $virtual_pages;
 		}
-		
-		unset($this->db->rows);
-		return $virtual_pages;
 		
 	}
 
-	public function get_virtual_pages_multilang($code) {
-	
-		$virtual_pages = array();
-		$this->db->query("SELECT * FROM virtual_page_multilang WHERE code = '$code'");
-		$this->db->get();
-	
-		if(empty($this->db->rows)) {
-			$virtual_pages = "";
-		} else {
-			$virtual_pages = $this->db->rows;
-		}
-	
-		unset($this->db->rows);
-		return $virtual_pages;
-	
-	}
 	
 	/**
 	* Metodos
@@ -152,52 +156,61 @@ class virtual_page_Model extends configSettings {
 	}
 	
 	/**
-	 *
-	 * @return default language
+	 * 
+	 * @return default language 
 	 */
 	
 	public function getLang() {
-	
+		
 		$defaultLang = "";
-	
+		
 		$this->db->query("SELECT * FROM cookie WHERE name = '".$_SERVER['REMOTE_ADDR']."'");
 		$this->db->get();
-	
-		foreach ($this->db->rows as $row) {
-			$defaultLang = $row['value'];
-			//echo $defaultLang;
+		
+		try {
+			
+			foreach ($this->db->rows as $row) {
+				$defaultLang = $row['value'];
+				//echo $defaultLang;
+			}
+				
+			if(empty($this->db->rows) || empty($defaultLang)) {
+				throw new Exception();
+			}
+			
+		} catch (Exception $e) {
+			
+			/**
+			 * NULL
+			 */
+			
+			$defaultLang = "main";
+			
 		}
-	
+		
 		unset($this->db->rows);
 		return $defaultLang;
-	
+		
 	}
 	
-	public function total_pages_multilang($code) {
-		$this->db->query("SELECT * FROM virtual_page_multilang WHERE code = '$code'");
-		$this->db->get();
-		$rows = $this->db->num_rows();
-		unset($this->db->rows);
-		return $rows;
-	}
+	public function total_pages() {
 		
-	public function get_virtual_page_multilang($id, $code) {
-	
-		try {
+		$rows = array();
 		
-		$virtual_pages = array();
-		$this->db->query("SELECT * FROM virtual_page_multilang WHERE id = '$id' AND code = '$code'");
-		$this->db->get();
-		$virtual_pages = $this->db->rows;
-		
-		} catch (Exception $e) {
-			$virtual_pages = array();
-			die("WTF");
+		if(empty($this->lang) || $this->lang == "main") {
+			$this->db->query("SELECT * FROM virtual_page WHERE active = '1'");
+			$this->db->get();
+			$rows = $this->db->num_rows();
+			unset($this->db->rows);
+			return $rows;
+		} else {
+			$this->db->query("SELECT * FROM virtual_page_multilang WHERE code = '$this->lang'");
+			$this->db->get();
+			$rows = $this->db->num_rows();
+			unset($this->db->rows);
+			return $rows;
 		}
-	
-		unset($this->db->rows);
-		return $virtual_pages;
-	
+		
 	}
 	
 	public function limit() {

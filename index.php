@@ -33,6 +33,12 @@ $dir = dirname(__FILE__);
 $dir = str_replace("\\", "/", $dir);
 
 /**
+ * Balero CMS Version
+ */
+
+define("_CORE_VERSION", "0.5");
+
+/**
  *
  * LOCAL_DIR = Directorio dónde se encuentra nuestro sistema.
  * (No editar)

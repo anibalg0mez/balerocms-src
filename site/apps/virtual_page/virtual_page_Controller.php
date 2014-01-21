@@ -15,7 +15,13 @@ class virtual_page_Controller extends ControllerHandler {
 
 	public $objModel;
 	public $objView;
-		
+	
+	/**
+	 * @param $lang default language
+	 */
+	
+	private $lang;
+	
 	/**
 	* Los cargamos en el constructor
 	**/
@@ -29,6 +35,20 @@ class virtual_page_Controller extends ControllerHandler {
 			$this->objView = new virtual_page_View();
 		}
 		
+		/**
+		 * get default language if empty is main
+		 */
+		
+		$this->lang = $this->objModel->getLang();
+		
+		/**
+		 * Tell this classes the main language
+		*/
+		
+		$this->objView->lang = $this->lang;
+		$this->objModel->lang = $this->lang;
+		
+		
 		$this->init($this);
 	}
 		
@@ -40,10 +60,12 @@ class virtual_page_Controller extends ControllerHandler {
 	
 		try {
 			
-			if(isset($_GET['id'])) {
+			if(isset($_GET['id'])) {	
 				$shield = new Security();
 				$id = $shield->shield($_GET['id']);
-				$query_content = $this->objModel->get_virtual_page($id);
+				$this->objModel->lang = $_GET['sr'];
+				$query_content = $this->objModel->get_virtual_page_by_id($id);
+				$this->objView->rows = $this->objModel->rows;
 				$md = new Markdown();
 				$this->objView->content .= $md->defaultTransform($this->objView->print_virtual_page($query_content));
 			} else {
@@ -64,9 +86,6 @@ class virtual_page_Controller extends ControllerHandler {
 	* Métodos
 	**/
 		
-	/**
-	 * Métodos
-	 **/
 	
 	public function init($var) {
 		
@@ -98,21 +117,25 @@ class virtual_page_Controller extends ControllerHandler {
 			foreach ($ModLangs as $row) {
 				if($_GET['sr'] == $row['code']) {
 						
-					
 					try {
+						
 					/**
 					 * Multilgang posts view
 					 */
 						
-					$total_rows = $this->objModel->total_pages_multilang($row['code']);
+					$this->lang = $row['code'];	
+					$this->objModel->lang = $this->lang;
+					$this->objView->lang = $this->lang;
+					
+					$total_rows = $this->objModel->total_pages();
 					$limit = $this->objModel->limit();
 					$p = new Pagination($total_rows, $limit);
 					$min = $p->min();
-					$this->objModel->code = $_GET['sr'];
+					
 					if(isset($_GET['id'])) {
 						$shield = new Security();
 						$id = $shield->shield($_GET['id']);
-						$query_content = $this->objModel->get_virtual_page_multilang($id, $row['code']);
+						$query_content = $this->objModel->get_virtual_page_by_id($id);
 						$this->objView->rows = $this->objModel->rows;
 						$shield = new Security();
 						$md = new Markdown();

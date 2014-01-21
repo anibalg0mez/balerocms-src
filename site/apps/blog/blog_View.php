@@ -96,7 +96,11 @@ class blog_View extends configSettings {
 	
 	}
 	
-	public function print_post() {
+	public function show_all_post() {
+		
+		if(empty($this->lang)) {
+			$this->lang = "main";
+		}
 		
 		$this->count = 0;
 		// debug
@@ -108,7 +112,7 @@ class blog_View extends configSettings {
 		
 		foreach ($this->rows as $row) {
 			
-			$this->page = htmlentities($row['title']);
+			$this->page = "Blog";
 			
 			//$blocks = 3;
 			
@@ -194,6 +198,8 @@ class blog_View extends configSettings {
 	 */
 	
 	public function full_post_view($array) {
+		
+		//echo $this->printVirtualPages;
 		
 		$markdown = new Markdown();
 		

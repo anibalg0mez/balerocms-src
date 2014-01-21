@@ -13,14 +13,14 @@
 **/
 
 /**
- * @author Anibal Gomez -lastprophet-
- * Es simple, clase para paginar los resultados.
- * (Muchas veces ni yo mismo entiendo lo que programo).
- * ========================================================
- * v.0.3 pretty and dynamic URL support
- * 
+ * @param $total = total rows.
+ * @param $limit = limit results x page.
+ * @param $nav = new Pagination($total, $limit);
+ *  
  * $this->print_url prints dynamic URL
  * $this->print_pretty prints pretty URL
+ * 
+ * @author Anibal Gomez -lastprophet-
  *
  */
 

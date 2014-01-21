@@ -23,58 +23,55 @@ class virtual_page_View extends configSettings {
 	
 	public $virtual_pages;
 	
-	public $objTheme;
+	public $objModel;
 	
-	public $page;
+	public $lang;
 	
 	public function __construct() {
 		
-		$this->objTheme = new virtual_page_Model();
-		$this->theme = $this->objTheme->theme();
+		$this->objModel = new virtual_page_Model();
+		$this->theme = $this->objModel->theme();
 		
 		// forzar la carga de variables de config
 		$this->LoadSettings();
 		
 	}
 	
-	public function print_virtual_pages_title() {
+	/**
+	 * 
+	 * @code $code: Current language running
+	 * @return Virtual Pages Menú
+	 * 
+	 */
+	
+	public function virtual_pages_menu() {
 		
 		$html = "";
+
+		// pass lang to class
+		$this->objModel->lang = $this->lang;
+		$value = $this->objModel->get_virtual_pages();
 		
-		$value = $this->objTheme->get_virtual_pages();
-		
+		if(empty($this->lang) || $this->lang == "main") {
+			foreach ($value as $page) {
+				// dynamic
+                //$html .= "<li><a href=\"index.php?app=virtual_page&id=".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+                $html .= "<li><a href=\"./virtual_page/main/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+			}
+		} else {
+			foreach ($value as $page) {
+				// dynamic
+				//$html .= "<li><a href=\"index.php?app=virtual_page&id=".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+				$html .= "<li><a href=\"./virtual_page/".$this->lang."/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+			}
+		}
+				
 		if(empty($value)) {
 			return _NO_VIRTUAL_PAGES;
 		}
 		
-		foreach ($this->objTheme->get_virtual_pages() as $page) {
-			// dynamic
-			//$html .= "<li><a href=\"index.php?app=virtual_page&id=".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
-			$html .= "<li><a href=\"./virtual_page/main/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
-		}
-		
 		return $html;
-		
-	}
-	
-	public function print_virtual_pages_title_multilang($code) {
-	
-		$html = "";
-	
-		$value = $this->objTheme->get_virtual_pages_multilang($code);
-	
-		if(empty($value)) {
-			return _NO_VIRTUAL_PAGES;
-		}
-	
-		foreach ($this->objTheme->get_virtual_pages_multilang($code) as $page) {
-			// dynamic
-			//$html .= "<li><a href=\"index.php?app=virtual_page&id=".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
-			$html .= "<li><a href=\"./virtual_page/".$code."/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
-		}
-	
-		return $html;
-	
+			
 	}
 	
 	public function print_virtual_page($db_array = array()) {
@@ -109,17 +106,17 @@ class virtual_page_View extends configSettings {
 		$lang = new Language();
 		$lang->multilang = $this->multilang;
 		$lang->app = "blog"; // where is controller? -> blog_controller -> setlang
-		$lang->defaultLang = $this->objTheme->getLang();
+		$lang->defaultLang = $this->objModel->getLang();
 		
 		$array = array(
 				'title'=>$this->title,
 				'keywords'=>$this->keywords,
 				'description'=>$this->description,
 				'content'=>$this->content,
-				'virtual_pages'=>$this->print_virtual_pages_title(),
+				'virtual_pages'=>$this->virtual_pages_menu($lang->defaultLang),
 				'basepath'=>$this->basepath,
 				'page'=>$this->page,
-				'langs'=>$lang->langList($this->objTheme->getLangList())
+				'langs'=>$lang->langList($this->objModel->getLangList())
 				);
 		
 		/**
@@ -127,8 +124,8 @@ class virtual_page_View extends configSettings {
 		 * Renderizamos nuestra página.
 		 */
 
-		$objTheme = new ThemeLoader(LOCAL_DIR . "/themes/" . $this->theme . "/main.html");		
-		echo $objTheme->renderPage($array);
+		$objModel = new ThemeLoader(LOCAL_DIR . "/themes/" . $this->theme . "/main.html");		
+		echo $objModel->renderPage($array);
 		
 	
 	}

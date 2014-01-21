@@ -22,8 +22,13 @@ class blog_Model extends configSettings {
 	public $prueba;
 	public $rows; // pasar variable a vista
 	
-	public $code;
-
+	/**
+	 * 
+	 * Language code
+	 */
+	
+	public $lang; // get default lang
+	
 	/**
 	* Conectar a la base de datos en el constructor.
 	**/
@@ -89,86 +94,87 @@ class blog_Model extends configSettings {
 		
 	}
 	
-	public function get_post($min, $max) {
-				
+	
+	public function get_fullpost($id) {
+	
+		if(empty($this->lang) || $this->lang == "main") {
 		
-			$this->db->query("SELECT * FROM blog ORDER BY id DESC LIMIT $min, $max");
+			$this->db->query("SELECT * FROM blog WHERE id = '$id'");
 			$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
-			
 			$this->rows = $this->db->rows;
 			
+		} else {
+		
+			$this->db->query("SELECT * FROM blog_multilang WHERE code = '".$this->lang."' AND id = '".$id."'");
+			$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
+			$this->rows = $this->db->rows;
+		
+		}
+		
+		unset($this->db->rows);
+	
+	}
+	
+	/**
+	 * Get post multilingual and default
+	 * @param unknown $min
+	 * @param unknown $max
+	 * @return boolean
+	 */
+	
+	public function get_post($min, $max) {
+	
+		/**
+		 * if empty lang then default load language
+		 */
+		
+		if(empty($this->lang) || ($this->lang == "main")) {
+			
+			$this->db->query("SELECT * FROM blog ORDER BY id DESC LIMIT $min, $max");
+			$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
+				
+			$this->rows = $this->db->rows;
+				
 			if(empty($this->rows) OR !is_array($this->db->rows)) {
 				return false;
 			}
 			
-			//				recorrer datos almacenados en $rows[]
-			//				lo hacemos desde la vista:
-			//foreach ($this->db->rows as $row) {
-				//echo $row['id'] . $row['title'];
-			//}
+		} else {
 			
-			/**
-			 * Siempre (siempre) debemos de matar la variable $rows despues de una consulta,
-			 * para limpiar los datos y esten limpios en la siguiente consulta.
-			 */
+			$this->db->query("SELECT * FROM blog_multilang WHERE code = '".$this->lang."' ORDER BY id DESC LIMIT $min, $max");
+			$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
+				
+			$this->rows = $this->db->rows;
 			
-			unset($this->db->rows);
-		
-	}
-	
-	
-	public function get_fullpost($id) {
-	
-	
-		$this->db->query("SELECT * FROM blog WHERE id = '$id'");
-		$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
+		}
 			
-		$this->rows = $this->db->rows;
+		/**
+		 * Siempre (siempre) debemos de matar la variable $rows despues de una consulta,
+		 * para limpiar los datos y esten limpios en la siguiente consulta.
+		 */
 			
 		unset($this->db->rows);
 	
 	}
-	
-	public function get_post_multilang($min, $max) {
-	
-		//echo $this->code;
-	
-		$this->db->query("SELECT * FROM blog_multilang WHERE code = '".$this->code."' ORDER BY id DESC LIMIT $min, $max");
-		$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
-			
-		$this->rows = $this->db->rows;
-			
-		unset($this->db->rows);
-	
-	}
-	
-	public function get_fullpost_multilang($id) {
-	
-		//echo $this->code;
-	
-		$this->db->query("SELECT * FROM blog_multilang WHERE code = '".$this->code."' AND id = '".$id."'");
-		$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
-			
-		$this->rows = $this->db->rows;
-			
-		unset($this->db->rows);
-	
-	}
+
 	
 	public function total_post() {
-		$this->db->query("SELECT * FROM blog");
-		$this->db->get();
-		$rows = $this->db->num_rows();
-		unset($this->db->rows);
-		return $rows;
-	}
-	
-	public function total_post_multilang($code) {
-		$this->db->query("SELECT * FROM blog_multilang WHERE code = '$code'");
-		$this->db->get();
-		$rows = $this->db->num_rows();
-		unset($this->db->rows);
-		return $rows;
+		
+		$rows = array();
+		
+		if(empty($this->lang) || ($this->lang == "main")) {
+			$this->db->query("SELECT * FROM blog");
+			$this->db->get();
+			$rows = $this->db->num_rows();
+			unset($this->db->rows);
+			return $rows;
+		} else {
+			$this->db->query("SELECT * FROM blog_multilang WHERE code = '$this->lang'");
+			$this->db->get();
+			$rows = $this->db->num_rows();
+			unset($this->db->rows);
+			return $rows;
+		}
 	}
 
 	/**
@@ -229,16 +235,23 @@ class blog_Model extends configSettings {
 		
 		try {
 			
-			if(empty($this->db->rows)) {
-				throw new Exception();
-			}
-			
 			foreach ($this->db->rows as $row) {
 				$defaultLang = $row['value'];
 				//echo $defaultLang;
 			}
+				
+			if(empty($this->db->rows) || empty($defaultLang)) {
+				throw new Exception();
+			}
+			
 		} catch (Exception $e) {
+			
+			/**
+			 * NULL
+			 */
+			
 			$defaultLang = "main";
+			
 		}
 		
 		unset($this->db->rows);

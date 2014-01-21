@@ -23,7 +23,12 @@ class blog_Controller extends ControllerHandler {
 	public $objModel;
 	public $objView;
 		
-	public $lang;
+	/**
+	 * 
+	 * Default language
+	 */
+	
+	private $lang;
 	
 	/**
 	* Los cargamos en el constructor
@@ -37,11 +42,26 @@ class blog_Controller extends ControllerHandler {
 		} catch (Exception $e) {
 			$this->objView = new blog_View();
 		}
-		
-		// Automatizar el controlador
-		//$handler = new ControllerHandler($this);
+				
+		/**
+		 * get default language if empty is main
+		 */
 		
 		$this->lang = $this->objModel->getLang();
+		
+		/**
+		 * Tell this classes the main language
+		 */
+		
+		$this->objView->lang = $this->lang;
+		$this->objModel->lang = $this->lang;
+		
+		/**
+		 * Automatizar el controlador
+		 * $handler = new ControllerHandler($this);
+		 * init() controllers
+		 */
+		
 		$this->init($this);
 		
 		
@@ -53,82 +73,30 @@ class blog_Controller extends ControllerHandler {
 
 	public function main() {
 		
+		/**
+		 * Show full post in main()
+		 */
+		
 		if(isset($_GET['id'])) {
-
-			$ldr = new autoloader("virtual_page");
-			$vp = new virtual_page_View();
-			$this->objView->printVirtualPages = $vp->print_virtual_pages_title_multilang($this->lang);
-			
-			$this->objModel->get_fullpost($_GET['id']);
-			$this->objView->rows = $this->objModel->rows;
-			$this->objView->more = "";
-			//$this->objView->print_post();
-			$this->objView->full_post_view($this->objModel->rows);
-			
-		} else {
+			$this->full_post();
+			$this->objView->Render();
+			die();
+		}
 		
-		// rows totales
-		$total_rows = $this->objModel->total_post();
-		
-		// limpiamos para hacer otra consulta
-		//unset($this->objModel->rows);
-		
-		// obtener limite de paginación desd las config.
-		$limit = $this->objModel->limit();
-		
-		// traer paginador
-		$p = new Pagination($total_rows, $limit);
-		
-		// obtener LIMIT (min)
-		 $min = $p->min();
-		 // obtener LIMIT (max)
-		 //echo "max" .$max = $p->max();
-		
-		// limitar (min, limit)
-			
-		 /**
-		  * For main() method
-		  * Get default lang (from blog table) or
-		  * Get multilang page (from blog_multilang)
-		  */
-		 
 		 try {
 		 	
-		 	$this->objModel->code = $this->objModel->getLang();
+		 	/**
+		 	 * For main() method
+		 	 * Get default lang (from blog table) or
+		 	 * Get multilang page (from blog_multilang)
+		 	 */
 		 	
-		 	if(($this->objModel->code == "main") OR ($this->objModel->code == "")) {
-		 		throw new Exception();
-		 	}
-		 	
-		 	$this->lang = $this->objModel->code;
-		 	$this->objView->lang = $this->lang;
-		 	$this->objModel->get_post_multilang($min, $limit);
-		 	$ldr = new autoloader("virtual_page");
-		 	$vp = new virtual_page_View();
-		 	$this->objView->printVirtualPages = $vp->print_virtual_pages_title_multilang($this->lang);
-		 	
-		 } catch (Exception $e) {
-		 	$this->lang = "main";
-		 	$this->objView->lang = "main";
-		 	$ldr = new autoloader("virtual_page");
-		 	$vp = new virtual_page_View();
-		 	$this->objView->printVirtualPages = $vp->print_virtual_pages_title();
-		 	$this->objModel->get_post($min, $limit); //main lang
-		 }
-		 	
-		 
-		 try {
-		 	
-			// resultado de la query en array
-			$this->objView->rows = $this->objModel->rows;
+			$this->all_post();
 		
 			if(!$this->objModel->rows) {
-					throw new Exception();
+				throw new Exception();
 			}
-		
-			// mostrar post
-			$this->objView->print_post();
-		
+			
 		 } catch (Exception $e) {
 		 	
 		 	/**
@@ -140,15 +108,6 @@ class blog_Controller extends ControllerHandler {
 		 	
 		 }
 		
-		// barra de paginacion (dynamic url)
-		//$this->objView->content .= $p->nav();
-		
-		// barra de paginacion (pretty url)
-		$this->objView->content .= $p->pretty_nav("blog/" . $this->lang);
-		
-		//echo "total post" . $this->objModel->total_post();
-		
-		}
 		
 		$this->objView->Render();	
 		
@@ -171,7 +130,7 @@ class blog_Controller extends ControllerHandler {
 		 */
 	
 		if(isset($_GET['sr'])) {
-	
+		
 			/**
 			 *
 			 * Problem with CGI/Fast CGI as PHP Server API Fixed
@@ -183,7 +142,6 @@ class blog_Controller extends ControllerHandler {
 				die(_GET_APP_DONT_EXIST);
 			}
 				
-			//$class_methods = get_class_methods("appController");
 			$security = new Security();
 			$shield_var = $security->shield($_GET['app']);
 			$class_methods = get_class_methods($shield_var . "_Controller");
@@ -195,52 +153,21 @@ class blog_Controller extends ControllerHandler {
 			$objModLangs = new mod_languages_Model();
 			$ModLangs = $objModLangs->get_lenguages();
 			
+			
 			foreach ($ModLangs as $row) {
-				if($_GET['sr'] == $row['code']) {
-					
-					/**
-					 * Multilgang posts view
-					 */
-					
-					$total_rows = $this->objModel->total_post_multilang($row['code']);
-					$limit = $this->objModel->limit();
-					$p = new Pagination($total_rows, $limit);
-					$min = $p->min();
-					$this->objModel->code = $_GET['sr'];
+				
+				
+				switch ($sr) {
+					case $row['code']:
 					if(isset($_GET['id'])) {
-						
-						$this->objModel->code = $this->objModel->getLang();
-						
-						if(($this->objModel->code == "main") OR ($this->objModel->code == "")) {
-							throw new Exception();
-						}
-						
-						$this->lang = $this->objModel->code;
-						$this->objView->lang = $this->lang;
-						$this->objModel->get_post_multilang($min, $limit);
-						$ldr = new autoloader("virtual_page");
-						$vp = new virtual_page_View();
-						$this->objView->printVirtualPages = $vp->print_virtual_pages_title_multilang($this->lang);
-						
-						
-						$this->objModel->get_fullpost_multilang($_GET['id']);
-						$this->objView->rows = $this->objModel->rows;
-						//$this->objView->print_post();
-						$this->objView->full_post_view($this->objModel->rows);
+						$this->full_post();
 					} else {
-						
-						$this->objModel->get_post_multilang($min, $limit);
-						$this->objView->rows = $this->objModel->rows;
-						$this->objView->print_post();
-						$this->objView->content .= $p->pretty_nav("blog/" . $_GET['sr']);
+						$this->all_post();	
 					}
-
 					$this->objView->Render();
-					
-					//echo $row['code'];
-					die();
-					
+					break;
 				}
+					
 			}
 			
 			foreach ($class_methods as $method_name) {
@@ -248,13 +175,7 @@ class blog_Controller extends ControllerHandler {
 				if(($sr == $method_name)) {
 				
 					switch($sr) {
-						// llama staticamente
-						//appController::$sr();
-						//appModel::$sr();
-						//AppView::$sr();
-	
-						
-						// llamar dinamicamente
+					
 						case $sr:
 							$var->$sr();
 							break;
@@ -275,23 +196,98 @@ class blog_Controller extends ControllerHandler {
 	} // fin de init()
 	
 	
+	public function all_post() {
+		
+		/**
+		 * Call virtual pages menu
+		 */
+		
+		$ldr = new autoloader("virtual_page");
+		$vp = new virtual_page_View();
+		$vp->lang = $this->lang;
+		$this->objView->printVirtualPages = $vp->virtual_pages_menu();
+		
+		/**
+		 * Pagination
+		 */
+		
+			// rows totales
+			$total_rows = $this->objModel->total_post();
+			// obtener limite de paginación desd las config.
+			$limit = $this->objModel->limit();
+			// traer paginador
+			$p = new Pagination($total_rows, $limit);
+				
+			// obtener LIMIT (min)
+			$min = $p->min();
+				
+			$this->objModel->get_post($min, $limit);
+				
+			// resultado de la query en array
+			$this->objView->rows = $this->objModel->rows;
+			//print_r($this->objModel->rows);
+				
+			$this->objView->show_all_post();
+			
+			$this->objView->content .= $p->pretty_nav("blog/" . $this->lang);
+			
+	}
+	
+	public function full_post() {
+		
+		/**
+		 * Call virtual pages menu
+		 */
+		
+		$ldr = new autoloader("virtual_page");
+		$vp = new virtual_page_View();
+		$vp->lang = $this->lang;
+		$this->objView->printVirtualPages = $vp->virtual_pages_menu($this->lang);
+		
+		
+		if(isset($_GET['sr'])) {
+			$this->lang = $_GET['sr']; // get sr has the language
+			$this->objModel->lang = $this->lang;
+			$this->objView->lang = $this->lang;
+			$this->objView->rows = $this->objModel->rows;
+		}
+			
+			$this->objModel->get_fullpost($_GET['id']);
+			$this->objView->rows = $this->objModel->rows;
+			$this->objView->full_post_view($this->objModel->rows);
+			
+	}
+	
 	/**
 	 * We need one controller to manage this lang method class
 	 */
 	
 	public function setlang() {
-		
+	
 		date_default_timezone_set('UTC');
 		$expire = date("Y-m-d", strtotime("+1 day")); // expire in 1 day
-		
+	
 		$langsList = $this->objModel->getLangList();
 		$lang = new Language();
-		
+	
 		$value = $lang->setLang($langsList, $_GET['lang']);
-		
+	
 		$this->objModel->setVirtualCookie($_SERVER['REMOTE_ADDR'], $value, $expire);
+	
+		/**
+		 * Reload language public vars
+		*/
+	
+		$this->lang = $this->objModel->getLang();
+		$this->objView->lang = $this->lang;
+		$this->objModel->lang = $this->lang;
+	
+		/**
+		 * Refresh main()
+		 */
+	
 		$this->main();
-		
+	
 	}
 	
 	public function test() {
