@@ -5,6 +5,10 @@
 * Declare aqui todas las conexiones a la Base de datos.
 **/
 
+/**
+ * Multi-Language Fixes
+ */
+
 class virtual_page_Model extends configSettings {
 	
 	/**

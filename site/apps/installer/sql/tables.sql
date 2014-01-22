@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `blog` (
 INSERT INTO `blog` (`id`, `title`, `message`, `info`) VALUES
 (1, 'Welcome', '> Balero CMS is free and Open Source', 'demo @ 2013-11-28 06:27:09'),
 (2, 'Markdown', '# This is a h1 header\r\n\r\n## This is a h2 header\r\n\r\n### This is a h3 header', 'demo @ 2013-11-28 06:28:31'),
-(3, 'Smart blog', 'Can you see the smart blog system? Adjust your text', 'demo @ 2013-11-28 06:29:23'),
+(3, 'Admin Panel', '<a href="./admin">Administrator Panel</a>', 'demo @ 2013-11-28 06:29:23'),
 (4, 'Example news', 'Examples news Examples news Examples news Examples news\r\nExamples news Examples news Examples news Examples news\r\nExamples news Examples news Examples news Examples news', 'demo @ 2013-11-28 06:30:20');
 
 CREATE TABLE IF NOT EXISTS `blog_multilang` (

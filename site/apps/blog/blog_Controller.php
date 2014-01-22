@@ -8,6 +8,10 @@
 **/
 
 /**
+ * Multi-Language Fixes
+ */
+
+/**
  * 
  * @author lastprophet
  * Extends ControllerHandler to multilanguage pages

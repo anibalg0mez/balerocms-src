@@ -5,6 +5,10 @@
 * Declare aqui todas las 'vistas'
 **/
 
+/**
+ * Multi-Language Fixes
+ */
+
 class blog_View extends configSettings {
 	
 	public $theme;

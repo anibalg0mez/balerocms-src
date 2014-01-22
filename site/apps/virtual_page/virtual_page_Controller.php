@@ -7,6 +7,10 @@
 * correspondientes de cada controlador.
 **/
 
+/**
+ * Multi-Language Fixes
+ */
+
 class virtual_page_Controller extends ControllerHandler {
 	
 	/**
