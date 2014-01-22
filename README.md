@@ -27,6 +27,7 @@ CHANGELOG
 ==========
 
 	v.5.2
+  * Admin Panel Link on Post Example
   * Blog's multilang fixes
   * Virtual page's multilang fixes
 
