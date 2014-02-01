@@ -23,7 +23,6 @@ class blog_Model extends configSettings {
 	public $dbpass;
 	public $dbname;
 	
-	public $prueba;
 	public $rows; // pasar variable a vista
 	
 	/**
@@ -148,7 +147,9 @@ class blog_Model extends configSettings {
 			$this->db->query("SELECT * FROM blog_multilang WHERE code = '".$this->lang."' ORDER BY id DESC LIMIT $min, $max");
 			$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
 				
-			$this->rows = $this->db->rows;
+			if(!empty($this->db->rows)) {
+				$this->rows = $this->db->rows;
+			}
 			
 		}
 			
@@ -253,13 +254,13 @@ class blog_Model extends configSettings {
 		
 		try {
 			
-			if(empty($this->db->rows) || empty($defaultLang)) {
-				throw new Exception();
-			}
-			
 			foreach ($this->db->rows as $row) {
 				$defaultLang = $row['value'];
 				//echo $defaultLang;
+			}
+			
+			if(empty($this->db->rows) || empty($defaultLang)) {
+				throw new Exception();
 			}
 			
 		} catch (Exception $e) {

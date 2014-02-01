@@ -32,14 +32,14 @@ class blog_Controller extends ControllerHandler {
 	 * Default language
 	 */
 	
-	private $lang;
+	public $lang;
 	
 	/**
 	* Los cargamos en el constructor
 	**/
 
 	public function __construct() {
-		
+				
 		try {
 			$this->objModel = new blog_Model();
 			$this->objView = new blog_View();
@@ -59,6 +59,8 @@ class blog_Controller extends ControllerHandler {
 		
 		$this->objView->lang = $this->lang;
 		$this->objModel->lang = $this->lang;
+		
+		//echo "lang: " . $this->lang;
 		
 		/**
 		 * Automatizar el controlador

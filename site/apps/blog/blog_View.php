@@ -115,6 +115,12 @@ class blog_View extends configSettings {
 		
 		$tpl = new ThemeLoader(APPS_DIR . "blog/html/index.html");
 		
+		try {
+		
+			if(empty($this->rows)) {
+				throw new Exception();
+			}
+			
 		foreach ($this->rows as $row) {
 			
 			$this->page = "Blog";
@@ -129,7 +135,7 @@ class blog_View extends configSettings {
 			$limit = 300;
 			$word_count = strlen($row['message']);
 			
-			try {
+			//try {
 				
 				/**
 				 * Truncate post content
@@ -181,13 +187,15 @@ class blog_View extends configSettings {
 			
 			$this->content .= $tpl->renderPage($vars);
 			
+		} // end loop
 			
 			} catch (Exception $e) {
+
+				/**
+				 * No action
+				 */
 				
 			}
-			
-		} // end loop
-		
 		
 	}
 	
