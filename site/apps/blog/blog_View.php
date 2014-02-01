@@ -80,6 +80,7 @@ class blog_View extends configSettings {
 		
 		$array = array(
 				'title'=>$this->title,
+				'url'=>$this->url,
 				'keywords'=>$this->keywords,
 				'description'=>$this->description,
 				'content'=>$this->content,
@@ -212,10 +213,10 @@ class blog_View extends configSettings {
 		foreach ($array as $row) {
 			
 			$title = $row['title'];
-			$this->page = htmlspecialchars($title);
+			$this->page = $title;
 			$message = $markdown->defaultTransform($row['message']);
 			
-			$vars = array("blog_title" => $row['title'],
+			$vars = array("blog_title" => $title,
 					"blog_message" => $message,
 					"blog_info" => $row['info']);
 				

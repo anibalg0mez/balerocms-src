@@ -59,7 +59,7 @@ class mod_languages_Model extends configSettings {
 			}
 				
 		} catch (Exception $e) {
-			$lang_array = _NO_LANGUAGES;
+			//$lang_array = _NO_LANGUAGES;
 		}
 	
 			

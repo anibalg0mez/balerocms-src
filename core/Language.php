@@ -179,10 +179,11 @@ class Language {
 	
 	public function langList($array) {
 		
+		$links = "";
+		
 			if($this->multilang == "yes") {
 				if(is_array($array)) {
 					$links = "<div id=\"langbar\">";
-						$links .= "<div id=\"langlabel\">" ._LANG . "</div>";
 					for($i = 0; $i < count($array); $i++) {
 						if($array[$i] == $this->defaultLang) {
 							$links .= "<div class=\"on\"><a href=\"".$this->app."/setlang/lang-main\">".$array[$i]."</a></div>";

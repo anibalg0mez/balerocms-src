@@ -256,7 +256,7 @@ class Router {
 			unset($this->lang);
 		} else {
 			$msg = new MsgBox("error", "dont exist");
-			$theme = new ThemeLoader(LOCAL_DIR . "/themes/universe/main.html");
+			$theme = new ThemeLoader(LOCAL_DIR . "/themes/tundra/main.html");
 			echo $theme->renderPage($array = array("content" => $msg->Show()));
 		}
 		

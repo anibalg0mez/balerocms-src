@@ -27,13 +27,13 @@ class installer_View extends configSettings {
 	 */
 	
 	public $check;
-	private $check_icon = "<img src=\"themes/universe/images/check-icon.png\">";
-	
+	private $check_icon;
 	private $page;
 	
 	
 	public function __construct() {
 		
+		$this->check_icon = "<img src=\"site/apps/installer/html/images/check-icon.png\">";
 		$this->check = $this->check_icon;
 		
 		$this->LoadSettings(); //cargar datos XML
@@ -61,6 +61,7 @@ class installer_View extends configSettings {
 		
 		$array = array(
 				'title'=>$this->title,
+				'url'=>$this->url,
 				'page'=>$this->page,
 				'keywords'=>$this->keywords,
 				'description'=>$this->description,
@@ -73,11 +74,11 @@ class installer_View extends configSettings {
 		/**
 		 * 
 		 * Render our page.
-		 * Default theme for installer "universe"
+		 * Default theme for installer "tundra"
 		 * 
 		 */
 
-		$objTheme = new ThemeLoader(LOCAL_DIR . "/themes/universe/main.html");		
+		$objTheme = new ThemeLoader(LOCAL_DIR . "/themes/tundra/main.html");		
 		echo $objTheme->renderPage($array);
 		
 	

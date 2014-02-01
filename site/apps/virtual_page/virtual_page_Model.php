@@ -151,8 +151,23 @@ class virtual_page_Model extends configSettings {
 	
 		//print_r($this->db->rows);
 	
-		foreach ($this->db->rows as $row) {
-			$array[] = $row['code'];
+		
+		try {
+			
+			if(empty($this->db->rows)) {
+				throw new Exception();
+			}
+			
+			foreach ($this->db->rows as $row) {
+				$array[] = $row['code'];
+			}
+			
+		} catch (Exception $e) {
+			
+			/**
+			 * Np actions
+			 */
+			
 		}
 	
 		unset($this->db->rows);
@@ -173,13 +188,13 @@ class virtual_page_Model extends configSettings {
 		
 		try {
 			
+			if(empty($this->db->rows) || empty($defaultLang)) {
+				throw new Exception();
+			}
+			
 			foreach ($this->db->rows as $row) {
 				$defaultLang = $row['value'];
 				//echo $defaultLang;
-			}
-				
-			if(empty($this->db->rows) || empty($defaultLang)) {
-				throw new Exception();
 			}
 			
 		} catch (Exception $e) {

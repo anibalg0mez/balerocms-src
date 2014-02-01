@@ -31,6 +31,27 @@ class virtual_page_View extends configSettings {
 	
 	public $lang;
 	
+	/**
+	 * 
+	 * Page title
+	 */
+	
+	public $page;
+	
+	
+	/**
+	 * Active Link
+	 */
+	
+	public $active;
+	
+	/**
+	 * 
+	 * Highlights active link
+	 */
+	
+	public $css_active;
+	
 	public function __construct() {
 		
 		$this->objModel = new virtual_page_Model();
@@ -50,7 +71,8 @@ class virtual_page_View extends configSettings {
 	
 	public function virtual_pages_menu() {
 		
-		$html = "";
+		$html = "<ul>";
+		$html .= "<li $this->active><a href=\"./\">". _HOME ."</a></li>";
 
 		// pass lang to class
 		$this->objModel->lang = $this->lang;
@@ -58,25 +80,40 @@ class virtual_page_View extends configSettings {
 		
 		if(empty($this->lang) || $this->lang == "main") {
 			foreach ($value as $page) {
+				if($this->active == $page['virtual_title']) {
+					$this->css_active = "class=\"active\"";
+				}
 				// dynamic
                 //$html .= "<li><a href=\"index.php?app=virtual_page&id=".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
-                $html .= "<li><a href=\"./virtual_page/main/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+                $html .= "<li $this->css_active><a href=\"./virtual_page/main/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+                $this->css_active = ""; // reset
 			}
 		} else {
 			foreach ($value as $page) {
+				if($this->active == $page['virtual_title']) {
+					$this->css_active = "class=\"active\"";
+				}
 				// dynamic
 				//$html .= "<li><a href=\"index.php?app=virtual_page&id=".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
-				$html .= "<li><a href=\"./virtual_page/".$this->lang."/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+				$html .= "<li $this->css_active><a href=\"./virtual_page/".$this->lang."/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+				$this->css_active = ""; // reset
 			}
 		}
 				
+		$html .= "</ul>";
+		
 		if(empty($value)) {
-			return _NO_VIRTUAL_PAGES;
+			$html = _NO_VIRTUAL_PAGES;
 		}
 		
 		return $html;
 			
 	}
+	
+	/**
+	 * 
+	 * Full Virtual Page Content
+	 */
 	
 	public function print_virtual_page($db_array = array()) {
 	
@@ -87,7 +124,8 @@ class virtual_page_View extends configSettings {
 		$html = "";
 	
 		foreach ($db_array as $page) {
-			$this->page = htmlspecialchars($page['virtual_title']);
+			$this->page = $page['virtual_title'];
+			$this->active = $this->page;
 			// markdown header 2
 			$html .= "## " . $page['virtual_title'] . "\n";
 			// markdown italic
@@ -114,6 +152,7 @@ class virtual_page_View extends configSettings {
 		
 		$array = array(
 				'title'=>$this->title,
+				'url'=>$this->url,
 				'keywords'=>$this->keywords,
 				'description'=>$this->description,
 				'content'=>$this->content,

@@ -71,13 +71,16 @@ class virtual_page_Controller extends ControllerHandler {
 				$query_content = $this->objModel->get_virtual_page_by_id($id);
 				$this->objView->rows = $this->objModel->rows;
 				$md = new Markdown();
-				$this->objView->content .= $md->defaultTransform($this->objView->print_virtual_page($query_content));
+				$this->objView->content .= "<div id=\"vp-content\">" . 
+											$md->defaultTransform($this->objView->print_virtual_page($query_content))
+											. "</div>";
 			} else {
 				throw new Exception();
 			}
 			
 			
 		} catch (Exception $e) {
+			$this->objView->page = _NOT_FOUND;
 			$msgbox = new MsgBox(_VP, _VP_DONT_EXIST);
 			$this->objView->content .= $msgbox->Show();
 		}
@@ -117,48 +120,57 @@ class virtual_page_Controller extends ControllerHandler {
 			$ModLangs = array();
 			$objModLangs = new mod_languages_Model();
 			$ModLangs = $objModLangs->get_lenguages();
-				
-			foreach ($ModLangs as $row) {
-				if($_GET['sr'] == $row['code']) {
+
+			$cfgSettings = new configSettings();
+			
+			if($cfgSettings->multilang == "yes") {
+			
+				foreach ($ModLangs as $row) {
+					if($_GET['sr'] == $row['code']) {
+							
+						try {
+							
+						/**
+						 * Multilgang posts view
+						 */
+							
+						$this->lang = $row['code'];	
+						$this->objModel->lang = $this->lang;
+						$this->objView->lang = $this->lang;
 						
-					try {
+						$total_rows = $this->objModel->total_pages();
+						$limit = $this->objModel->limit();
+						$p = new Pagination($total_rows, $limit);
+						$min = $p->min();
 						
-					/**
-					 * Multilgang posts view
-					 */
-						
-					$this->lang = $row['code'];	
-					$this->objModel->lang = $this->lang;
-					$this->objView->lang = $this->lang;
-					
-					$total_rows = $this->objModel->total_pages();
-					$limit = $this->objModel->limit();
-					$p = new Pagination($total_rows, $limit);
-					$min = $p->min();
-					
-					if(isset($_GET['id'])) {
-						$shield = new Security();
-						$id = $shield->shield($_GET['id']);
-						$query_content = $this->objModel->get_virtual_page_by_id($id);
-						$this->objView->rows = $this->objModel->rows;
-						$shield = new Security();
-						$md = new Markdown();
-						$this->objView->content .= $md->defaultTransform($this->objView->print_virtual_page($query_content));
-					} else {
-						throw new Exception();
+						if(isset($_GET['id'])) {
+							$shield = new Security();
+							$id = $shield->shield($_GET['id']);
+							$query_content = $this->objModel->get_virtual_page_by_id($id);
+							$this->objView->rows = $this->objModel->rows;
+							$shield = new Security();
+							$md = new Markdown();
+							$this->objView->content .= "<div id=\"vp-content\">" . 
+														$md->defaultTransform($this->objView->print_virtual_page($query_content))
+														. "</div>";
+						} else {
+							throw new Exception();
+						}
+		
+						} catch (Exception $e) {
+							$msgbox = new MsgBox(_VP, _VP_DONT_EXIST);
+							$this->objView->content .= $msgbox->Show();
+						}
+						$this->objView->Render();
+							
+						//echo $row['code'];
+						die();
+							
 					}
-	
-					} catch (Exception $e) {
-						$msgbox = new MsgBox(_VP, _VP_DONT_EXIST);
-						$this->objView->content .= $msgbox->Show();
-					}
-					$this->objView->Render();
-						
-					//echo $row['code'];
-					die();
-						
-				}
-			}
+					
+				} // for each
+			
+			} // end if config settings
 				
 			foreach ($class_methods as $method_name) {
 	

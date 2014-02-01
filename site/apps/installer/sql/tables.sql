@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `custom_settings` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 INSERT INTO `custom_settings` (`id`, `theme`, `url_friendly`, `pagination`) VALUES
-(1, 'universe', 1, 5);
+(1, 'tundra', 1, 5);
 
 CREATE TABLE IF NOT EXISTS `test` (
   `id` int(10) NOT NULL,

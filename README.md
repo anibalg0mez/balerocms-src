@@ -26,7 +26,15 @@ CHANGELOG
 
 ==========
 
-	v.5.2
+    v.0.6
+  * Login, setup and front-end page compatible with mobile and tablets
+  * New default theme added (responsive theme tundra)
+  * Some bugs fixes on installer and blog modules
+  * Language and pagination bar fixes
+  * Menu Highlight Virtual Page
+  * Next feature: Responsive admin control panel
+  
+    v.0.5.2
   * Admin Panel Link on Post Example
   * Blog's multilang fixes
   * Virtual page's multilang fixes
@@ -65,7 +73,7 @@ CHANGELOG
   * And other minor bugs fixes
 
     v,0,2,5
-  * hotfix (1 mb)
+  * hotfix
  
     v.0.2.4
   * editing virtual pages fix
@@ -86,4 +94,4 @@ CHANGELOG
 
 Friendly contact:
 
-anibalgomez@icloud.com
+anibalgomez@balerocms.com
