@@ -5,20 +5,15 @@ Balero CMS
 
 [http://docs.balerocms.com/](http://docs.balerocms.com/)
 
-
-Brief introduction to Balero CMS architecture:
-==============================================
-
-* Core (/core/): Core classes and static/language files.
-* Apps (/site/apps/): Apps built in Balero CMS.
-* Config files (/site/etc/): All config files be there.
-* Themes (/themes/): All site templates.
-
-More info:
-
 * API Documentation:
 
 [http://api.balerocms.com/](http://api.balerocms.com/)
+
+Features in coming versions
+
+  * Responsive admin control panel
+  * Markdown editor preview
+  * Uploading and resizing image class
 
 ==========
 
@@ -27,12 +22,12 @@ CHANGELOG
 ==========
 
     v.0.6
-  * Login, setup and front-end page compatible with mobile and tablets
-  * New default theme added (responsive theme tundra)
+  * Login and front-end template compatible with mobile and tablets
+  * New default theme added (responsive theme 'tundra')
   * Some bugs fixes on installer and blog modules
   * Language and pagination bar fixes
-  * Menu Highlight Virtual Page
-  * Next feature: Responsive admin control panel
+  * Menu Highlight Virtual Pages
+  * Mobile menu added
   
     v.0.5.2
   * Admin Panel Link on Post Example
