@@ -113,6 +113,7 @@ class installer_View extends configSettings {
 		$DBform->TextField(_DB_USER, "dbuser", $this->dbuser);
 		$DBform->PasswordField(_DB_PASS, "dbpass", $this->dbpass);
 		$DBform->TextField(_DB_NAME, "dbname", $this->dbname);
+		$DBform->Label(_DB_IF_NOT_EXIST);
 		$DBform->SubmitButton(_SEND);
 	
 		try {
@@ -282,14 +283,14 @@ class installer_View extends configSettings {
 	
 	public function unknow_database_error() {
 			
-		$msg = new MsgBox(_DB_DONT_EXIST, _PLEASE_CREATE_DATABASE);
+		$msg = new MsgBox(_DB_DONT_EXIST, _DATABASE_CREATED);
 		$this->content .= $msg->Show();
 			
 	}
 	
 	public function unknow_database_connect() {
 	
-			$msg = new MsgBox(_INSTALLER_WARNING, _INSTALLER_WARNING_MESSAGE);
+		$msg = new MsgBox(_INSTALLER_WARNING, _INSTALLER_WARNING_MESSAGE);
 		$this->content .= $msg->Show();
 		
 	}
@@ -311,6 +312,13 @@ class installer_View extends configSettings {
 	public function create_db_error($e) {
 		
 		$msg = new MsgBox(_ERROR_CREATING_DATABASE, _ERROR_CREATING_DATABASE_MESSAGE . " " . $e);
+		$this->content .= $msg->Show();
+		
+	}
+	
+	public function database_created() {
+		
+		$msg = new MsgBox(_WARNING, _DATABASE_CREATED);
 		$this->content .= $msg->Show();
 		
 	}

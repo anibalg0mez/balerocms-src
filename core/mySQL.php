@@ -77,6 +77,13 @@ class mySQL {
 	public $row;
 	
 	/**
+	 * 
+	 * Connection status
+	 */
+	
+	public $status = FALSE;
+	
+	/**
 	 * Método constructor
 	 **/
 	
@@ -89,7 +96,9 @@ class mySQL {
 		
 			try {
 				$this->conn = new mysqli($host, $user, $pass, $db);
+				$this->status = TRUE;
 				if(mysqli_connect_errno()) {
+					$this->status = FALSE;
 					throw new errorConnection(get_class($this) . ": " . _DB_ERROR . " . " . mysqli_connect_error());
 				}
 			} catch (errorConnection $e) {
@@ -230,14 +239,14 @@ class mySQL {
 	 * Cerrar conexión.
 	 */
 	
-	public function __desctruct() {
+	public function __destruct() {
 		
 		/**
 		 * Liberar Y cerrar consulta.
 		 */
 		
-		$this->result->close();
 		$this->conn->close();
+		
 	}
 
 }

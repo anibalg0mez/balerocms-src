@@ -29,6 +29,8 @@ class installer_Model {
 	public $dbpass;
 	public $dbname;
 	
+	public $status;
+	
 	public function __construct() { 
 		
 		
@@ -40,9 +42,37 @@ class installer_Model {
 		$this->dbname = $xml->Child("database", "dbname");
 		
 		try {
-			$this->db = new mySQL($this->dbhost, $this->dbuser, $this->dbpass, $this->dbname);
+			
+			$this->db = new mySQL($this->dbhost, $this->dbuser, $this->dbpass);
+			
+			/**
+			 * 
+			 * DB User and PW are correct but dbname doesn't exist create new one
+			 * 
+			 */
+			
+			if($this->db->status == TRUE) {
+				
+				 $this->db->query("CREATE DATABASE IF NOT EXISTS " . $this->dbname . ";");
+			
+				 
+				/**
+				 * Re-connect and connect to the database
+				 */
+				
+				$this->db->__destruct();
+				$this->db = new mySQL($this->dbhost, $this->dbuser, $this->dbpass, $this->dbname);
+			
+			} else {
+				
+				throw new Exception();
+				
+			}
+			
 		} catch(Exception $e) {
+			
 			throw new Exception($e->getMessage());
+			
 		}
 		
 	}
@@ -50,7 +80,6 @@ class installer_Model {
 	
 	public function test() {
 	
-
 			try {
 				$testDB = new mySQL($this->dbpass, $this->dbuser, $this->dbpass, $this->dbname);
 				
@@ -69,12 +98,18 @@ class installer_Model {
 	public function install() {
 		// obtener las sentencias sql de el archivo tablas.sql
 		$query = file_get_contents(APPS_DIR . "installer/sql/tables.sql");
+		$query = str_replace("{dbname}", $this->dbname, $query);
 		$this->db->create($query);
 		
 		$xml = new XMLHandler(LOCAL_DIR . "/site/etc/balero.config.xml");
 		$xml->editChild("/config/system/installed", "yes");
 	}
-		
+	
+	public function createDB() {
+		die("error");
+		//$this->db->query("CREATE DATABASE IF NOT EXISTS ".$this->dbname.";");
+	}
+	
 	# Método destructor del objeto
  	public function __destruct() {
  		unset($this);

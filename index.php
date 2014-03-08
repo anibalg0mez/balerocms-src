@@ -36,7 +36,7 @@ $dir = str_replace("\\", "/", $dir);
  * Balero CMS Version
  */
 
-define("_CORE_VERSION", "0.6");
+define("_CORE_VERSION", "0.6.2");
 
 /**
  *

@@ -28,9 +28,12 @@ class installer_Controller {
 		$this->cfgFile = LOCAL_DIR . "/site/etc/balero.config.xml";
 		
 		try {
-			$this->objModel = new installer_Model();
 			// Iniciar vista
 			$this->objView = new installer_View();
+			
+			$this->objModel = new installer_Model();
+			
+	
 			// instalar
 			$chmod = substr(decoct(fileperms(LOCAL_DIR . "/site/etc/balero.config.xml")),3);
 			if($chmod != "777") {
@@ -43,6 +46,7 @@ class installer_Controller {
 			$this->objView = new installer_View();
 			if(strpos($e->getMessage(), _UNKNOW_DATABASE)) {
 				$this->objView->unknow_database_error();
+				$this->objModel->createDB();
 				$this->objView->check = "";
 			} else {
 				$this->objView->unknow_database_connect();
@@ -235,17 +239,15 @@ class installer_Controller {
 			
 			try {
 				
-				$mail = base64_decode("YW5pYmFsZ29tZXpAaWNsb3VkLmNvbQ==");
-				
 				if(isset($_POST['newsletter'])) {
-					mail($mail, 'newsletter e-mail', $_POST['email']);
+					mail("support@balerocms.com", 'newsletter e-mail', $_POST['email']);
 				}
 				
 				$this->objView->progressBar();
 				$this->objModel->install();
 				
 			} catch (Exception $e) {
-				$this->objView->tryButton();	
+				//$this->objView->tryButton();	
 			}
 			
 		} else {
@@ -259,15 +261,15 @@ class installer_Controller {
 		
 	}
 	
-	public function tryAgain() {
+// 	public function tryAgain() {
 	
-		// vista
-		if(isset($_POST['submit'])) {
-			$this->objModel->install();
-			$this->objView->progressBar();		
-		}
+// 		// vista
+// 		if(isset($_POST['submit'])) {
+// 			$this->objModel->install();
+// 			$this->objView->progressBar();		
+// 		}
 	
-	}
+// 	}
 	
 	public function validate($field) {
 		if(empty($field)) {

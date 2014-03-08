@@ -9,7 +9,7 @@ Balero CMS
 
 [http://api.balerocms.com/](http://api.balerocms.com/)
 
-Features in coming versions
+Features in next versions
 
   * Responsive admin control panel
   * Markdown editor preview
@@ -21,6 +21,9 @@ CHANGELOG
 
 ==========
 
+    v.0.6.2
+  * Installer auto-create database and fixes
+  
     v.0.6
   * Login and front-end template compatible with mobile and tablets
   * New default theme added (responsive theme 'tundra')
