@@ -11,8 +11,6 @@ Balero CMS
 
 Features in next versions
 
-  * Responsive admin control panel
-  * Markdown editor preview
   * Uploading and resizing image class
 
 ==========
@@ -20,6 +18,28 @@ Features in next versions
 CHANGELOG
 
 ==========
+
+    v.0.7
+  * Admin control panel re-designed
+  * Insert youtbe videos from toolbar editor (example: http://www.youtube.com/watch?v=SlKrelkKrQ8)
+  * Mobile Admin CP compatible
+  * Core's forms fixes
+  * MVC pattern Views fixes
+  * Core's fixes
+  * Admin modules fixes (virtual pages. blog, settings, languages)
+  * Some multi-language system changes
+  * Added HTML editor to Admin Panel
+  * Markdown and HTML compatible
+  * Added bootstrap framework to views
+  * MsgBox new styles
+  * Login page 'no-cache' fixes in Konqueror and other browsers
+  * Mobile language bar compatible
+  * And other minor bugs fixes
+  * Added bootstrap theme 'tundra'
+  * Tundra theme and virtual pages navigation bar fixes
+  * Router class changes
+  * Installer app changes and views fixes
+  * Security class compatible with markdown, youtube links and HTML content
 
     v.0.6.2
   * Installer auto-create database and fixes

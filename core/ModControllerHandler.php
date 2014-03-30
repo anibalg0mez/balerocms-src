@@ -57,12 +57,12 @@ class ModControllerHandler {
 				
 			$sr = $_GET['sr'];
 			
-			if(!isset($_GET['mod_controller'])) {
+			if(!isset($_GET['mod'])) {
 				die();
 			}
 			
 			$security = new Security();
-			$var_shield = $security->shield($_GET['mod_controller']);
+			$var_shield = $security->shield($_GET['mod']);
 			$class_methods = get_class_methods("mod_" . $var_shield . "_Controller");
 				
 			foreach ($class_methods as $method_name) {

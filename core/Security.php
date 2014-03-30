@@ -29,24 +29,25 @@ class Security {
 		
 		$search_arr = array("<script>",
 						"</script>".
-						"\">",
-						"<\"",
 						"@<script[^>]*?>.*?</script>@si",  // Strip out javascript
                			"@<[\/\!]*?[^<>]*?>@si",            // Strip out HTML tags
                			"@<style[^>]*?>.*?</style>@siU",    // Strip style tags properly
                			"@<![\s\S]*?--[ \t\n\r]*>@",         // Strip multi-line comments including CDATA 
-						"src=",
-						"=\"",
 						"js:",
 						"javascript:",
 						"/\(.*\)/",
-						"<img",
+						"alert",
+						"document.cookie",
 						);
-		
 		
 		$script_str = str_ireplace($search_arr, "", $script_str);
 		
-		$script_str = str_ireplace("\"", "&quot;", $script_str);
+		/**
+		 * Character escape for injections
+		 * http://www.ascii.cl/htmlcodes.htm
+		 */
+		
+		$script_str = str_replace("'", "&#39;", $script_str);
 		
 		
 		return $script_str;
@@ -93,12 +94,15 @@ class Security {
 		
 		$array = array("<script>",
 						"</script>".
-						"\">",
-						"<\"",
 						"@<script[^>]*?>.*?</script>@si",  // Strip out javascript
                			"@<[\/\!]*?[^<>]*?>@si",            // Strip out HTML tags
                			"@<style[^>]*?>.*?</style>@siU",    // Strip style tags properly
-               			"@<![\s\S]*?--[ \t\n\r]*>@",         // Strip multi-line comments including CDATA 
+               			"@<![\s\S]*?--[ \t\n\r]*>@",         // Strip multi-line comments including CDATA
+						"js:",
+						"javascript:",
+						"/\(.*\)/",
+						"alert",
+						"document.cookie",
 						"%20");
 		
 		$this->var = str_replace($array, "", $this->var);
@@ -108,7 +112,7 @@ class Security {
 	
 	public function Level3($str) {
 		$this->var = str_replace("document.cookie", "", $str);
-		$this->var = str_replace("alert(*)", "", $str);
+		$this->var = str_replace("alert(.*)", "", $str);
 		return $this->var;
 	}
 	

@@ -16,7 +16,7 @@ class mod_blog_Controller extends configSettings {
 	
 	public $modModel;
 	public $modView;
-	
+		
 	public function __construct($menu) {
 		
 		// cargar vista de módulo.
@@ -46,20 +46,24 @@ class mod_blog_Controller extends configSettings {
 	
 	
 	public function main() {
-
+		
 		/**
-		 * No usamos main() en modulos de admin, sin embargo
-		 * Necesitamos declararlo por si alguien intenta acceder a el
-		 * simplemente lo redireccioonamos.
+		 * Load Controllers
 		 */
 		
-		header("Location: index.php?app=admin");
+		$this->new_post();
+		
+		/**
+		 * Load Views
+		 */
+		
+		$this->initViews();
 		
 	}
 	
 	// controlador new_post
 	public function new_post() {
-
+		
 		if(isset($_POST['submit'])) {
 			
 			$objSec = new Security();
@@ -109,8 +113,8 @@ class mod_blog_Controller extends configSettings {
 			
 		} // end if
 		
-			$this->modView->new_post_view();
-			$this->modView->Render();
+			//$this->modView->new_post_view();
+			
 	}
 			
 
@@ -119,8 +123,7 @@ class mod_blog_Controller extends configSettings {
 	 */
 	
 	public function edit_delete_post() {
-
-
+		
 		//$this->modView->mod_name = "Editar post";
 		/**
 		 * Mensajes sucess y errores
@@ -130,18 +133,25 @@ class mod_blog_Controller extends configSettings {
 		
 			$string_array = "";
 			$i = 0;
-			if(isset($_POST['delete_post'])) {
-				$delete_post = $_POST['delete_post'];
-				for($i = 0; $i < count($delete_post); $i++) {
-					$this->modModel->delete_query($delete_post[$i]);
-					if($i != count($delete_post)-1) {
-						$string_array = $string_array . $delete_post[$i] . ", ";
-					} else {
-						$string_array = $string_array . $delete_post[$i] . "";
+			
+			if(isset($_POST['submit_delete'])) {
+				if(isset($_POST['delete_post'])) {
+					$delete_post = $_POST['delete_post'];
+					for($i = 0; $i < count($delete_post); $i++) {
+						$this->modModel->delete_query($delete_post[$i]);
+						if($i != count($delete_post)-1) {
+							$string_array = $string_array . $delete_post[$i] . ", ";
+						} else {
+							$string_array = $string_array . $delete_post[$i] . "";
+						}
 					}
+					$message = "Post ID #: " .$string_array." " . _WAS_DELETED_OK;
+					$this->modView->sucessMessage($message);
+					
 				}
-				$message = "Post ID #: " .$string_array." " . _WAS_DELETED_OK;
-				$this->modView->sucessMessage($message);
+			}elseif(isset($_POST['id'])) {
+				$this->edit_post();
+				die();
 			}
 		
 		} catch (Exception $e) {
@@ -152,38 +162,9 @@ class mod_blog_Controller extends configSettings {
 		 * Fin de mensajes
 		 */
 		
-		// obtener  limite de la bd
-		$limit = $this->modModel->limit();
-		
-		// obtener total de registros de la bd
-		$total = $this->modModel->total_rows();
-		
-		// calcular paginador
-		$p = new Pagination($total, $limit);
-		
-		// ibtener min
-		$min = $p->min();
-		
-		// necesitamos este dato en la vista
-		$this->modView->min = $min;
-		
-		$this->modView->content .= $p->nav();
-		
-		/**
-		 * COntrolador
-		 */
-		
-		try {
-			$this->modModel->get_post($min, $limit); // cargara la variable rows[] con datos ($this->modModel->rows).
-			$this->modView->print_post($this->modModel->rows); // pasamos datos por medio de un parametro
-			
-			// renderizamos
-			
-			$this->modView->Render();
-			
-		} catch (Exception $e) {
-			
-		}
+		$this->initViews();
+		//$this->modView->Render();
+
 		
 	}
 	
@@ -194,7 +175,7 @@ class mod_blog_Controller extends configSettings {
 	
 	
 	public function edit_post() {
-
+		
 		try {
 		
 			/**
@@ -211,7 +192,7 @@ class mod_blog_Controller extends configSettings {
 					throw new Exception(" "._BLOG_POST_ERROR." ");
 				}
 				$objShield = new Security();
-				$id = $objShield->shield($_GET['id']);
+				$id = $objShield->shield($_POST['id']);
 				$this->modModel->edit_post($id, $objShield->shield($_POST['title']), $objShield->noJS($_POST['content']));
 				$this->modView->sucessMessage(_SAVED_SUCESSFULLY);
 			}
@@ -226,10 +207,9 @@ class mod_blog_Controller extends configSettings {
 			 */
 		
 			$objShield = new Security();
-			$id = $objShield->shield($_GET['id']);
-				
+			$id = $objShield->shield($_POST['id']);
+			
 			$this->modView->edit_view($id);
-		
 				
 			/**
 			 * Fin de acción para mostrar (importar) el editor cargado con el contenido que le corresponde
@@ -238,10 +218,12 @@ class mod_blog_Controller extends configSettings {
 				
 		} catch (Exception $e) {
 			$id = new Security();
-			$_id = $id->shield($_GET['id']);
+			$_id = $id->shield($_POST['id']);
 			$this->modView->errorMessage($e->getMessage());
 			$this->modView->edit_view($_id);
 		}
+		
+		//$this->modView->Render();
 			
 	}
 	
@@ -250,11 +232,38 @@ class mod_blog_Controller extends configSettings {
 	 */
 	
 	public function post_multilang() {
+				
+		/**
+		 * Delete post
+		 */
 		
-		$objShield = new Security();
-		
-		if(isset($_POST['code'])) {
-		
+		$string_array = "";
+		$i = 0;
+			
+		if(isset($_POST['submit_delete'])) {
+			if(isset($_POST['delete_post'])) {
+				$delete_post = $_POST['delete_post'];
+				for($i = 0; $i < count($delete_post); $i++) {
+					echo $delete_post[$i] . " " . $_POST['code'];
+					$this->modModel->delete_query_multilang($delete_post[$i], $_POST['code']);
+					if($i != count($delete_post)-1) {
+						$string_array = $string_array . $delete_post[$i] . ", ";
+					} else {
+						$string_array = $string_array . $delete_post[$i] . "";
+					}
+				}
+				$message = "Post ID #: " .$string_array." " . _WAS_DELETED_OK;
+				$this->modView->sucessMessage($message);
+					
+			}
+		}elseif(isset($_POST['code'])) {
+
+			/**
+			 * Add or edit multilang post
+			 */
+			
+			$objShield = new Security();
+			
 		/**
 		 * Add multi-lang pages
 		 */
@@ -263,21 +272,25 @@ class mod_blog_Controller extends configSettings {
 			$content = $_POST['content'];
 			
 			try {
+				
 				//$this->modModel->edit_post_multilang($_GET['id'], $objShield->shield($title), $objShield->noJS($content));
 				//$this->modView->sucessMessage(_EDIT_MULTI_SUCESS);
 				
-				$this->modModel->add_post_multilang($_GET['id'], $objShield->shield($title), $objShield->noJS($content), $_POST['code'], $_GET['id']);
+				$this->modModel->add_post_multilang($_POST['id'], $objShield->shield($title), $objShield->noJS($content), $_POST['code'], $_POST['id']);
 				$this->modView->sucessMessage(_ADD_MULTI_SUCESS);
+				//$this->modView->Render();
 				
 				
 			} catch (Exception $e) {				
 				
+				die("asdf");
 				$this->modView->errorMessage($e->getMessage());
+				
 			}
 		
 		} //end if
 		
-		$this->modView->edit_view($_GET['id']);
+		$this->modView->edit_view($_POST['id']);
 		
 	}
 	
@@ -293,6 +306,35 @@ class mod_blog_Controller extends configSettings {
 		$plain_text = $openHeaders . $content . $closeHeaders;
 		
 		return $plain_text;
+		
+	}
+	
+	public function initViews() {
+		
+		/**
+		 * Views
+		 */
+		
+		$this->modView->new_post_view();
+		
+		$limit = $this->modModel->limit();
+		$total = $this->modModel->total_rows();
+		
+		$p = new Pagination($total, $limit);
+		
+		$min = $p->min();
+		$this->modView->min = $min;
+		//$this->modView->content .= $p->nav();
+		
+		/**
+		 * Blog navigation bar
+		 */
+		
+		$this->modView->paginationBar = $p->pretty_nav("admin/main/mod-blog");
+		
+		$this->modModel->get_post($min, $limit); // cargara la variable rows[] con datos ($this->modModel->rows).
+		$this->modView->print_post($this->modModel->rows); // pasamos datos por medio de un parametro
+		$this->modView->Render();
 		
 	}
 	

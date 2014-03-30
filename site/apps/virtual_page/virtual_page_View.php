@@ -43,7 +43,7 @@ class virtual_page_View extends configSettings {
 	 * Active Link
 	 */
 	
-	public $active;
+	public $active = "class=\"active\"";
 	
 	/**
 	 * 
@@ -71,7 +71,9 @@ class virtual_page_View extends configSettings {
 	
 	public function virtual_pages_menu() {
 		
-		$html = "<ul>";
+		$html = "";
+		
+		//$html = "<ul>";
 		$html .= "<li $this->active><a href=\"./\">". _HOME ."</a></li>";
 
 		// pass lang to class
@@ -79,6 +81,7 @@ class virtual_page_View extends configSettings {
 		$value = $this->objModel->get_virtual_pages();
 		
 		if(empty($this->lang) || $this->lang == "main") {
+			
 			foreach ($value as $page) {
 				if($this->active == $page['virtual_title']) {
 					$this->css_active = "class=\"active\"";
@@ -88,22 +91,29 @@ class virtual_page_View extends configSettings {
                 $html .= "<li $this->css_active><a href=\"./virtual_page/main/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
                 $this->css_active = ""; // reset
 			}
+			
 		} else {
-			foreach ($value as $page) {
-				if($this->active == $page['virtual_title']) {
-					$this->css_active = "class=\"active\"";
+			
+			if(is_array($value)) {
+			
+				foreach ($value as $page) {
+					if($this->active == $page['virtual_title']) {
+						$this->css_active = "class=\"active\"";
+					}
+					// dynamic
+					//$html .= "<li><a href=\"index.php?app=virtual_page&id=".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+					$html .= "<li $this->css_active><a href=\"./virtual_page/".$this->lang."/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
+					$this->css_active = ""; // reset
 				}
-				// dynamic
-				//$html .= "<li><a href=\"index.php?app=virtual_page&id=".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
-				$html .= "<li $this->css_active><a href=\"./virtual_page/".$this->lang."/id-".$page['id']."\">" . $page['virtual_title'] . "</a></li>";
-				$this->css_active = ""; // reset
+			
 			}
+			
 		}
 				
-		$html .= "</ul>";
+		//$html .= "</ul>";
 		
 		if(empty($value)) {
-			$html = _NO_VIRTUAL_PAGES;
+			$html = "<li><a href=\"#\">" . _NO_VIRTUAL_PAGES . "</a></li>";
 		}
 		
 		return $html;

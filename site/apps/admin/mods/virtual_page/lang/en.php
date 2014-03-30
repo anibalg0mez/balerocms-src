@@ -13,7 +13,7 @@ define("_CONTENT_DELETED_OK", "The content has been deleted!");
 define("_ADDING_PAGE_ERROR", "Error while trying saving new virtual page!");
 define("_ADDED_SUCESSFULLY", "Your content has been added sucessfully! =)");
 define("_ID_DONT_EXIST", "¿What are you trying? The ID does not exist.");
-define("_MARKDOWN_REFERENCE", "Balero CMS's editor uses lightweight markup language (MarkDown). Click on the <a href='http://daringfireball.net/projects/markdown/syntax' target='_blank'> next </ a> link for a reference and start posting content on your page.");
+define("_MARKDOWN_REFERENCE", "Balero CMS's editor uses lightweight markup language (MarkDown). Click on the <a href='http://daringfireball.net/projects/markdown/syntax' target='_blank'> next </a> link for a reference and start posting content on your page.");
 define("_SAVING_CONTENT_OK", "The content has been saved!");
 define("_ERROR_DELETING_PAGE", "Error while trying deleting virtual page.");
 define("_CONFIG_PAGE", "Configuratión");
@@ -34,3 +34,9 @@ define("_VIRTUAL_PAGE_NOTE_MESSAGE", "Remember this, this is your tree's list of
 define("_VIRTUAL_PAGE_CONFIRM", "Confirm");
 define("_VIRTUAL_PAGE_CANCEL", "Cancel");
 define("_VIRTUAL_PAGE_CONFIRM_MESSAGE", "Do you really want to delete the contents of the virtual page?");
+define("_MOD_VIRTUAL_PAGE", "Virtual Pages");
+define("_VIRTUAL_PAGE_ACTIVE", "Active");
+define("_VIRTUAL_PAGE_RESET", "Reset");
+define("_VIRTUAL_PAGE_DELETE", "Delete");
+define("_VIRTUAL_PAGE_NEW", "Add new virtual page");
+define("_VIRTUAL_PAGE_SITEMAP", "Sitemap");

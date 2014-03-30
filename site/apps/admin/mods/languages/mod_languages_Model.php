@@ -90,6 +90,16 @@ class mod_languages_Model extends configSettings {
 	}
 	
 
+	public function get_regs() {
+		
+		if($this->multilang == "yes") {
+			return "ON"; // nothing to show
+		} else {
+			return "OFF"; // nothing to show
+		}
+		
+	}
+	
  	# Método destructor del objeto
  	public function __destruct() {
  		unset($this);

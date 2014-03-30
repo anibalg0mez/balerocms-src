@@ -14,7 +14,7 @@
 
 class mod_blog_View extends configSettings {
 	
-	public $mod_name = "Comenzar";
+	public $mod_name = _MOD_BLOG;
 	
 	/**
 	 * Variable de contenido $content
@@ -30,6 +30,18 @@ class mod_blog_View extends configSettings {
 	public $menu;
 	
 	public $min;
+	
+	/**
+	 * Tab Menu Links
+	 */
+	
+	public $tabLinks;
+	
+	/**
+	 * Pagination bar
+	 */
+	
+	public $paginationBar;
 	
 	public function __construct() {
 		
@@ -47,55 +59,74 @@ class mod_blog_View extends configSettings {
 	
 	public function new_post_view() {
 
+
 		/**
 		 * @$this->mod_name Nombre de el módulo (Aparecera en el header del contededor)
 		 **/
 		
 		$this->mod_name = _ADD_NEW_POST;
 		
+		$tip = new MsgBox("", _BLOG_MARKDOWN_REFERENCE, "I");
+		$tip_type2_2 = $tip->Show();
+		$this->content .= $tip_type2_2;
+		
 		/**
 		 * Build default lang tab
 		 */
 		
 		$htmltab = "";
-		$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/UI.html");
-		
-		// default or non-multilanguage form
-		$frmDefault = new Form("index.php?app=admin&mod_controller=blog&sr=new_post");
-		$frmDefault->Label(_LANG_DEFAULT);
-		$frmDefault->Label(_NEW_POST);
-		$frmDefault->TextField(_POST_TITLE, "title", "");
-		$frmDefault->TextArea(_POST_MESSAGE, "content", "");
-		$frmDefault->SubmitButton(_OK_MESSAGE);
-		
+		$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/mods/blog/html/main.html");
+				
 		$array = array(
+				'title' => _BLOG_ADD,
 				'code' => "*",
-				'content' => $frmDefault->Show()
+				'content' => '',
+				
+				/**
+				 * Labels
+				 */
+				
+				'lbl_new_post' => _BLOG_NEW_POST,
+				'lbl_title' => _BLOG_TITLE,
+				'lbl_message' => _BLOG_MESSAGE,
+				
+				/**
+				 * Buttons
+				 */
+				
+				'btn_add' => _BLOG_ADD,
+				'btn_cancel' => _BLOG_CANCEL
+				
 		);
 		
 		$htmltab .= $tab->renderPage($array);
-		
-		
 		
 		/**
 		 * Build html tab block
 		 */
 			
-		$this->content .= "<div class=\"set set-1\">";
 		$this->content .= $htmltab;
-		$this->content .= "</div>";
-			
-		$js = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/js.html");
-		$this->content .= $js->renderPage(array());
-		
-		$tip = new MsgBox("", _MARKDOWN_REFERENCE);
-		$tip_type2_2 = $tip->Show();
-		$this->content .= $tip_type2_2;
+
+		//$this->Render();
 		
 	}
 	
+	public function infoMessage($message) {
+		$v_message = new MsgBox("", $message, "I");
+		$string_var_message = $v_message->Show($message);
+	
+		/**
+		 *
+		 * @$string_var_message se necesita almacenar el contenido en una
+		 * variable de tipo String.
+		*/
+	
+		$this->content .= $string_var_message;
+	
+	}
+	
 	public function sucessMessage($message) {
-		$v_message = new MsgBox("", $message);
+		$v_message = new MsgBox("", $message, "S");
 		$string_var_message = $v_message->Show($message);
 		
 		/**
@@ -109,7 +140,7 @@ class mod_blog_View extends configSettings {
 	}
 	
 	public function errorMessage($message) {
-		$v_message = new MsgBox("", $message);
+		$v_message = new MsgBox("", $message, "E");
 		$string_var_message = $v_message->Show();
 	
 		/**
@@ -166,90 +197,55 @@ class mod_blog_View extends configSettings {
 		 */
 		
 		$htmltab = "";
-		$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/UI.html");
+		$tab = new ThemeLoader(MODS_DIR . "/blog/html/main_edit_post.html");
 		
 		
-		$editor = new Form("index.php?app=admin&mod_controller=blog&sr=edit_post&id=$id");
+		$editor = new Form();
 			
 		// traer datos de modelo
 		$model_edit = new mod_blog_Model();
 		// regresa el titulo del post unicamente por ID
 		$title = $model_edit->return_post_title($id);
 		// importar contenido en el editor , todo lo que este dentro de un campo llamado "import" por ID
-		$import = $model_edit->return_post_content($id);
-		
-		$editor->Label(_EDIT_POST_CONTENT);
-		$editor->TextField(_POST_TITLE, "title", $title);
-		$editor->TextArea(_POST_MESSAGE, "content", $import);
-		$editor->HiddenField("import", $import);
-		$editor->SubmitButton(_OK_MESSAGE);
-		
+		$message = $model_edit->return_post_content($id);
+				
 		$array = array(
-				'code' => "*",
-				'content' => $editor->Show()
+								
+				/**
+				 * Variables
+				 */
+				
+				'id' => $id,
+				'code' => "main",
+				'title' => $title,
+				'message' => $message,
+				'edit' => _BLOG_EDIT,
+				
+				/**
+				 * Labels
+				 */
+				
+				'lbl_title' => _BLOG_TITLE,
+				'lbl_message' => _BLOG_MESSAGE,
+				
+				/**
+				 * Buttons
+				 */
+				
+				'btn_reset' => _BLOG_RESET,
+				'btn_edit' => _BLOG_EDIT,
+				'btn_delete' => _BLOG_DELETE,
+				
+				'content' => $this->buildTab(),
+				'codes_loop' => $this->tabLinks
+				
 		);
 		
 		$htmltab .= $tab->renderPage($array);
-		
-		/**
-		 * Build lang tabs
-		 */
-		
-		if($this->multilang == "yes") {
-				
-			$model = new mod_blog_Model();
-				
-			$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/UI.html");
-		
-			$objLangs = new mod_languages_Model();
-			$langs = $objLangs->get_lenguages();
-		
-			$i = 0;
-			foreach ($langs as $row) {
-
-				
-				
-				$i++;
-				$model->return_post_title_multilang($_GET['id'], $row['code']);
-				$model->return_post_content_multilang($_GET['id'], $row['code']);
-				
-				$editor = new Form("index.php?app=admin&mod_controller=blog&sr=post_multilang&id=$id");
-				$editor->Label($row['label'] . " " . _VERSION);
-				$editor->TextField(_POST_TITLE, "title", $model->title);
-				$editor->TextArea(_POST_MESSAGE, "content", $model->message);
-				$editor->HiddenField("import", $import);
-				$editor->HiddenField("code", $row['code']);
-				$editor->SubmitButton(_OK_MESSAGE);
-		
-				$array = array(
-						'code' => $row['code'],
-						'content' => $editor->Show()
-				);
 					
-				/**
-				 * Build html tab block
-				*/
-		
-				$htmltab .= $tab->renderPage($array);
-		
-				
-			} // for each
-					
-		} // end if
-		
-		/**
-		 * Build html tab block
-		*/
-			
-		$this->content .= "<div class=\"set set-1\">";
+		$this->infoMessage(_BLOG_POST_MESSAGE);
 		$this->content .= $htmltab;
-		$this->content .= "</div>";
-			
-		$js = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/js.html");
-		$this->content .= $js->renderPage(array());
-		
-		$this->sucessMessage(_BLOG_POST_MESSAGE);
-			
+					
 		$this->Render();
 		
 	}
@@ -324,7 +320,9 @@ class mod_blog_View extends configSettings {
 		 */
 		
 		$array = array(
-				'loop'=>$html
+				'loop'=>$html,
+				'pagination_bar' => $this->paginationBar,
+				'edit' => _BLOG_EDIT,
 		);
 		
 		/**
@@ -332,7 +330,7 @@ class mod_blog_View extends configSettings {
 		 * Renderizamos nuestra tabla finalmente
 		 */
 		
-		$objTheme = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/mods/blog/html/edit_delete_post.html");
+		$objTheme = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/mods/blog/html/table_post_list.html");
 		return $objTheme->renderPage($array);
 		
 	}
@@ -349,9 +347,11 @@ class mod_blog_View extends configSettings {
 		
 		$array = array(
 				'content'=>$this->content,
-				'mod_name'=>$this->mod_name,
+				'mod_name'=>"Blog",
 				'mod_menu'=>$this->menu,
-				'basepath'=>$cfg->basepath
+				'basepath'=>$cfg->basepath,
+				'username'=>$cfg->user,
+				'email'=>$cfg->email
 				);
 		
 		/**
@@ -359,11 +359,87 @@ class mod_blog_View extends configSettings {
 		 * Renderizamos nuestra página.
 		 */
 
-		$objTheme = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/html/panel.html");		
+		$objTheme = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/dashboard.html");		
 		echo $objTheme->renderPage($array);
 		
 	
 	}
 
+	/**
+	 * Build html tab block
+	 */
+	
+	private function buildTab() {
+	
+		$htmltab = "";
+		
+		/**
+		 * Build lang tabs
+		 */
+		
+		if($this->multilang == "yes") {
+			
+		
+			$model = new mod_blog_Model();
+			
+			$tab = new ThemeLoader(MODS_DIR . "/blog/html/code_edit_post.html");
+			
+			$objLangs = new mod_languages_Model();
+			$langs = $objLangs->get_lenguages();
+			
+			$i = 0;
+			foreach ($langs as $row) {
+			
+				$i++;
+				$model->return_post_title_multilang($_POST['id'], $row['code']);
+				$model->return_post_content_multilang($_POST['id'], $row['code']);
+				
+				$this->tabLinks .= "<li><a href=\"#code-" . $row['code'] . "\" data-toggle=\"tab\">" . $row['code'] . "</a></li>\n";
+			
+				$array = array(
+						
+						/**
+						 * Variables
+						 */
+						
+						'id' => $_POST['id'],
+						'code' => $row['code'],
+						'title' => $model->title,
+						'message' => $model->message,
+						
+						/**
+						 * Labels
+						 */
+						
+						'lbl_title' => _BLOG_TITLE,
+						'lbl_message' => _BLOG_MESSAGE,
+						
+						
+						/**
+						 * Buttons
+						 */
+						
+						'btn_reset' => _BLOG_RESET,
+						'btn_edit' => _BLOG_EDIT,
+						'btn_delete' => _BLOG_DELETE,
+						
+						
+				);
+					
+				/**
+				 * Build html tab block
+				*/
+			
+				$htmltab .= $tab->renderPage($array);
+			
+			
+			} // for each
+				
+		} // end if
+		
+		return $htmltab;
+		
+	}
+	
 	
 }

@@ -2,13 +2,15 @@
 
 /**
  *
- * blog_controller.php
+ * mod_virtual_page_Controller.php.php
  * (c) Jun 11, 2013 lastprophet 
  * @author Anibal Gomez (lastprophet)
  * Balero CMS Open Source
  * Proyecto %100 mexicano bajo la licencia GNU.
  * PHP P.O.O. (M.V.C.)
  * Contacto: anibalgomez@icloud.com
+ * 
+ * UPDATED: 20-04-2014
  *
 **/
 
@@ -22,6 +24,7 @@ class mod_virtual_page_Controller {
 		
 		// cargar vista de módulo.
 		try {
+			
 			$this->modModel = new mod_virtual_page_Model();
 			$this->modView = new mod_virtual_page_View();
 			$this->modView->menu = $menu;
@@ -32,16 +35,10 @@ class mod_virtual_page_Controller {
 		
 		// Automatizar el controlador
 		try {
-		$handler = new ModControllerHandler($this);
+				$handler = new ModControllerHandler($this);
 		} catch (Exception $e) {
 			die($e->getMessage());
 		}
-		
-// 		switch ($_GET['sr']) {
-// 			case "prueba":
-// 				echo "funciona";
-// 				break;
-// 		}
 		
 	}
 	
@@ -49,19 +46,17 @@ class mod_virtual_page_Controller {
 	public function main() {
 
 		/**
-		 * No usamos main() en modulos de admin, sin embargo
-		 * Necesitamos declararlo por si alguien intenta acceder a el
-		 * simplemente lo redireccioonamos.
+		 * Main method
 		 */
 		
-		header("Location: index.php?app=admin");
+		$this->modView->new_virtual_page_view();
+		$this->modView->site_map_view();
+		$this->modView->Render();
 		
 	}
 	
 	// controlador nueva pagina virtual
 	public function new_page() {
-		
-		
 		
 		if(isset($_POST['submit'])) {
 			
@@ -93,8 +88,6 @@ class mod_virtual_page_Controller {
 			//$this->modView->content .= $plain_text;
 			//$this->modView->content .= "----------------------";
 			//$this->modView->content .= $render_html;
-			
-			
 			
 			try {
 				if(empty($_POST['content'])) {
@@ -134,9 +127,13 @@ class mod_virtual_page_Controller {
 	}
 	
 	public function edit_page() {
-		
-		
+				
 		try {
+			
+			if(isset($_POST['submit_delete'])) {
+				$this->delete_page_confirm();
+				die();
+			}
 			
 			if(empty($_GET['id'])) {
 				throw new Exception(_NO_RESULTS);
@@ -177,18 +174,19 @@ class mod_virtual_page_Controller {
 	public function delete_page_confirm() {
 		
 		try {
-			if(isset($_POST['submit'])) {
+			if(isset($_POST['submit_delete'])) {
 				$this->modModel->delete_page_confirm_model($_POST['id']);
 				$this->modView->sucessMessage(_CONTENT_DELETED_OK);
 				$this->modView->site_map_view($this->modModel->rows);
 			} else {
 				$this->modView->delete_post_confirm_view();
-				$this->modView->Render();
 			}
 		} catch (Exception $e) {
 			$this->modView->errorMessage($e->getMessage());
 			$this->modView->site_map_view($this->modModel->rows);
 		}
+		
+		$this->modView->Render();
 		
 	}
 
@@ -213,16 +211,26 @@ class mod_virtual_page_Controller {
 				//$this->modModel->edit_post_multilang($_GET['id'], $objShield->shield($title), $objShield->noJS($content));
 				//$this->modView->sucessMessage(_EDIT_MULTI_SUCESS);
 	
-				$this->modModel->add_page_multilang($_GET['id'], $objShield->shield($title), $objShield->noJS($content), $_POST['a'], $_POST['code'], $_GET['id']);
-				$this->modView->sucessMessage(_VPADD_MULTI_SUCESS);
+				if(isset($_POST['submit_delete'])) {
+						
+					$this->modModel->delete_page_multilang_confirm_model($_GET['id']);
+					$this->modView->sucessMessage(_DELETE_SUCESS);
+						
+				} else {
+				
+					$this->modModel->add_page_multilang($_GET['id'], $objShield->shield($title), $objShield->noJS($content), $_POST['a'], $_POST['code'], $_GET['id']);
+					$this->modView->sucessMessage(_VPADD_MULTI_SUCESS);
+				
+				}
 	
 	
 			} catch (Exception $e) {
 	
 				$this->modView->errorMessage($e->getMessage());
+				
 			}
 	
-		} //end if
+		}
 	
 		$this->modView->edit_virtual_page_view($_GET['id']);
 	

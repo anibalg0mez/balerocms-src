@@ -21,20 +21,24 @@ class installer_View extends configSettings {
 
 	public $content = "";
 	
+	public $page;
+	
 	/**
-	 * 
+	 *
 	 * Check icon on top
 	 */
 	
-	public $check;
-	private $check_icon;
-	private $page;
+	public $check_db;
+	public $check_site;
+	public $check_admin;
 	
+	public $check_icon = "<img src=\"site/apps/installer/html/images/check-icon.png\">";
 	
 	public function __construct() {
 		
-		$this->check_icon = "<img src=\"site/apps/installer/html/images/check-icon.png\">";
-		$this->check = $this->check_icon;
+		$this->check_db = $this->check_icon;
+		$this->check_site = $this->check_icon;
+		$this->check_admin = $this->check_icon;
 		
 		$this->LoadSettings(); //cargar datos XML
 		$this->page = _PAGE;
@@ -90,123 +94,24 @@ class installer_View extends configSettings {
 	 */
 	
 	/**
-	 * First block: Database config
-	 */
-	
-	/**
 	 * v.0.5
 	 * Pretty URL off on installer app because
 	 * there are some incompatibilities in some servers
 	 */
 	
-	public function formDBInfo() {
-	
-		/* 
-		 * Dynamic URL: index.php?app=installer&sr=formDBInfo 
-		 */
+
+	public function is_mod_rewrite_enabled() {
 		
-		$DBform = new Form("index.php?app=installer&sr=formDBInfo");
-		// Etiqueta (opcional) // Nombre //Valor
-		// Ejemplo:
-		// Inserte nombre // btnSubmit // Valor inicial
-		$DBform->TextField(_DB_HOST, "dbhost", $this->dbhost);
-		$DBform->TextField(_DB_USER, "dbuser", $this->dbuser);
-		$DBform->PasswordField(_DB_PASS, "dbpass", $this->dbpass);
-		$DBform->TextField(_DB_NAME, "dbname", $this->dbname);
-		$DBform->Label(_DB_IF_NOT_EXIST);
-		$DBform->SubmitButton(_SEND);
-	
-		try {
-	
-			$DBMsgBox = new MsgBox($this->check  . " " . _DB_CONFIG, $DBform->Show());
-			$this->content .= $DBMsgBox->Show();
-	
-		}	catch (Exception $e) {
-			
+		if(in_array('mod_rewrite', apache_get_modules())) {
+			$msg = new MsgBox(_INSTALLER_MESSAGE_MW_TITLE_OK, _INSTALLER_MESSAGE_MW_MESSAGE_OK, "S");
+			$this->content .= $msg->Show();
+		} else {
+			$msg = new MsgBox(_INSTALLER_MESSAGE_MW_TITLE_ERROR, _INSTALLER_MESSAGE_MW_MESSAGE_ERROR, "E");
+			$this->content .= $msg->Show();
 		}
 		
 	}
-	
-	
-	/**
-	 * Second block
-	 */
-	
-	public function formSiteInfo() {
-		
-		try {
 			
-			if(empty($this->basepath)) {
-				$cfg = new configSettings();
-				$basepath = $cfg->FullBasepath();
-			} else {
-				$basepath = $this->basepath;
-			}
-			
-			if(empty($this->basepath) || empty($this->title) || empty($this->url) || empty($this->description) || empty($this->keywords)) {
-				throw new Exception();
-			}
-			
-			$this->check = $this->check_icon;
-			
-		} catch (Exception $e) {
-			$this->check = "";
-		}
-		
-		/**
-		 * Dynamic URL: index.php?app=installer&sr=formSiteInfo
-		 */
-		
-		$adminInfo = new Form("index.php?app=installer&sr=formSiteInfo");
-		$adminInfo->TextField(_BASEPATH, "basepath", $basepath);
-		$adminInfo->Label(_NOTE_BASEPATH);
-		$adminInfo->TextField(_TITLE, "title", $this->title);
-		$adminInfo->TextField(_URL, "url", $this->url);
-		$adminInfo->TextArea(_DESCRIPTION, "description", $this->description);
-		$adminInfo->TextField(_TAGS, "keywords", $this->keywords);
-		$adminInfo->SubmitButton(_OK);
-		
-		$portalMsgBox = new MsgBox($this->check . " " . _SITE_INFO, $adminInfo->Show());
-		$this->content .= $portalMsgBox->Show();
-		
-	}
-	
-	/**
-	 * Formulario de datos de administrador
-	 */
-	
-	public function formadminInfo() {
-		
-		try {
-			if(empty($this->user) || empty($this->pass) || empty($this->url) || empty($this->firstname) || empty($this->lastname) || empty($this->email)) {
-				throw new Exception();
-			}
-			$this->check = $this->check_icon;
-		} catch (Exception $e) {
-			$this->check = "";
-		}
-		
-		/**
-		 * Dynamic URL: index.php?app=installer&sr=formadminInfo
-		 */
-		
-		$adminInfo = new Form("index.php?app=installer&sr=formadminInfo");
-	
-		$adminInfo->TextField(_ADMIN, "username", $this->user);
-		$adminInfo->PasswordField(_PASS, "passwd", "");
-		$adminInfo->PasswordField(_RETYPE_PASS, "passwd2", "");
-		$adminInfo->TextField(_NAME, "firstname", $this->firstname);
-		$adminInfo->TextField(_LAST_NAME, "lastname", $this->lastname);
-		$adminInfo->TextField(_EMAIL, "email", $this->email);
-		$adminInfo->CheckBox(_NEWSLETTER, "newsletter", 1);
-		$adminInfo->SubmitButton(_OK);
-		
-		$admMsgBox = new MsgBox($this->check . " " . _ADMIN_CONFIGURATION, $adminInfo->Show());
-		$this->content .= $admMsgBox->Show();
-		
-	}
-	
-		
 	public function installButton() {
 
 		try {		
@@ -219,15 +124,12 @@ class installer_View extends configSettings {
 				throw new Exception();
 			}
 			
-			/**
-			 * Dynamic URL: index.php?app=installer&sr=progressBar
-			 */
+			$array = array(
+					'title' => _INSTALL_TITLE,
+					'btn_install' => _INSTALL_BUTTON);
 			
-			$install = new Form("index.php?app=installer&sr=progressBar");
-			$install->SubmitButton(_INSTALL_TITLE);
-		
-			$iMsgBox = new MsgBox(_INSTALL_BUTTON, $install->Show());
-			$this->content .= $iMsgBox->Show();
+			$template = new ThemeLoader(APPS_DIR . "/installer/html/finish_install.html");
+			$this->content .= $template->renderPage($array);
 	
 		} catch(Exception $e) {
 			$this->content .= $this->tips_messages();
@@ -235,19 +137,6 @@ class installer_View extends configSettings {
 		
 	}
 	
-	public function tryButton() {
-	
-		/**
-		 * Dynamic URL index.php?app=installer&sr=tryAgain
-		 */
-		
-		$install = new Form("index.php?app=installer&sr=tryAgain");
-		$install->SubmitButton("FORCE INSTALL");
-	
-		$iMsgBox = new MsgBox(_ERROR_INSTALLING, $install->Show());
-		$this->content .= $iMsgBox->Show();
-	
-	}
 		
 	/**
 	 * vistas de modelo
@@ -274,51 +163,152 @@ class installer_View extends configSettings {
 		
 	}
 	
+	public function wizard() {
+				
+		try {
+			
+			
+			if(empty($this->basepath)) {
+				$basepath = $this->FullBasepath();
+			} else {
+				$basepath = $this->basepath;
+			}
+			
+			if(empty($basepath) || empty($this->title) || empty($this->url) || empty($this->description) || empty($this->keywords)) {
+				$this->check_site = "";
+			}
+			
+			if(empty($this->user) || empty($this->pass) || empty($this->firstname) || empty($this->lastname) || empty($this->email)) {
+				$this->check_admin = "";
+			}
+						
+			
+		} catch (Exception $e) {
+			
+
+			
+		}
+				
+		
+		$array = array(
+				
+				/**
+				 * Objects
+				 */
+				
+				'check_db' => $this->check_db,
+				'check_site' => $this->check_site,
+				'check_admin' => $this->check_admin,
+				
+				/**
+				 * Labels
+				 */
+				
+				'lbl_dbconfig' => _DB_CONFIG,
+				'lbl_dbhost' => _DB_HOST,
+				'lbl_dbusername' => _DB_USER,
+				'lbl_dbpass' => _DB_PASS,
+				'lbl_dbname' => _DB_NAME,
+				'lbl_dbname_note' => _DB_IF_NOT_EXIST,
+				
+				'lbl_siteinfo' => _SITE_INFO,
+				'lbl_basepath' => _BASEPATH,
+				'lbl_basepath_note' => _NOTE_BASEPATH,
+				'lbl_title' => _TITLE,
+				'lbl_url' => _URL,
+				'lbl_keywords' => _TAGS,
+				'lbl_description' => _DESCRIPTION,
+				
+				'lbl_adminconfig' => _ADMIN_CONFIGURATION,
+				'lbl_administrator' => _ADMIN,
+				'lbl_pass' => _PASS,
+				'lbl_retype' => _RETYPE_PASS,
+				'lbl_firstname' => _NAME,
+				'lbl_lastname' => _LAST_NAME,
+				'lbl_email' => _EMAIL,
+				'lbl_newsletter' => _NEWSLETTER,
+				
+				/**
+				 * TextBox
+				 */
+								
+				'txt_dbhost' => $this->dbhost,
+				'txt_dbuser' => $this->dbuser,
+				'txt_dbpass' => $this->dbpass,
+				'txt_dbname' => $this->dbname,
+				
+				'txt_basepath' => $basepath,
+				'txt_title' => $this->title,
+				'txt_url' => $this->url,
+				'txt_keywords' => $this->keywords,
+				'txt_description' => $this->description,
+				
+				'txt_administrator' => $this->user,
+				'txt_pass' => '',
+				'txt_retype' => '',
+				'txt_firstname' => $this->firstname,
+				'txt_lastname' => $this->lastname,
+				'txt_email' => $this->email,
+				'txt_newsletter' => $this->newsletter,
+				
+				/**
+				 * Buttons
+				 */
+				
+				'btn_save' => _INSTALLER_SAVE
+				
+						);
+		
+		$objWizard = new ThemeLoader(APPS_DIR . "installer/html/wizard.html");
+		$this->content .= $objWizard->renderPage($array);
+		
+	}
+	
 	public function tips_messages() {
 			
-		$msg = new MsgBox(_NOTE, _INSTALLER_TIP1);
+		$msg = new MsgBox(_NOTE, _INSTALLER_TIP1, "I");
 		$this->content .= $msg->Show();
 			
 	}
 	
 	public function unknow_database_error() {
 			
-		$msg = new MsgBox(_DB_DONT_EXIST, _DATABASE_CREATED);
+		$msg = new MsgBox(_DB_DONT_EXIST, _DATABASE_CREATED, "I");
 		$this->content .= $msg->Show();
 			
 	}
 	
 	public function unknow_database_connect() {
 	
-		$msg = new MsgBox(_INSTALLER_WARNING, _INSTALLER_WARNING_MESSAGE);
+		$msg = new MsgBox(_INSTALLER_WARNING, _INSTALLER_WARNING_MESSAGE, "I");
 		$this->content .= $msg->Show();
 		
 	}
 	
 	public function form_field_error($e) {
 	
-	$msg = new MsgBox(_ADMIN_CONFIGURATION, _CHECK_FIELDS . $e);
+	$msg = new MsgBox(_ADMIN_CONFIGURATION, _CHECK_FIELDS . $e, "E");
 		$this->content .= $msg->Show();
 	
 	}
 	
 	public function file_error($e) {
 	
-		$msg = new MsgBox(_PERMISSIONS_ERROR, _PERMISSIONS_ERROR_MESSAGE . $e);
+		$msg = new MsgBox(_PERMISSIONS_ERROR, _PERMISSIONS_ERROR_MESSAGE . $e, "E");
 		$this->content .= $msg->Show();
 	
 	}
 
 	public function create_db_error($e) {
 		
-		$msg = new MsgBox(_ERROR_CREATING_DATABASE, _ERROR_CREATING_DATABASE_MESSAGE . " " . $e);
+		$msg = new MsgBox(_ERROR_CREATING_DATABASE, _ERROR_CREATING_DATABASE_MESSAGE . " " . $e, "E");
 		$this->content .= $msg->Show();
 		
 	}
 	
 	public function database_created() {
 		
-		$msg = new MsgBox(_WARNING, _DATABASE_CREATED);
+		$msg = new MsgBox(_WARNING, _DATABASE_CREATED, "S");
 		$this->content .= $msg->Show();
 		
 	}

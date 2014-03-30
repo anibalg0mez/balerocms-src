@@ -2,7 +2,7 @@
 
 /**
  *
- * blog_view.php
+ * mod_virtual_page_View.php
  * (c) Jun 12, 2013 lastprophet 
  * @author Anibal Gomez (lastprophet)
  * Balero CMS Open Source
@@ -12,9 +12,9 @@
  *
 **/
 
-class mod_virtual_page_View extends mod_virtual_page_Model {
+class mod_virtual_page_View extends configSettings {
 	
-	public $mod_name = _VIRTUAL_PAGE;
+	public $mod_name = _MOD_VIRTUAL_PAGE;
 	
 	/**
 	 * Variable de contenido $content
@@ -22,14 +22,14 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 	
 	public $content = "";
 	
-	public $basepath;
-	
 	/**
 	 * 
 	 * Recibir el menu de módulos desde el Router.
 	 */
 	
 	public $menu;
+	
+	public $tabLinks;
 	
 	public function __construct() {
 		
@@ -39,7 +39,7 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		 * en el panel izquierdo del menu. Ejemplo Blog (70)
 		 */
 		
-	
+		$this->LoadSettings();
 		
 	}
 	
@@ -51,42 +51,39 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		 * @$this->mod_name Nombre de el módulo (Aparecera en el header del contededor)
 		 **/
 
-		$this->mod_name = _NEW_VIRTUAL_PAGE;
-		
-		$editor = new Form("index.php?app=admin&mod_controller=virtual_page&sr=new_page");
-		$editor->Label(_CONFIG_PAGE);
-		$editor->RadioButton(_ENABLED_CONTENT, "1", "a", 1);
-		$editor->RadioButton(_DISABLED_CONTENT, "0", "a", 0);
-		$editor->Label(_VIRTUAL_PAGE_CONTENT);
-		$editor->TextField(_VIRTUAL_PAGE_TITLE, "virtual_title", "");
-		$editor->TextArea(_VIRTUAL_PAGE_CONTENT, "content", "");
-		$editor->SubmitButton(_VIRTUAL_PAGE_CREATE);
-		
+		$this->mod_name = _VIRTUAL_PAGE;
+				
 		/**
 		 * Build html tab block
 		*/
 		
 		$htmltab = "";
-		$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/UI.html");
+		$tab = new ThemeLoader(MODS_DIR . "/virtual_page/html/new_page.html");
 		
 		$array = array(
-				'code' => "*",
-				'content' => $editor->Show()
+				
+				/**
+				 * Labels
+				 */
+				
+				'lbl_title' => _VIRTUAL_PAGE_TITLE,
+				'lbl_active' => _VIRTUAL_PAGE_ACTIVE,
+				'lbl_message' => _VIRTUAL_PAGE_CONTENT,
+				
+				/**
+				 * Variables
+				 */
+				
+				'new_page' => _VIRTUAL_PAGE_NEW,
+				'enabled' => _ENABLED_CONTENT,
+				'disabled' => _DISABLED_CONTENT,
+				'btn_add' => _VIRTUAL_PAGE_CREATE
+				
 		);
 		
 		$htmltab .= $tab->renderPage($array);
 		
-		$this->content .= "<div class=\"set set-1\">";
 		$this->content .= $htmltab;
-		$this->content .= "</div>";
-			
-		$js = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/js.html");
-		$this->content .= $js->renderPage(array());
-		
-		$tip = new MsgBox(_VIRTUAL_PAGE_TIP_PREVIEW, _MARKDOWN_REFERENCE);
-		$tip_type2 = $tip->Show();
-		
-		$this->content .= $tip_type2;
 		
 		
 	}
@@ -94,6 +91,7 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 	
 	public function edit_virtual_page_view($id) {
 	
+		$form = "";
 		$db = new mod_virtual_page_Model();
 		
 		/**
@@ -107,34 +105,62 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		$editor = new Form("index.php?app=admin&mod_controller=virtual_page&sr=edit_page&id=$id");
 		$editor->Label(_CONFIG_VIRTUAL_PAGE);
 		if($db->return_value($id) == 1) {
-			$editor->RadioButton(_ENABLED_CONTENT, "1", "a", 1);
-			$editor->RadioButton(_DISABLED_CONTENT, "0", "a", 0);
+			$form .= $editor->RadioButton(_ENABLED_CONTENT, "1", "a", 1);
+			$form .= $editor->RadioButton(_DISABLED_CONTENT, "0", "a", 0);
 		} else {
-			$editor->RadioButton(_ENABLED_CONTENT, "1", "a", 0);
-			$editor->RadioButton(_DISABLED_CONTENT, "0", "a", 1);
+			$form .= $editor->RadioButton(_ENABLED_CONTENT, "1", "a", 0);
+			$form .= $editor->RadioButton(_DISABLED_CONTENT, "0", "a", 1);
 		}
-		$editor->HiddenField("id", $id);
-		$editor->Label(_VIRTUAL_PAGE_CONTENT);
-		$editor->TextField(_VIRTUAL_PAGE_TITLE, "virtual_title", $db->return_virtual_title($id));
-		$editor->TextArea(_VIRTUAL_PAGE_CONTENT, "content", $db->return_virtual_content($id));
-		$editor->HiddenField("import", $db->return_virtual_content($id));
-		$editor->SubmitButton(_VIRTUAL_PAGE_EDIT);
-	
+		
+		$title = $db->return_virtual_title($id);
+		$content = $db->return_virtual_content($id);
+		
 		/**
-		 * Build html tab block
+		 * Build html tab block main
 		*/
 		
 		$htmltab = "";
-		$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/UI.html");
+		$tab = new ThemeLoader(MODS_DIR. "/virtual_page/html/main_edit_page.html");
 		
 		$array = array(
-				'code' => "*",
-				'content' => $editor->Show()
+				'id' => $id,
+				'code' => "main",
+				'content' => $this->buildTab(),
+				'codes_loop' => $this->tabLinks,
+				'option_active' => $form,
+				'title' => $title,
+				'message' => $content,
+				'edit'=>_VIRTUAL_PAGE_EDIT,
+				
+				/**
+				 * Labels
+				 */
+				
+				'lbl_title' => _VIRTUAL_PAGE_TITLE,
+				'lbl_active' => _VIRTUAL_PAGE_ACTIVE,
+				'lbl_message' => _VIRTUAL_PAGE_CONTENT,
+				
+				/**
+				 * Buttons
+				 */
+				
+				'btn_reset' => _VIRTUAL_PAGE_RESET,
+				'btn_edit' => _VIRTUAL_PAGE_EDIT,
+				'btn_delete' => _VIRTUAL_PAGE_DELETE,
+				'btn_confirm' => _VIRTUAL_PAGE_CONFIRM,
+				'btn_cancel' => _VIRTUAL_PAGE_CANCEL,
+				
+				/**
+				 * Messages
+				 */
+				
+				'message_title' => _VIRTUAL_PAGE_NOTE,
+				'message_confirm' => _VIRTUAL_PAGE_CONFIRM_MESSAGE
+				
 		);
 		
 		$htmltab .= $tab->renderPage($array);
 		
-
 		/**
 		 * Build lang tabs
 		 */
@@ -142,77 +168,21 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		$settings = new configSettings();
 		$settings->LoadSettings();
 		
-		if($settings->multilang == "yes") {
-		
-			$model = new mod_virtual_page_Model();
-		
-			$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/UI.html");
-		
-			$objLangs = new mod_languages_Model();
-			$langs = $objLangs->get_lenguages();
-		
-			$i = 0;
-			foreach ($langs as $row) {
-		
-				$i++;
-				//$model->return_post_title_multilang($_GET['id'], $row['code']);
-				//$model->return_post_content_multilang($_GET['id'], $row['code']);
-
-				$editor = new Form("index.php?app=admin&mod_controller=virtual_page&sr=page_multilang&id=$id");
-				$editor->Label($row['label']);
-				if($db->return_value($id) == 1) {
-					$editor->RadioButton(_ENABLED_CONTENT, "1", "a", 1);
-					$editor->RadioButton(_DISABLED_CONTENT, "0", "a", 0);
-				} else {
-					$editor->RadioButton(_ENABLED_CONTENT, "1", "a", 0);
-					$editor->RadioButton(_DISABLED_CONTENT, "0", "a", 1);
-				}
-				$editor->HiddenField("id", $id);
-				$editor->Label(_VIRTUAL_PAGE_CONTENT);
-				$model->return_virtual_title_multilang($id, $row['code']);
-				$editor->TextField(_VIRTUAL_PAGE_TITLE, "virtual_title", $model->virtual_title);
-				$model->return_virtual_content_multilang($id, $row['code']);
-				$editor->TextArea(_VIRTUAL_PAGE_CONTENT, "virtual_content", $model->virtual_content);
-				$editor->HiddenField("import", $model->virtual_content);
-				$editor->HiddenField("code", $row['code']);
-				$editor->SubmitButton(_VIRTUAL_PAGE_EDIT);
-				
-				$array = array(
-						'code' => $row['code'],
-						'content' => $editor->Show()
-				);
-					
-				/**
-				 * Build html tab block
-				*/
-		
-				$htmltab .= $tab->renderPage($array);
-		
-				
-			} // for each
-				
-		} // end if
-		
-		$this->content .= "<div class=\"set set-1\">";
 		$this->content .= $htmltab;
-		$this->content .= "</div>";
-		
-		$js = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/tabs/js.html");
-		$this->content .= $js->renderPage(array());
-	
-		$tip = new MsgBox("", _MARKDOWN_REFERENCE);
+
+		$tip = new MsgBox("", _MARKDOWN_REFERENCE, "I");
 		$tip_type2 = $tip->Show();
 		$this->content .= $tip_type2;
 	
 	}
 	
-	
+
 	public function site_map_view() {
 		
 		$s = new mod_virtual_page_Model();
 		$s->site_map_model();
 		
-		$this->content .= _TREE_VIRTUAL_PAGE;
+		//$this->content .= _TREE_VIRTUAL_PAGE;
 		
 		/**
 		 * Como renderizar página utilizando ThemeLoader
@@ -225,76 +195,63 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 		$this->basepath = $cfg->basepath;
 		
 		// nueva variable de tipo objeto
-		$objTemplate = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/mods/virtual_page/html/tree.html");
+		$objTemplate = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/mods/virtual_page/html/sitemap.html");
 
 		// variable para acumular el contenido de los loops (html)
 		$html = "";
 		
 		try {
+			
 			if(empty($s->rows)) {
 				$html = _NO_VIRTUAL_PAGES;
 				throw new Exception();
 			} 
-		// recorremos los datos o la query y lo almacenamos en $html
-		foreach ($s->rows as $row) {
-			// obtener el contenido de loop.html y reemplazarlo con su contenido
-			$tmp = file_get_contents(LOCAL_DIR . "/site/apps/admin/mods/virtual_page/html/loop.html");
-			$tmp = str_replace("{virtual_title}", $row['virtual_title'], $tmp);
-			$tmp = str_replace("{id}", $row['id'], $tmp);
 			
-			// almacenando página dentro del loop (html)
-			$html = $html . $tmp;
+			// recorremos los datos o la query y lo almacenamos en $html
+			foreach ($s->rows as $row) {
+				// obtener el contenido de loop.html y reemplazarlo con su contenido
+				$tmp = file_get_contents(LOCAL_DIR . "/site/apps/admin/mods/virtual_page/html/loop.html");
+				$tmp = str_replace("{virtual_title}", $row['virtual_title'], $tmp);
+				$tmp = str_replace("{id}", $row['id'], $tmp);
+				
+				// almacenando página dentro del loop (html)
+				$html = $html . $tmp;
+			}
 		
-			
-		}
 		} catch (Exception $e) {
 			
 		}
 		
 		// creamos diccionario y reemplazamos $html
 		$array = array(
+				
 				'site'=>$cfg->title,
-				'loop'=>$html
+				'loop'=>$html,
+				
+				/**
+				 * Labels
+				 */
+				
+				'sitemap' => _VIRTUAL_PAGE_SITEMAP
+				
 		);
 	
 		// metemos el contenido del template en el contenido de la pagina
 		$this->content .= $objTemplate->renderPage($array);
 		
-		
-		
 		/******************************************************/
 		
-		$msgbox = new MsgBox(_VIRTUAL_PAGE_NOTE, _VIRTUAL_PAGE_NOTE_MESSAGE);
+		$msgbox = new MsgBox(_VIRTUAL_PAGE_NOTE, _VIRTUAL_PAGE_NOTE_MESSAGE, "I");
 		$this->content .= $msgbox->Show();
 		
 		// renderizamos finalmente todo el documento
-		$this->Render();
+		//$this->Render();
 		
 	}
 	
-
-	public function delete_post_confirm_view() {
-		
-		if(isset($_POST['cancel'])) {
-			header("Location: index.php?app=admin&mod_controller=virtual_page&sr=site_map");
-			die();
-		}
-		
-		$id = new Security();
-		$id = $id->shield($_GET['id']);
-		
-		$frm = new Form("index.php?app=admin&mod_controller=virtual_page&sr=delete_page_confirm");
-		$frm->HiddenField("id", $id);
-		$frm->SubmitButton(_VIRTUAL_PAGE_CONFIRM, "submit");
-		$frm->SubmitButton(_VIRTUAL_PAGE_CANCEL, "cancel");
-		
-		$msg = new MsgBox(_VIRTUAL_PAGE_CONFIRM_MESSAGE, $frm->Show());
-		$this->content .= $msg->Show();
-		
-	}
 	
 	public function sucessMessage($message) {
-		$v_message = new MsgBox("", $message);
+		$v_message = new MsgBox("", $message, "S");
 		$string_var_message = $v_message->Show();
 		
 		/**
@@ -308,7 +265,7 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 	}
 	
 	public function errorMessage($message) {
-		$v_message = new MsgBox("", $message);
+		$v_message = new MsgBox("", $message, "E");
 		$string_var_message = $v_message->Show();
 	
 		/**
@@ -342,28 +299,125 @@ class mod_virtual_page_View extends mod_virtual_page_Model {
 	
 	public function Render() {
 		
+		$cfg = new configSettings();
+		
 		/**
 		 * 
 		 * Diccionario (variables de la plantilla).
 		 */
 		
 		$array = array(
-				'basepath'=>$this->basepath,
 				'content'=>$this->content,
 				'mod_name'=>$this->mod_name,
-				'mod_menu'=>$this->menu
+				'mod_menu'=>$this->menu,
+				'basepath'=>$cfg->basepath,
+				'username'=>$cfg->user,
+				'email'=>$cfg->email
 				);
-		
+				
+
+		try {
+			
 		/**
 		 * 
 		 * Renderizamos nuestra página.
 		 */
 
-		$objTheme = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/panel/html/panel.html");		
-		echo $objTheme->renderPage($array);
+			$objTheme = new ThemeLoader(APPS_DIR . "admin/panel/dashboard.html");		
+			echo $objTheme->renderPage($array);
+		
+		} catch (Exception $e) {
+			
+			die($e->getMessage());
+			
+		}
 		
 	
 	}
 
+	private function buildTab() {
+	
+		$htmltab = "";
+	
+		/**
+		 * Build lang tabs
+		 */
+	
+		if($this->multilang == "yes") {
+				
+	
+			$model = new mod_virtual_page_Model();
+				
+			$tab = new ThemeLoader(MODS_DIR . "/virtual_page/html/code_edit_page.html");
+				
+			$objLangs = new mod_languages_Model();
+			$langs = $objLangs->get_lenguages();
+				
+			$i = 0;
+			foreach ($langs as $row) {
+				
+				$i++;
+				$title = $model->return_virtual_title_multilang($_GET['id'], $row['code']);
+				$message = $model->return_virtual_content_multilang($_GET['id'], $row['code']);
+
+				//$editor = new Form("index.php?app=admin&mod_controller=virtual_page&sr=page_multilang&id=$id");
+				$editor = new Form();
+				
+				//$editor->Label($row['label']);
+				
+				if($model->return_value($_GET['id']) == 1) {
+					$editor->RadioButton(_ENABLED_CONTENT, "1", "a", 1);
+					$editor->RadioButton(_DISABLED_CONTENT, "0", "a", 0);
+				} else {
+					$editor->RadioButton(_ENABLED_CONTENT, "1", "a", 0);
+					$editor->RadioButton(_DISABLED_CONTENT, "0", "a", 1);
+				}
+								
+	
+				$this->tabLinks .= "<li><a href=\"#code-" . $row['code'] . "\" data-toggle=\"tab\">" . $row['code'] . "</a></li>\n";
+					
+				$array = array(
+	
+						/**
+						 * Variables
+						 */
+	
+						'id' => $_GET['id'],
+						'code' => $row['code'],
+						'title' => $title,
+						'message' => $message,
+	
+						/**
+						 * Labels
+						 */
+	
+						'lbl_title' => _VIRTUAL_PAGE_TITLE,
+						'lbl_message' => _VIRTUAL_PAGE_CONTENT,
+	
+	
+						/**
+						 * Buttons
+						 */
+	
+						'btn_reset' => _BLOG_RESET,
+						'btn_edit' => _BLOG_EDIT,
+						'btn_delete' => _BLOG_DELETE,
+	
+	
+				);
+					
+				/**
+				 * Build html tab block
+				*/
+					
+				$htmltab .= $tab->renderPage($array);
+					
+			} // for each
+	
+		} // end if
+	
+		return $htmltab;
+	
+	}
 	
 }

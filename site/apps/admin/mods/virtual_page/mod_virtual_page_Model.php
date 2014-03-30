@@ -12,10 +12,6 @@ class mod_virtual_page_Model extends configSettings {
 	public $editor;
 	public $rows;
 	
-		
-	public $virtual_title;
-	public $virtual_content;
-	
 	public function __construct() {
 		
 		
@@ -35,7 +31,6 @@ class mod_virtual_page_Model extends configSettings {
 		
 	}
 	
-
 	/**
 	* Metodos
 	**/
@@ -117,17 +112,17 @@ class mod_virtual_page_Model extends configSettings {
 		}
 		
 		unset($this->db->rows);
-		return$virtual_title;
+		return $virtual_title;
 	}
 	
 
 	public function return_virtual_title_multilang($id, $code) {
 	
-	
 		/**
 		 * Find post multilang by id;code
 		 * Ex: 188;en
 		 */
+		
 		try {
 			$this->db->query("SELECT * FROM virtual_page_multilang WHERE page_id='".$id.";".$code."'");
 			$this->db->get(); // cargar la variable de la clase $this->db->rows[] (MySQL::rows[]) con datos.
@@ -143,13 +138,13 @@ class mod_virtual_page_Model extends configSettings {
 				}
 					
 				if($row['id'] == $id && !empty($row['virtual_title'])) {
-					$this->virtual_title = $row['virtual_title'];
+					return $row['virtual_title'];
 				}
 			}
 	
 	
 		} catch (Exception $e) {
-			$this->virtual_title = "";
+			return "";
 		}
 	
 		unset($this->db->rows);
@@ -179,13 +174,13 @@ class mod_virtual_page_Model extends configSettings {
 				}
 					
 				if($row['id'] == $id && !empty($row['virtual_content'])) {
-					$this->virtual_content = $row['virtual_content'];
+					return $row['virtual_content'];
 				}
 			}
 	
 	
 		} catch (Exception $e) {
-			$this->virtual_content = "";
+			return "";
 		}
 	
 		unset($this->db->rows);
@@ -234,6 +229,15 @@ class mod_virtual_page_Model extends configSettings {
 			throw new Exception(_ERROR_DELETING_PAGE . " " . _ID_DONT_EXIST . $e->getMessage());
 		}
 		
+	}
+	
+	public function delete_page_multilang_confirm_model($id) {
+		try {
+			$this->db->query("DELETE FROM virtual_page_multilang WHERE id = '$id'");
+		} catch (Exception $e) {
+			throw new Exception(_ERROR_DELETING_PAGE . " " . _ID_DONT_EXIST . $e->getMessage());
+		}
+	
 	}
 	
 	public function update_virtual_content($id, $title, $content, $active) {

@@ -44,13 +44,7 @@ class mod_languages_Controller extends Security {
 	
 	public function main() {
 
-		/**
-		 * No usamos main() en modulos de admin, sin embargo
-		 * Necesitamos declararlo por si alguien intenta acceder a el
-		 * simplemente lo redireccioonamos.
-		 */
-		
-		header("Locatio: index.php?app=admin");
+		$this->modView->setup_view();
 		
 	}
 	

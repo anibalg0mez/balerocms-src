@@ -253,10 +253,17 @@ class blog_Model extends configSettings {
 		$this->db->get();
 		
 		try {
+
+			/**
+			 * is 2nd if sentence is on top will be an error
+			 * Dont edit for now
+			 */
 			
-			foreach ($this->db->rows as $row) {
-				$defaultLang = $row['value'];
-				//echo $defaultLang;
+			if(is_array($this->db->rows)) {
+				foreach ($this->db->rows as $row) {
+					$defaultLang = $row['value'];
+					//echo $defaultLang;
+				}
 			}
 			
 			if(empty($this->db->rows) || empty($defaultLang)) {

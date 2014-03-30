@@ -262,6 +262,13 @@ class mod_blog_Model extends configSettings {
 		$this->db->query("DELETE FROM blog_multilang WHERE id='$_id'");
 		unset($this->db->rows);
 	}
+	
+	public function delete_query_multilang($id, $code) {
+		$objShield = new Security();
+		$_id = $objShield->shield($id);
+		$this->db->query("DELETE FROM blog_multilang WHERE id='$_id' AND code='$code'");
+		unset($this->db->rows);
+	}
 		
 	/**
 	 *

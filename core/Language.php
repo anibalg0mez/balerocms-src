@@ -178,25 +178,31 @@ class Language {
 	 */
 	
 	public function langList($array) {
-		
+				
 		$links = "";
+		$template = "";
 		
 			if($this->multilang == "yes") {
-				if(is_array($array)) {
-					$links = "<div id=\"langbar\">";
+				
+				//if(is_array($array)) {
+					$links = "<li>";
 					for($i = 0; $i < count($array); $i++) {
 						if($array[$i] == $this->defaultLang) {
-							$links .= "<div class=\"on\"><a href=\"".$this->app."/setlang/lang-main\">".$array[$i]."</a></div>";
+							$links .= "\t<a href=\"".$this->app."/setlang/lang-main\"><i class=\"icon-ok\"></i> ".$array[$i]."</a>\n";
 						} else {
-							$links .= "<div class=\"off\"><a href=\"".$this->app."/setlang/lang-" . $array[$i] ."\">".$array[$i]."</a></div>";
+							$links .= "\t<a href=\"".$this->app."/setlang/lang-" . $array[$i] ."\">".$array[$i]."</a>\n";
 						}
 					}
-					$links .= "</div>";
-				}
+					$links .= "</li>";
+				//}
+				
+				$tpl = new ThemeLoader(LOCAL_DIR . "/core/html/lang_bar.html");
+				$template = $tpl->renderPage($array = array('code' => $links));
+				
 			}
-		
-		return $links;
+
+		return $template;
 	
 	}
-	
+		
 }

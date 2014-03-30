@@ -52,7 +52,7 @@ class Form {
 		} else {
 			$this->method = $method;
 		}
-		$this->FormNew($action, $method);
+		//$this->FormNew($action, $method);
 	}
 	
 	public function FormNew($action = "", $method = "") {
@@ -130,7 +130,7 @@ class Form {
 		} else {
 			$tmp = $this->renderField($name, $html);
 		}
-		$this->form .= $tmp;
+		return $tmp;
 	}
 	
 	
@@ -162,11 +162,9 @@ class Form {
 		$this->form .= $tmp;
 	}
 	
-	public function DropDown($array = array(), $label = "", $name = "", $selected = "") {
-	
-		//selected=\"selected\"
+	public function DropDown($array = array(), $name = "", $attributes = "", $selected = "") {
 		
-		$html = $label . "<select name=\"$name\">";
+		$html = "<select name=\"$name\" $attributes>";
 		
 		if(count($array) == 0) {
 			$html .= "<option>ERROR: ".__FUNCTION__ . " INVALID ARRAY IN " .__CLASS__."</option>";
@@ -178,14 +176,14 @@ class Form {
 					$html .= "<option value=\"".$array[$i]."\">".$array[$i]."</option>";
 				}
 			}
+			
 		}
 
 		
 		$html .= "</select>";
 		
-		$tmp = $this->renderField("", $html);
+		return $html;
 		
-		$this->form .= $tmp;
 	}
 
 	
@@ -211,7 +209,7 @@ class Form {
 		 * Static UI files in core
 		 */
 		
-		$file = file_get_contents(LOCAL_DIR . "/core/html/Form/UI.html");
+		$file = file_get_contents(LOCAL_DIR . "/core/html/form.html");
 		$file = str_replace("{label}", $label, $file);
 		$file = str_replace("{field}", $field, $file);
 		//echo $file;

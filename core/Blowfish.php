@@ -100,7 +100,20 @@ class Blowfish {
 		
 			//require_once(LOCAL_DIR . "/core/ThemeLoader.php");
 			
-			$objTheme = new ThemeLoader($view);
+			try {
+
+				//if(!file_exists($view)) {
+					//throw new Exception(_THEME_DONT_EXIST);
+				//}
+				
+				$objTheme = new ThemeLoader($view);
+			
+			} catch (Exception $e) {
+				
+				throw new Exception($e->getMessage());
+				
+			}
+			
 			return $objTheme->renderPage($array);
 			
 	}

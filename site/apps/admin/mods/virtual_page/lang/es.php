@@ -34,3 +34,9 @@ define("_VIRTUAL_PAGE_NOTE_MESSAGE", "Recuerda, éste es tu listado de las secci
 define("_VIRTUAL_PAGE_CONFIRM", "Confirmar");
 define("_VIRTUAL_PAGE_CANCEL", "Cancelar");
 define("_VIRTUAL_PAGE_CONFIRM_MESSAGE", "¿Realmente deseas eliminar el contenido de tu página virtual?");
+define("_MOD_VIRTUAL_PAGE", "Páginas Virtuales");
+define("_VIRTUAL_PAGE_ACTIVE", "Activo");
+define("_VIRTUAL_PAGE_RESET", "Restaurar");
+define("_VIRTUAL_PAGE_DELETE", "Borrar");
+define("_VIRTUAL_PAGE_NEW", "Agregar nueva página virtual");
+define("_VIRTUAL_PAGE_SITEMAP", "Mapa del sitio");

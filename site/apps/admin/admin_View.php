@@ -28,7 +28,7 @@ class admin_View extends configSettings {
 		
 		$this->LoadSettings();
 		
-		$this->mod_name = _WELCOME . " "  . $this->user . " (" . $this->email . ")";
+		$this->mod_name = "Settings";
 		
 		/**
 		 *
@@ -59,7 +59,9 @@ class admin_View extends configSettings {
 				'content'=>$this->content,
 				'mod_name'=>$this->mod_name,
 				'mod_menu'=>$this->menu,
-				'basepath'=>$this->basepath
+				'basepath'=>$this->basepath,
+				'username'=>$this->user,
+				'email'=>$this->email
 				);
 		
 		/**
@@ -67,7 +69,7 @@ class admin_View extends configSettings {
 		 * Renderizamos nuestra página.
 		 */
 
-		$objTheme = new ThemeLoader(APPS_DIR . "admin/panel/html/panel.html");		
+		$objTheme = new ThemeLoader(APPS_DIR . "admin/panel/main_dashboard.html");		
 		echo $objTheme->renderPage($array);
 		
 	
@@ -115,36 +117,59 @@ class admin_View extends configSettings {
 		//$url_friendly_status = $model_settings->get_url_friendly_status();
 		$pagination = $model_settings->get_pagination();		
 		
-		$themes = $this->get_themes();
+		$themes = $this->get_themes(); // array
 		
 		$pages = array('4', '8', '12');
-				
+		
+		$msg = new MsgBox(_ADMIN_NOTE, _ADMIN_BASIC_MSG, "I");
+		$this->content .= $msg->Show();
+		
 		// dynamic old way
 		//$form = new Form("index.php?app=admin");
-		$form = new Form("./admin");
-		$form->Label("<h3>"._APPEARANCE."</h3>");
-		$form->DropDown($themes, _THEME. ": ", "themes", $default_theme); // universe (selected)
-		$form->Label("<h3>"._PAGINATION."</h3>");
-		$form->DropDown($pages, "", "pages", $pagination);
-		$form->Label("<h3>"._CONFIG."</h3>");
-		$form->TextField(_TITLE, "title", $this->title);
-		$form->TextField(_TAGS, "keywords", $this->keywords);
-		$form->TextField(_URL, "url", $this->url);
-		$form->TextArea(_DESCRIPTION, "description", $this->description);
-		// URLS amigables en proxima version despues de lanzamiento
-// 		$form->Label("URL Amigable");
-// 		if($url_friendly_status == TRUE) {
-// 			$form->RadioButton("Si", "1", "url_friendly", 1); // 1 = checked
-// 			$form->RadioButton("No", "0", "url_friendly");
-// 		} else {
-// 			$form->RadioButton("Si", "1", "url_friendly"); 
-// 			$form->RadioButton("No", "0", "url_friendly", 1); // 1 = checked
-// 		}
-		$form->SubmitButton(_OK);
-		$this->content .= $form->Show();
+		$form = new Form();
+		$dropdown_theme = $form->DropDown($themes, "themes", "class='chzn-select'", $default_theme); // default thene (selected)
+		$dropdown_pagination = $form->DropDown($pages, "pages", "class='chzn-select'", $pagination);
 		
-		$msg = new MsgBox(_NOTE, _BASIC_MSG);
-		$this->content .= $msg->Show();
+						/**
+						 * Labels
+						 */
+		
+		$elements = array(
+				
+				
+						/**
+						 * Variables
+						 */
+				
+						'title' => _ADMIN_GLOBAL_SETTINGS,
+				
+						/**
+						 * Labels
+						 */
+						
+						'lbl_settings' => _ADMIN_SETTINGS,
+						'lbl_theme' => _ADMIN_THEME,
+						'lbl_pagination' => _ADMIN_PAGINATION,
+						'lbl_title' => _ADMIN_TITLE,
+						'lbl_keywords' => _ADMIN_KEYWORDS,
+						'lbl_url' => _ADMIN_URL,
+						'lbl_insert' => _ADMIN_INSERT,
+						'lbl_description' => _ADMIN_DESCRIPTION,
+				
+						/**
+						 * Elements
+						 */
+				
+						'txt_title' => $this->title,
+						'txt_keywords' => $this->keywords,
+						'txt_url' => $this->url,
+						'txt_description' => $this->description,
+						'dropdown_theme' => $dropdown_theme,
+						'dropdown_pagination' => $dropdown_pagination);
+		
+		$frmtpl = new ThemeLoader(APPS_DIR . "/admin/panel/settings.html");
+		$this->content .= $frmtpl->renderPage($elements);
+		
 		
 		/**
 		 * Render page

@@ -29,64 +29,22 @@ class Router {
 	
 	private $app;
 	
-	function __constructor() { 
 	
+	public function __construct() { 
+			
+		$this->installer();
+		
 	}
 	
-	function init() {
+	public function init() {
 		
 		/**
 		 * 
 		 * Cargar nucleo
 		 */
 		
-		$init = new boot(); // cargar nucleo
-		
-		if(file_exists(APPS_DIR . "installer")) {
+		$init = new boot(); // cargar nucleo	
 			
-			/**
-			 * Cargar lenguaje
-			 */
-			
-			$this->lang = new Language();
-			$this->lang->init();
-			$this->lang->init_apps_lang("installer");
-			
-			try {
-				$xml = new XMLHandler(LOCAL_DIR . "/site/etc/balero.config.xml");
-			} catch (Exception $e) {
-				//die(_CONFIG_FILE_ERROR);
-				$theme = new ThemeLoader(APPS_DIR . "installer/html/cfgFileError.html");
-				echo $theme->renderPage(array(
-						"msg_error"=>_CONFIG_FILE_ERROR,
-						"refresh"=>_REFRESH));
-				die();	
-			}
-			
-			$installed = $xml->Child("system", "installed");
-			
-			$pos = strpos($installed, "yes");
-			
-			// Note our use of ===.  Simply == would not work as expected
-			// because the position of 'a' was the 0th (first) character.
-			if ($pos === false) {
-				$ldr = new autoloader("installer"); // cargar clases para la app
-				$app = new installer_Controller();
-				die();
-			} else {
-				$ldr = new autoloader("installer"); // cargar clases para la app
-				$app = new installer_View();
-				$msgbox = new MsgBox(_SECURITY_LOCK, _SECURITY_LOCK_MESSAGE);
-				$app->content .= $msgbox->Show();
-				$app->Render();
-				unset($this->lang);
-				die();
-			}
-			
-			unset($this->lang);
-			
-		}
-				
 		/**
 		 * Router (controlador) de secciones (app)
 		 */
@@ -131,6 +89,7 @@ class Router {
 			
 		} else {
 			
+			
 			/**
 			 * default app or home
 			 */
@@ -156,8 +115,8 @@ class Router {
 				 * Kill lang
 				 */
 				
-				unset($this->lang);
-				
+				unset($lang);
+					
 		}
 		
 		
@@ -174,7 +133,7 @@ class Router {
 		$this->lang->init_apps_lang("admin");
 		$this->lang->app = "admin";
 
-		//echo "cokie: " . $_COOKIE['counter'];
+		//echo "cokie: " . base64_decode($_COOKIE['admin_god_balero']);
 		
 		if(isset($_COOKIE['counter']) && $_COOKIE['counter'] >= 5) {
 			die(_LOGIN_ATTEMPS);
@@ -207,6 +166,7 @@ class Router {
 			
 		if(isset($_COOKIE['admin_god_balero'])) {
 
+			//echo("logeado");
 			$cfg = new configSettings();
 			$login = new Blowfish();
 			
@@ -220,8 +180,13 @@ class Router {
 			
 			
 			if($cfg->user == $cookie_usr && $cfg->pass == $cookie_pwd) {
+				//die("buscando...");
 				$ldr = new autoloader("admin"); // cargar clases para la app
 				$this->init_mod();
+			} else {
+				// remomve cookie
+				setcookie("admin_god_balero", "", time()-3600);
+				die("Hash Error");
 			}
 			
 		} else {
@@ -229,9 +194,19 @@ class Router {
 			$cfg = new configSettings();
 			$login = new Blowfish();			
 			$login->message = $this->message;
-			$login->basepath = $cfg->basepath;			
-			echo $login->login_form(APPS_DIR . "admin/panel/html/login.html");
-		
+			$login->basepath = $cfg->basepath;	
+
+			try {
+				
+				$this->nocache();
+				echo $login->login_form(APPS_DIR . "admin/panel/login.html");
+			
+			} catch (Exception $e) {
+				
+				die($e->getMessage());
+				
+			}
+			
 		}
 			
 		unset($this->lang);
@@ -269,37 +244,32 @@ class Router {
 		
 	}
 	
-	/**
-	 * init() admin mods system
-	 * /site/apps/admin/mods/
-	 */
-	
 	public function init_mod() {
 	
 		/**
 		 * Buscar en esta carpeta los modulos modloader("carpeta");
 		 */
 	
-		if(isset($_GET['mod_controller'])) {
+		if(isset($_GET['mod'])) {
 	
 			$mod_controller_blind = new Security();
-			$blind_url = $mod_controller_blind->shield($_GET['mod_controller']);
+			$blind_url = $mod_controller_blind->shield($_GET['mod']);
 	
 			switch ($blind_url) {
 	
 				case $blind_url:
 					if(file_exists(MODS_DIR . $blind_url)) {
-					$this->lang = new Language();
-					$this->lang->init();
-					$this->lang->app = $blind_url;
-					$this->lang->init_mods_lang($blind_url);
-					//include_once(LOCAL_DIR . "/site/apps/admin/mods/" . $blind_url . "/lang/en.php");
-					$dynamic = "mod_" . $blind_url . "_Controller";
-					$mod_loader = new Modloader($blind_url);
-					$admin_elements = new AdminElements();
-					$title_mod_menu = $admin_elements->mods_menu();
-					// cargar controlador de pagina de inicio (admin).
-					$settings_controller = new $dynamic($title_mod_menu);
+						//$this->lang = new Language();
+						//$this->lang->init();
+						//$this->lang->app = $blind_url;
+						//$this->lang->init_mods_lang($blind_url);
+						//include_once(LOCAL_DIR . "/site/apps/admin/mods/" . $blind_url . "/lang/en.php");
+						$dynamic = "mod_" . $blind_url . "_Controller";
+						$mod_loader = new Modloader($blind_url);
+						$admin_elements = new AdminElements();
+						$title_mod_menu = $admin_elements->mods_menu();
+						// cargar controlador de pagina de inicio (admin).
+						$settings_controller = new $dynamic($title_mod_menu);
 					} else {
 						die(_CONTROLLER_NOT_FOUND);
 					}
@@ -309,38 +279,112 @@ class Router {
 			}
 	
 		} else {
-			
+				
 			/**
 			 * Init admin app controller
 			 */
-			
-			if(file_exists(APPS_DIR . "admin/admin_Controller.php")) {
 				
+			if(file_exists(APPS_DIR . "admin/admin_Controller.php")) {
+	
 				/**
 				 * Load lang and wait
 				 */
-				
+	
 				$this->lang = new Language();
 				$this->lang->app = "admin";
 				$this->lang->init();
 				$this->lang->init_apps_lang("admin");
-			
+					
 				/**
 				 * Load panel and admin controller
-				 */
-				
-			$admin_elements = new AdminElements();
-			$title_mod_menu = $admin_elements->mods_menu();
-			// cargar controlador de pagina de inicio (admin).
-			$settings_controller = new admin_Controller($title_mod_menu);
-			
-			unset($this->lang);
-			
+				*/
+	
+				$admin_elements = new AdminElements();
+				$title_mod_menu = $admin_elements->mods_menu();
+				// cargar controlador de pagina de inicio (admin).
+				$settings_controller = new admin_Controller($title_mod_menu);
+					
+				unset($this->lang);
+					
 			} else {
 				die(_CONTROLLER_ADMIN_NOT_FOUND);
 			}
 		}
+		
 	}
+	
+	public function installer() {
+
+		$init = new boot(); // cargar nucleo
+		
+		//die("installer");
+		
+		try {
+		
+			$xml = new XMLHandler(LOCAL_DIR . "/site/etc/balero.config.xml");
+			$installed = $xml->Child("system", "installed");
+			$pos = strpos($installed, "yes");
+			
+ 			if ($pos === false) {
+
+ 				//die("no instalado");
+ 				
+ 				if(!file_exists(APPS_DIR . "installer")) {
+ 					die("App installer NOT found.");
+ 				}
+ 				
+ 				$this->lang = new Language();
+ 				$this->lang->init();
+ 				$this->lang->init_apps_lang("installer");
+ 				
+ 				$ldr = new autoloader("installer"); // cargar clases para la app
+ 				$app = new installer_Controller();
+ 				die();
+								
+				
+			} else {
+				
+				//die("instalado");
+				
+				if(file_exists(APPS_DIR . "installer")) {
+						
+					$this->lang = new Language();
+					$this->lang->init();
+					$this->lang->init_apps_lang("installer");
+						
+					$ldr = new autoloader("installer"); // cargar clases para la app
+					$app = new installer_View();
+					$msgbox = new MsgBox(_SECURITY_LOCK, _SECURITY_LOCK_MESSAGE, "I");
+					$app->content .= $msgbox->Show();
+					$app->Render();
+					unset($this->lang);
+					die();
+				}
+				
+			}
+			
+		} catch (Exception $e) {
+			
+			if(!file_exists(APPS_DIR . "installer")) {
+				die("App installer NOT found.");		
+			}
+			
+			$this->lang = new Language();
+			$this->lang->init();
+			$this->lang->init_apps_lang("installer");
+			
+			$theme = new ThemeLoader(APPS_DIR . "installer/html/cfgFileError.html");
+			echo $theme->renderPage(array(
+					"msg_error"=>_CONFIG_FILE_ERROR,
+					"refresh"=>_REFRESH));
+			die();
+		
+		}
+		
+		unset($this->lang);
+		
+		
+	} // installer
 	
 	public function logout() {
 		if(isset($_COOKIE['admin_god_balero'])) {
@@ -367,5 +411,18 @@ class Router {
 			
 		}
 	} // end logout
+	
+	/**
+	 * no-cache method's Konqueror fix and other browsers for login page
+	 */
+	
+	public function nocache() {
+		//no  cache headers
+		header("Expires: Mon, 26 Jul 1990 05:00:00 GMT");
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+	}
 	
 }

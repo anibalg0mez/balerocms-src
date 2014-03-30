@@ -59,13 +59,21 @@ class ThemeLoader {
 			
 			$template = "";
 			$this->array = $array;
-			if(!file_exists($this->file)) {
-								
-				$this->MsgBox = new MsgBox(_THEME_SYSTEM, 
-						"Error: ". _THEME_DONT_EXIST ." \"" . $this->file . "\"");
+			
+			try {
+				
+				if(!file_exists($this->file)) {
+					throw new Exception(_THEME_DONT_EXIST . ": " . $this->file);
+				}
+				
+				$template = file_get_contents($this->file);
+				
+			} catch (Exception $e) {
+				
+				throw new Exception($e->getMessage());
+				
 			}
 			
-			$template = file_get_contents($this->file);
 	
 			foreach ($array as $key => $value) {
 				$template = str_replace("{" . $key . "}", $value, $template);

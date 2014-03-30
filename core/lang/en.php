@@ -25,7 +25,7 @@ define("_CREATE_TABLE_ERROR", "Creating database table error.");
 define("_PAGINATION_HOME", "Home");
 define("_PAGINATION_LAST", "Last");
 define("_THEME_SYSTEM", "Theme system");
-define("_THEME_DONT_EXIST", "The theme does not exist");
+define("_THEME_DONT_EXIST", "The theme or template does not exist");
 define("_FILE_DONT_EXIST", "File does not exist");
 define("_WARNING_LOADING_FILE", "Warning: I can load the file, set chmod permissions to 777");
 define("_XML_ERROR_CHILD", "Child() value does not exist.");

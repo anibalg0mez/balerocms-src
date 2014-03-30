@@ -17,11 +17,17 @@
 /**
  * Debug Option
  * Desarrollador / Developer (-1)
- * Usuario / User (0)
+ * Usuario / User (0) (default)
  * (Editar)
  */
 
-error_reporting(0); // user mode by default
+error_reporting(0);
+
+/**
+ * Balero CMS Version
+ */
+
+define("_CORE_VERSION", "0.7");
 
 /**
  * 
@@ -31,12 +37,6 @@ error_reporting(0); // user mode by default
 
 $dir = dirname(__FILE__);
 $dir = str_replace("\\", "/", $dir);
-
-/**
- * Balero CMS Version
- */
-
-define("_CORE_VERSION", "0.6.2");
 
 /**
  *

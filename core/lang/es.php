@@ -25,7 +25,7 @@ define("_CREATE_TABLE_ERROR", "Error creando tabla en DB.");
 define("_PAGINATION_HOME", "Inicio");
 define("_PAGINATION_LAST", "Última");
 define("_THEME_SYSTEM", "Sistema de temas");
-define("_THEME_DONT_EXIST", "El tema no existe");
+define("_THEME_DONT_EXIST", "El tema o plantilla no existe");
 define("_FILE_DONT_EXIST", "Archivo no existe");
 define("_WARNING_LOADING_FILE", "Aviso: No puedo cargar archivo, asigna permisos CHMOD 777");
 define("_XML_ERROR_CHILD", "valor Child() no existe.");

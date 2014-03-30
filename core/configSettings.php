@@ -75,6 +75,12 @@ class configSettings {
 	
 	public $multilang;
 	
+	/**
+	 *  Baepath
+	 */
+	
+	public $basepath;
+	
 	public function __construct() {
 				
 		$this->LoadSettings(); // Cargar datos XML

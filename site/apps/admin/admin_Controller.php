@@ -98,7 +98,7 @@ class admin_Controller {
 			unset($this->objView);
 			$this->objView = new admin_View();
 			$this->objView->menu = $this->menu;
-			$ok = new MsgBox("", _DATA_OK);
+			$ok = new MsgBox("", _ADMIN_DATA_OK, "S");
 			$this->objView->content .= $ok->Show();
 			
 			/**
@@ -106,7 +106,7 @@ class admin_Controller {
 			 */
 			
 			} catch (Exception $e) {
-				$ok = new MsgBox("", _DATA_ERROR . " " . $e->getMessage());
+				$ok = new MsgBox("", _ADMIN_DATA_ERROR . " " . $e->getMessage(), "E");
 				$ok->Show();
 			}
 		}
