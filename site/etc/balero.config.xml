@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+* XML configuration of Balero CMS.
+* NOTE: EDIT THIS FILE MANUALLY
+
+  OPTIONS:
+  - yes: true/activate
+  - no: false/desactivate
+
+ WRONG PARAMETERS 
+ EXAMPLE:
+ - Yes
+ - No
+ WRONG
+ - yES
+ - nO
+ CORRECT
+ - yes
+ - no
+* Otherwise Balero can't read the config file.
+-->
+<config>
+	<database>
+		<dbhost>localhost</dbhost>
+		<dbuser>root</dbuser>
+		<!-- empty fields like "_blank" -->
+		<!-- otherwise Balero CMS's core (XMLHandler) sent an error with empty fields -->
+		<!-- wrong values <dbpass></dbpass> -->
+		<!-- correct values <dbpass>_blank</dbpass> -->
+		<dbpass>root</dbpass>
+		<dbname>balero_cms</dbname>
+	</database>
+	<admin>
+		<!-- admin god -->
+		<username>admin</username>
+		<!-- pwd encrypt -->
+		<passwd>$2a$07$IbxCcoPG2TrejlFT9Z4HOuF8/jXbrjo6q1LW3XTxrVvDBivs9BPf.</passwd>
+		<!-- admin data -->
+		<firstname>Balero</firstname>
+		<lastname>CMS</lastname>
+		<!-- newsletter -->
+		<newsletter>yes</newsletter>
+		<email>anibalgomez@icloud.com</email>
+	</admin>
+	<system>
+		<!-- is first time -->
+		<firsttime>no</firsttime>
+		<!-- balero cms installed -->
+		<installed>yes</installed>
+	</system>
+	<site>
+		<!-- title page -->
+		<title>Balero CMS</title>
+		<!-- Direccion -->
+		<url>http://www.balerocms.com/</url>
+		<description>Powered by Balero CMS.</description>
+		<keywords>asdf</keywords>
+		<!-- basepath for url friendly -->
+		<basepath>http://localhost/balerocms-src/</basepath>
+		<!-- multilanguage support -->
+		<multilang>yes</multilang>
+	</site>
+</config>
