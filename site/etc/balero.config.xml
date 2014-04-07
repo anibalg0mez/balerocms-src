@@ -19,6 +19,7 @@
  - no
 * Otherwise Balero can't read the config file.
 -->
+<!--test-->
 <config>
 	<database>
 		<dbhost>localhost</dbhost>
