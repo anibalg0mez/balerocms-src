@@ -19,7 +19,7 @@
  - no
 * Otherwise Balero can't read the config file.
 -->
-<!--test-->
+<!-- test -->
 <config>
 	<database>
 		<dbhost>localhost</dbhost>
@@ -28,26 +28,26 @@
 		<!-- otherwise Balero CMS's core (XMLHandler) sent an error with empty fields -->
 		<!-- wrong values <dbpass></dbpass> -->
 		<!-- correct values <dbpass>_blank</dbpass> -->
-		<dbpass>root</dbpass>
+		<dbpass>_blank</dbpass>
 		<dbname>balero_cms</dbname>
 	</database>
 	<admin>
 		<!-- admin god -->
-		<username>admin</username>
+		<username>_blank</username>
 		<!-- pwd encrypt -->
-		<passwd>$2a$07$IbxCcoPG2TrejlFT9Z4HOuF8/jXbrjo6q1LW3XTxrVvDBivs9BPf.</passwd>
+		<passwd>_blank</passwd>
 		<!-- admin data -->
 		<firstname>Balero</firstname>
 		<lastname>CMS</lastname>
 		<!-- newsletter -->
 		<newsletter>yes</newsletter>
-		<email>anibalgomez@icloud.com</email>
+		<email>@</email>
 	</admin>
 	<system>
 		<!-- is first time -->
-		<firsttime>no</firsttime>
+		<firsttime>yes</firsttime>
 		<!-- balero cms installed -->
-		<installed>yes</installed>
+		<installed>no</installed>
 	</system>
 	<site>
 		<!-- title page -->
@@ -55,10 +55,11 @@
 		<!-- Direccion -->
 		<url>http://www.balerocms.com/</url>
 		<description>Powered by Balero CMS.</description>
-		<keywords>asdf</keywords>
+		<keywords>_blank</keywords>
 		<!-- basepath for url friendly -->
-		<basepath>http://localhost/balerocms-src/</basepath>
+		<basepath>_blank</basepath>
 		<!-- multilanguage support -->
-		<multilang>yes</multilang>
+		<multilang>no</multilang>
+		<editor>summernote</editor>
 	</site>
 </config>
