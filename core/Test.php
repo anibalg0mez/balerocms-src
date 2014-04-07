@@ -6,4 +6,8 @@
  * 
  * Write your tests here
  * Dot not use this file into framework
+ * 
+ * test
+ * 
+ * Do not upload balero.config.xml
  */
