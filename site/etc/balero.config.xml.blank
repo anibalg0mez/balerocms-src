@@ -59,5 +59,6 @@
 		<basepath>_blank</basepath>
 		<!-- multilanguage support -->
 		<multilang>no</multilang>
+		<editor>summernote</editor>
 	</site>
 </config>

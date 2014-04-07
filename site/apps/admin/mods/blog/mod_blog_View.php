@@ -75,7 +75,7 @@ class mod_blog_View extends configSettings {
 		 */
 		
 		$htmltab = "";
-		$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/mods/blog/html/main.html");
+		$tab = new ThemeLoader(LOCAL_DIR . "/site/apps/admin/mods/blog/html/main_" . $this->editor . ".html");
 				
 		$array = array(
 				'title' => _BLOG_ADD,
@@ -197,7 +197,8 @@ class mod_blog_View extends configSettings {
 		 */
 		
 		$htmltab = "";
-		$tab = new ThemeLoader(MODS_DIR . "/blog/html/main_edit_post.html");
+		//$tab = new ThemeLoader(MODS_DIR . "/blog/html/main_edit_post.html");
+		$tab = new ThemeLoader(MODS_DIR . "/blog/html/main_edit_post_" . $this->editor . ".html");
 		
 		
 		$editor = new Form();
@@ -382,7 +383,9 @@ class mod_blog_View extends configSettings {
 		
 			$model = new mod_blog_Model();
 			
-			$tab = new ThemeLoader(MODS_DIR . "/blog/html/code_edit_post.html");
+			
+			//$tab = new ThemeLoader(MODS_DIR . "/blog/html/code_edit_post.html");
+			$tab = new ThemeLoader(MODS_DIR . "/blog/html/code_edit_post_" . $this->editor . ".html");
 			
 			$objLangs = new mod_languages_Model();
 			$langs = $objLangs->get_lenguages();

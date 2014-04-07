@@ -58,7 +58,8 @@ class mod_virtual_page_View extends configSettings {
 		*/
 		
 		$htmltab = "";
-		$tab = new ThemeLoader(MODS_DIR . "/virtual_page/html/new_page.html");
+		//$tab = new ThemeLoader(MODS_DIR . "/virtual_page/html/new_page.html");
+		$tab = new ThemeLoader(MODS_DIR . "/virtual_page/html/new_page_" . $this->editor . ".html");
 		
 		$array = array(
 				
@@ -120,7 +121,8 @@ class mod_virtual_page_View extends configSettings {
 		*/
 		
 		$htmltab = "";
-		$tab = new ThemeLoader(MODS_DIR. "/virtual_page/html/main_edit_page.html");
+		//$tab = new ThemeLoader(MODS_DIR. "/virtual_page/html/main_edit_page.html");
+		$tab = new ThemeLoader(MODS_DIR. "/virtual_page/html/main_edit_page_". $this->editor .".html");
 		
 		$array = array(
 				'id' => $id,
@@ -348,8 +350,9 @@ class mod_virtual_page_View extends configSettings {
 	
 			$model = new mod_virtual_page_Model();
 				
-			$tab = new ThemeLoader(MODS_DIR . "/virtual_page/html/code_edit_page.html");
-				
+			//$tab = new ThemeLoader(MODS_DIR . "/virtual_page/html/code_edit_page.html");
+			$tab = new ThemeLoader(MODS_DIR . "/virtual_page/html/code_edit_page_". $this->editor .".html");
+			
 			$objLangs = new mod_languages_Model();
 			$langs = $objLangs->get_lenguages();
 				

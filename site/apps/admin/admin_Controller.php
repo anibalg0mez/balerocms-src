@@ -76,13 +76,15 @@ class admin_Controller {
 		
 		if(isset($_POST['submit'])) {
 			
-			
 			try {
 			
 			// url friendly prox. versiones
 			//$this->objModel->save_custom_settings($_POST['themes'], $_POST['url_friendly'], $_POST['pages']);
 			
-			$this->objModel->save_custom_settings($_POST['themes'], $_POST['pages']);
+			$this->objModel->save_custom_settings(
+								$_POST['themes'], 
+								$_POST['pages'])
+								;
 				
 			$admcfg = new XMLHandler(LOCAL_DIR . "/site/etc/balero.config.xml");
 		
@@ -90,6 +92,7 @@ class admin_Controller {
 			$admcfg->editChild("/config/site/url", $_POST['url']);
 			$admcfg->editChild("/config/site/description", $_POST['description']);
 			$admcfg->editChild("/config/site/keywords", $_POST['keywords']);
+			$admcfg->editChild("/config/site/editor", $_POST['editors']);
 			
 			/**
 			 * Get refresh view (reloading view)
@@ -106,6 +109,7 @@ class admin_Controller {
 			 */
 			
 			} catch (Exception $e) {
+				$admcfg->editChild("/config/site/editor", "markdown");
 				$ok = new MsgBox("", _ADMIN_DATA_ERROR . " " . $e->getMessage(), "E");
 				$ok->Show();
 			}

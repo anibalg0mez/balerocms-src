@@ -79,7 +79,8 @@ class Security {
 	}
 	
 	public function Level1($str) {
-		$this->var = htmlentities($str);
+		$this->var = htmlspecialchars($str);
+		//$this->var = $str;
 		return $this->var;
 	}
 	

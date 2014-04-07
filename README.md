@@ -19,6 +19,11 @@ CHANGELOG
 
 ==========
 
+    v.0.7.2
+  * Added SummerNote editor
+  * Switch editors
+    Please, check system updates: http://docs.balerocms.com/cgi-bin/moin.cgi/Updates
+
     v.0.7
   * Admin control panel re-designed
   * Insert youtbe videos from toolbar editor (example: http://www.youtube.com/watch?v=SlKrelkKrQ8)

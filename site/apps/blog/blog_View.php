@@ -132,7 +132,7 @@ class blog_View extends configSettings {
 			 * Llamar la clase Markdown.
 			 */
 			
-			$limit = 300;
+			$limit = 144;
 			$word_count = strlen($row['message']);
 			
 			//try {

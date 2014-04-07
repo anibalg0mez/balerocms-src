@@ -24,6 +24,14 @@ class admin_View extends configSettings {
 	
 	public $languages;
 	
+	/**
+	 * Editord
+	 */
+	
+	public $markdown;
+	public $wysihtml5;
+	public $summernote;
+	
 	public function __construct() {
 		
 		$this->LoadSettings();
@@ -155,6 +163,7 @@ class admin_View extends configSettings {
 						'lbl_url' => _ADMIN_URL,
 						'lbl_insert' => _ADMIN_INSERT,
 						'lbl_description' => _ADMIN_DESCRIPTION,
+						'lbl_editor' => _ADMIN_EDITOR,
 				
 						/**
 						 * Elements
@@ -165,7 +174,15 @@ class admin_View extends configSettings {
 						'txt_url' => $this->url,
 						'txt_description' => $this->description,
 						'dropdown_theme' => $dropdown_theme,
-						'dropdown_pagination' => $dropdown_pagination);
+						'dropdown_pagination' => $dropdown_pagination,
+		
+						/**
+						 * Editors
+						 */
+		
+						'editors' => $this->editors(),
+		
+						);
 		
 		$frmtpl = new ThemeLoader(APPS_DIR . "/admin/panel/settings.html");
 		$this->content .= $frmtpl->renderPage($elements);
@@ -177,6 +194,45 @@ class admin_View extends configSettings {
 		
 		$this->Render();
 
+	}
+	
+	/**
+	 * Default editor
+	 */
+	
+	public function editors() {
+	
+		$markdown_checked = 0;
+		$wysihtml5_checked = 0;
+		$summernote_checked = 0;
+		
+		switch ($this->editor) {
+			
+			case "markdown":
+			$markdown_checked = 1;
+			break;
+			
+			case "wysihtml5":
+			$wysihtml5_checked = 1;
+			break;
+				
+			case "summernote":
+			$summernote_checked = 1;
+			break;
+			
+			default:
+			$summernote_checked = 1;
+			break;
+			
+		}
+		
+		$editors = new Form();
+		$radio_editors = $editors->RadioButton(_ADMIN_PLAIN, "markdown", "editors", $markdown_checked);
+		$radio_editors .= $editors->RadioButton(_ADMIN_BASIC, "wysihtml5", "editors", $wysihtml5_checked);
+		$radio_editors .= $editors->RadioButton(_ADMIN_FULL, "summernote", "editors", $summernote_checked);
+		
+		return $radio_editors;
+		
 	}
 
 	

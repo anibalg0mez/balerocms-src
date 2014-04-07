@@ -140,7 +140,7 @@ class Router {
 		}
 		
 		if(!isset($_COOKIE['admin_god_balero'])) {
-			if(isset($_POST['submit'])) {
+			if(isset($_POST['login'])) {
 				$cfg = new configSettings();
 				$login = new Blowfish();
 				$verify = $login->verify_hash($_POST['pwd'], $cfg->pass);

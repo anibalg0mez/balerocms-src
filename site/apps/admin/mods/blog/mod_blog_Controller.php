@@ -283,7 +283,7 @@ class mod_blog_Controller extends configSettings {
 				
 			} catch (Exception $e) {				
 				
-				die("asdf");
+				//die("asdf");
 				$this->modView->errorMessage($e->getMessage());
 				
 			}

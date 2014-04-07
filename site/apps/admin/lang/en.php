@@ -21,3 +21,7 @@ define("_ADMIN_NOTE", "Note");
 define("_ADMIN_BASIC_MSG", "This is a basic site, remember that you can extend the options for your site as you want, you just need to install additional modules.");
 define("_ADMIN_INSERT", "Enter text...");
 define("_ADMIN_GLOBAL_SETTINGS", "Global settings");
+define("_ADMIN_EDITOR", "System Editor");
+define("_ADMIN_PLAIN", "Plain Text");
+define("_ADMIN_BASIC", "Basic Editor");
+define("_ADMIN_FULL", "Full Editor");

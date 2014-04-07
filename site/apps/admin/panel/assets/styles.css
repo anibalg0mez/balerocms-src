@@ -12,6 +12,9 @@ body {
     }
 }
 
+.field {
+	padding: 4px;
+}
 
 /** Login Page **/
 #login {

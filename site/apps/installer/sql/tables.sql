@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 CREATE TABLE IF NOT EXISTS `blog` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `title` varchar(250) CHARACTER SET latin1 NOT NULL,
-  `message` text CHARACTER SET latin1 NOT NULL,
+  `message` mediumtext NOT NULL,
   `info` varchar(250) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=135 ;
@@ -25,7 +25,7 @@ INSERT INTO `blog` (`id`, `title`, `message`, `info`) VALUES
 CREATE TABLE IF NOT EXISTS `blog_multilang` (
   `post_id` varchar(10) NOT NULL,
   `title` varchar(250) NOT NULL,
-  `message` text NOT NULL,
+  `message` mediumtext NOT NULL,
   `info` varchar(250) NOT NULL,
   `code` varchar(50) NOT NULL,
   `id` int(10) NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `languages` (
 CREATE TABLE IF NOT EXISTS `virtual_page` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `virtual_title` varchar(250) CHARACTER SET latin1 NOT NULL,
-  `virtual_content` text CHARACTER SET latin1 NOT NULL,
+  `virtual_content` mediumtext NOT NULL,
   `date` varchar(250) CHARACTER SET latin1 NOT NULL,
   `active` int(10) NOT NULL,
   `visible` int(10) NOT NULL,
@@ -100,7 +100,7 @@ INSERT INTO `virtual_page` (`id`, `virtual_title`, `virtual_content`, `date`, `a
 CREATE TABLE IF NOT EXISTS `virtual_page_multilang` (
   `page_id` varchar(10) NOT NULL,
   `virtual_title` varchar(250) NOT NULL,
-  `virtual_content` text NOT NULL,
+  `virtual_content` mediumtext NOT NULL,
   `date` varchar(250) NOT NULL,
   `active` int(10) NOT NULL,
   `visible` int(10) NOT NULL,
