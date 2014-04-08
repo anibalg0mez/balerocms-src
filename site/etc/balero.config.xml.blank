@@ -18,6 +18,9 @@
  - yes
  - no
 * Otherwise Balero can't read the config file.
+
+NOTE: Do not edit balero.config.xml on eclipse in a live website
+	  if you are developing on github
 -->
 <config>
 	<database>
