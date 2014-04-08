@@ -19,7 +19,7 @@ un juguete antigüo y representativo de México.
 
 Si deseas colaborar con el código visita:
 
-[http://docs.balerocms.com/](http://docs.balerocms.com/)
+[http://developer.balerocms.com/](http://developer.balerocms.com/)
 
 No olvides apoyar el software nacional.
 
