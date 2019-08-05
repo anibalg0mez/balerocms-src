@@ -1,18 +1,25 @@
 <?php
 
 /**
-* Plantilla de la clase appController para Balero CMS.
-* Coloque aqui la entrada/salida de datos.
-* Llame desde ésta clase los modelos/vistas 
-* correspondientes de cada controlador.
-**/
+ *
+ * virtual_page_Controller.php
+ * (c) Mar 15, 2015 lastprophet
+ * @author Anibal Gomez (lastprophet)
+ * Balero CMS Open Source
+ * Proyecto %100 mexicano bajo la licencia GNU.
+ * PHP P.O.O. (M.V.C.)
+ * Contacto: anibalgomez@icloud.com
+ *
+ **/
 
 /**
  * Multi-Language Fixes
  */
 
 class virtual_page_Controller extends ControllerHandler {
-	
+
+    private $objSecurity;
+
 	/**
 	* Variables para heredar los métodos de el modelo y la vista.
 	**/
@@ -31,7 +38,9 @@ class virtual_page_Controller extends ControllerHandler {
 	**/
 
 	public function __construct() {
-				
+
+        $this->objSecurity = new Security();
+
 		try {
 			$this->objModel = new virtual_page_Model();
 			$this->objView = new virtual_page_View();
@@ -64,10 +73,9 @@ class virtual_page_Controller extends ControllerHandler {
 	
 		try {
 			
-			if(isset($_GET['id'])) {	
-				$shield = new Security();
-				$id = $shield->shield($_GET['id']);
-				$this->objModel->lang = $_GET['sr'];
+			if(isset($_GET['id'])) {
+				$id = $this->objSecurity->toInt($_GET['id']);
+				$this->objModel->lang = $this->objSecurity->antiXSS($_GET['sr']);
 				$query_content = $this->objModel->get_virtual_page_by_id($id);
 				$this->objView->rows = $this->objModel->rows;
 				$md = new Markdown();
@@ -103,15 +111,14 @@ class virtual_page_Controller extends ControllerHandler {
 			 * Problem with CGI/Fast CGI as PHP Server API Fixed
 			 */
 	
-			$sr = $_GET['sr'];
+			$sr = $this->objSecurity->antiXSS($_GET['sr']);
 	
 			if(!isset($_GET['app'])) {
 				die(_GET_APP_DONT_EXIST);
 			}
 			
 			//$class_methods = get_class_methods("appController");
-			$security = new Security();
-			$shield_var = $security->shield($_GET['app']);
+			$shield_var = $this->objSecurity->antiXSS($_GET['app']);
 			$class_methods = get_class_methods($shield_var . "_Controller");
 			//var_dump($class_methods);
 	
@@ -144,11 +151,9 @@ class virtual_page_Controller extends ControllerHandler {
 						$min = $p->min();
 						
 						if(isset($_GET['id'])) {
-							$shield = new Security();
-							$id = $shield->shield($_GET['id']);
+							$id = $this->objSecurity->antiXSS($_GET['id']);
 							$query_content = $this->objModel->get_virtual_page_by_id($id);
 							$this->objView->rows = $this->objModel->rows;
-							$shield = new Security();
 							$md = new Markdown();
 							$this->objView->content .= "<div id=\"vp-content\">" . 
 														$md->defaultTransform($this->objView->print_virtual_page($query_content))

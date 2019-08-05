@@ -2,13 +2,17 @@
 
 /**
  *
- * blog_controller.php
- * (c) Jun 11, 2013 lastprophet 
+ * mod_blog_Controller.php
+ * (c) Jun 11, 2013 lastprophet
  * @author Anibal Gomez (lastprophet)
  * Balero CMS Open Source
  * Proyecto %100 mexicano bajo la licencia GNU.
  * PHP P.O.O. (M.V.C.)
  * Contacto: anibalgomez@icloud.com
+ *
+ * 15-03-2015 Multiple Authenticated Blind SQL Injections
+ * Reported By Gjoko Krstic <gjoko@zeroscience.mk>
+ * Fixed by Anibal Gomez <anibalgomez@icloud.com>
  *
 **/
 
@@ -16,10 +20,14 @@ class mod_blog_Controller extends configSettings {
 	
 	public $modModel;
 	public $modView;
+
+    private $objSecurity;
 		
 	public function __construct($menu) {
-		
-		// cargar vista de módulo.
+
+        $this->objSecurity = new Security();
+
+        // cargar vista de módulo.
 		try {
 			$this->modModel = new mod_blog_Model();
 			$this->modView = new mod_blog_View();
@@ -35,12 +43,6 @@ class mod_blog_Controller extends configSettings {
 		} catch (Exception $e) {
 			die($e->getMessage());
 		}
-		
-// 		switch ($_GET['sr']) {
-// 			case "prueba":
-// 				echo "funciona";
-// 				break;
-// 		}
 		
 	}
 	
@@ -66,45 +68,16 @@ class mod_blog_Controller extends configSettings {
 		
 		if(isset($_POST['submit'])) {
 			
-			$objSec = new Security();
-			$post_title = $objSec->shield($_POST['title']);
-			
-			/**
-			 *
-			 * @$plain_text Obtener el texto plano de el contenido que nos pasa el usuario.
-			 */
-			
-			$plain_text = "";
-			
-			
-			/**
-			 * 
-			 * @function htmlentities() no es compatible con acentos.
-			 */
-			
-			//$plain_text = htmlspecialchars($_POST['content']);
-			$plain_text = $objSec->noJS($_POST['content']);
-			
-			/**
-			 * 
-			 * Llamar la clase Markdown.
-			 */
-			
-			//$render_html = Markdown::defaultTransform($plain_text);
-			
-			//$this->modView->content .= $plain_text;
-			//$this->modView->content .= "----------------------";
-			//$this->modView->content .= $render_html;
-			
-			
-			
 			try {
 				if(empty($_POST['content'])) {
 					$this->modView->errorMessage(_BLOG_POST_ERROR);
 				}elseif(empty($_POST['title'])) {
 					$this->modView->errorMessage(_BLOG_POST_EMPTY_TITLE);
 				} else {
-					$this->modModel->add_post($post_title, $plain_text);
+					$this->modModel->add_post(
+                        $this->objSecurity->antiXSS($_POST['title']),
+                        $this->objSecurity->antiXSS($_POST['content'], 1)
+                    );
 					$this->modView->sucessMessage(_ADDED_SUCESSFULLY);
 				}
 			} catch (Exception $e) {
@@ -112,9 +85,7 @@ class mod_blog_Controller extends configSettings {
 			}
 			
 		} // end if
-		
-			//$this->modView->new_post_view();
-			
+
 	}
 			
 
@@ -138,11 +109,11 @@ class mod_blog_Controller extends configSettings {
 				if(isset($_POST['delete_post'])) {
 					$delete_post = $_POST['delete_post'];
 					for($i = 0; $i < count($delete_post); $i++) {
-						$this->modModel->delete_query($delete_post[$i]);
+						$this->modModel->delete_query($this->objSecurity->toInt($delete_post[$i]));
 						if($i != count($delete_post)-1) {
-							$string_array = $string_array . $delete_post[$i] . ", ";
+							$string_array = $string_array . $this->objSecurity->toInt($delete_post[$i]) . ", ";
 						} else {
-							$string_array = $string_array . $delete_post[$i] . "";
+							$string_array = $string_array . $this->objSecurity->toInt($delete_post[$i]) . "";
 						}
 					}
 					$message = "Post ID #: " .$string_array." " . _WAS_DELETED_OK;
@@ -191,9 +162,12 @@ class mod_blog_Controller extends configSettings {
 				if(empty($_POST['content'])) {
 					throw new Exception(" "._BLOG_POST_ERROR." ");
 				}
-				$objShield = new Security();
-				$id = $objShield->shield($_POST['id']);
-				$this->modModel->edit_post($id, $objShield->shield($_POST['title']), $objShield->noJS($_POST['content']));
+				$id = $this->objSecurity->toInt($_POST['id']);
+				$this->modModel->edit_post(
+                    $id,
+                    $this->objSecurity->antiXSS($_POST['title']),
+                    $this->objSecurity->antiXSS($_POST['content'], 1)
+                );
 				$this->modView->sucessMessage(_SAVED_SUCESSFULLY);
 			}
 				
@@ -205,9 +179,8 @@ class mod_blog_Controller extends configSettings {
 			/**
 			 * Acción para mostrar (importar) el editor cargado con el contenido que le corresponde
 			 */
-		
-			$objShield = new Security();
-			$id = $objShield->shield($_POST['id']);
+
+			$id = $this->objSecurity->antiXSS($_POST['id']);
 			
 			$this->modView->edit_view($id);
 				
@@ -217,10 +190,9 @@ class mod_blog_Controller extends configSettings {
 		
 				
 		} catch (Exception $e) {
-			$id = new Security();
-			$_id = $id->shield($_POST['id']);
+			$id = $this->objSecurity->toInt($_POST['id']);
 			$this->modView->errorMessage($e->getMessage());
-			$this->modView->edit_view($_id);
+			$this->modView->edit_view($id);
 		}
 		
 		//$this->modView->Render();
@@ -244,12 +216,15 @@ class mod_blog_Controller extends configSettings {
 			if(isset($_POST['delete_post'])) {
 				$delete_post = $_POST['delete_post'];
 				for($i = 0; $i < count($delete_post); $i++) {
-					echo $delete_post[$i] . " " . $_POST['code'];
-					$this->modModel->delete_query_multilang($delete_post[$i], $_POST['code']);
+					echo $this->objSecurity->toInt($delete_post[$i]) . " " . $this->objSecurity->antiXSS($_POST['code']);
+					$this->modModel->delete_query_multilang(
+                        $this->objSecurity->toInt($delete_post[$i]),
+                        $this->objSecurity->antiXSS($_POST['code'])
+                    );
 					if($i != count($delete_post)-1) {
-						$string_array = $string_array . $delete_post[$i] . ", ";
+						$string_array = $string_array . $this->objSecurity->toInt($delete_post[$i]) . ", ";
 					} else {
-						$string_array = $string_array . $delete_post[$i] . "";
+						$string_array = $string_array . $this->objSecurity->toInt($delete_post[$i]) . "";
 					}
 				}
 				$message = "Post ID #: " .$string_array." " . _WAS_DELETED_OK;
@@ -258,39 +233,27 @@ class mod_blog_Controller extends configSettings {
 			}
 		}elseif(isset($_POST['code'])) {
 
-			/**
-			 * Add or edit multilang post
-			 */
-			
-			$objShield = new Security();
-			
-		/**
-		 * Add multi-lang pages
-		 */
-		
-			$title = $_POST['title'];
-			$content = $_POST['content'];
-			
 			try {
-				
-				//$this->modModel->edit_post_multilang($_GET['id'], $objShield->shield($title), $objShield->noJS($content));
-				//$this->modView->sucessMessage(_EDIT_MULTI_SUCESS);
-				
-				$this->modModel->add_post_multilang($_POST['id'], $objShield->shield($title), $objShield->noJS($content), $_POST['code'], $_POST['id']);
+
+				$this->modModel->add_post_multilang(
+                    $this->objSecurity->toInt($_POST['id']),
+                    $this->objSecurity->antiXSS($_POST['title']),
+                    $this->objSecurity->antiXSS($_POST['content'], 1),
+                    $this->objSecurity->antiXSS($_POST['code']),
+                    $this->objSecurity->toInt($_POST['id'])
+                );
+
 				$this->modView->sucessMessage(_ADD_MULTI_SUCESS);
-				//$this->modView->Render();
-				
 				
 			} catch (Exception $e) {				
-				
-				//die("asdf");
+
 				$this->modView->errorMessage($e->getMessage());
 				
 			}
 		
 		} //end if
 		
-		$this->modView->edit_view($_POST['id']);
+		$this->modView->edit_view($this->objSecurity->toInt($_POST['id']));
 		
 	}
 	

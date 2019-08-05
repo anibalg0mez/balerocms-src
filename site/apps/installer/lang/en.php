@@ -16,7 +16,7 @@ define("_RETYPE_PASS", "Re-type pass");
 define("_NAME", "Name");
 define("_LAST_NAME", "Last name");
 define("_EMAIL", "E-mail");
-define("_NEWSLETTER", "Receive balerocms.com newsletter");
+define("_NEWSLETTER", "Receive balerocms.org newsletter");
 define("_ADMIN_CONFIGURATION", "Administrator configuration");
 define("_DB_HOST", "Database server");
 define("_DB_USER", "Database username");

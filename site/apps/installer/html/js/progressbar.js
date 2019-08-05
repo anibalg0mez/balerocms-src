@@ -12,7 +12,7 @@
  * (c) 2013
  * Adaptado para BaleroCMS 0.2+ por Anibal Gomez (anibalgomez@icloud.com)
  * Bifurcacion de "ProgressBar for jQuery" (https://github.com/kopipejst/progressbar)
- * balerocms.com
+ * balerocms.org
  *
  */
 function progressBar(percent, $element) {

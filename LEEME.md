@@ -3,11 +3,11 @@ Balero CMS
 
 * Documentación de Balero CMS en español:
 
-[http://docs.balerocms.com/](http://docs.balerocms.com/)
+[http://docs.balerocms.org/](http://docs.balerocms.org/)
 
 * Referencia de API:
 
-[http://api.balerocms.com/](http://api.balerocms.com/)
+[http://api.balerocms.org/](http://api.balerocms.org/)
 
 ===========
 Información
@@ -19,18 +19,18 @@ un juguete antigüo y representativo de México.
 
 Si deseas colaborar con el código visita:
 
-[http://developer.balerocms.com/](http://developer.balerocms.com/)
+[http://developer.balerocms.org/](http://developer.balerocms.org/)
 
 No olvides apoyar el software nacional.
 
 ==========
 
- * [http://www.balerocms.com/](balerocms.com)
+ * [http://www.balerocms.org/](balerocms.org)
  * [https://twitter.com/CMSBalero](@CMSBalero)
- * support@balerocms.com
+ * support@balerocms.org
 
 ==========
 
 Puedes escribirnos cualquier duda a:
 
-anibalgomez@balerocms.com
+anibalgomez@balerocms.org

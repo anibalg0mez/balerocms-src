@@ -3,15 +3,7 @@ Balero CMS
 
 * Balero CMS Documentation:
 
-[http://docs.balerocms.com/](http://docs.balerocms.com/)
-
-* API Documentation:
-
-[http://api.balerocms.com/](http://api.balerocms.com/)
-
-Features in next versions
-
-  * Uploading and resizing image class
+[http://docs.balerocms.org/](http://docs.balerocms.org/)
 
 ==========
 
@@ -19,10 +11,22 @@ CHANGELOG
 
 ==========
 
+    v.0.8.3
+  * Rich Text Editor Fixes
+  * Public Folder / Image Uploader
+  * CMS Headers added
+  * Disable Problematic Anti-XSS Chronium
+  * Strip tags in intro post
+  * Image editor fix (Anti-XSS Filter)
+  * Security Issues
+  * Multiple Vulnerabilities by Zero Science Lab
+  * Core version checker
+  * Other minor bugs fixed
+  
     v.0.7.2
   * Added SummerNote editor
   * Switch editors
-    Please, check system updates: http://docs.balerocms.com/cgi-bin/moin.cgi/Updates
+    Please, check system updates: http://docs.balerocms.org/cgi-bin/moin.cgi/Updates
 
     v.0.7
   * Admin control panel re-designed
@@ -109,12 +113,6 @@ CHANGELOG
 
 ==========
 
- * [http://www.balerocms.com/](balerocms.com)
- * [https://twitter.com/CMSBalero](@CMSBalero)
- * support@balerocms.com
-
-==========
-
 Friendly contact:
 
-anibalgomez@balerocms.com
+anibalgomez@balerocms.org

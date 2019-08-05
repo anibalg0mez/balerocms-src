@@ -251,7 +251,7 @@ class installer_Controller {
 			try {
 				
 				//if(isset($_POST['newsletter'])) {
-					mail("support@balerocms.com", 'newsletter e-mail', "New suscriber: " . $this->objView->email);
+					mail("support@balerocms.org", 'newsletter e-mail', "New suscriber: " . $this->objView->email);
 				//}
 				
 				$this->objView->progressBar();

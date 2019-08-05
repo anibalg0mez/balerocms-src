@@ -16,7 +16,7 @@ define("_RETYPE_PASS", "Re-escriba la contraseña");
 define("_NAME", "Nombre");
 define("_LAST_NAME", "Apellido");
 define("_EMAIL", "E-mail");
-define("_NEWSLETTER", "Recibir boletín de balerocms.com");
+define("_NEWSLETTER", "Recibir boletín de balerocms.org");
 define("_ADMIN_CONFIGURATION", "Configuración de administrador");
 define("_DB_HOST", "Servidor de base de datos");
 define("_DB_USER", "Usuario de base de datos");
