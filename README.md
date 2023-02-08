@@ -1,6 +1,8 @@
 Balero CMS
 ==========
 
+Balero CMS is an easy to use, lightweight and faster Content Management System.
+
 SETUP MANUALLY STEP
 ===================
 
