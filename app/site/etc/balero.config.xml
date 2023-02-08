@@ -59,7 +59,7 @@ NOTE: Do not edit balero.config.xml on eclipse in a live website
 		<description>Powered by Balero CMS.</description>
 		<keywords>_blank</keywords>
 		<!-- basepath for url friendly -->
-		<basepath>_blank</basepath>
+		<basepath>http://localhost:8002/</basepath>
 		<!-- multilanguage support -->
 		<multilang>no</multilang>
 		<editor>summernote</editor>

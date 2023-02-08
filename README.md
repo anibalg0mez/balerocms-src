@@ -1,118 +1,51 @@
-Balero CMS
+Balero CMS 
 ==========
 
-* Balero CMS Documentation:
+We are migrating CMS to PHP 7+. Instead you can try the legacy CMS (PHP 5) with Docker.
+Here is a development version through Docker Compose Setup!
 
-[http://docs.balerocms.org/](http://docs.balerocms.org/)
+DOWNLOAD DOCKER
+===============
 
-==========
+https://www.docker.com/products/docker-desktop/
 
-CHANGELOG
+    $ docker compose version
+    If the output shows the release downloaded in Step 3, you have successfully installed the package.
 
-==========
 
-    v.0.8.3
-  * Rich Text Editor Fixes
-  * Public Folder / Image Uploader
-  * CMS Headers added
-  * Disable Problematic Anti-XSS Chronium
-  * Strip tags in intro post
-  * Image editor fix (Anti-XSS Filter)
-  * Security Issues
-  * Multiple Vulnerabilities by Zero Science Lab
-  * Core version checker
-  * Other minor bugs fixed
-  
-    v.0.7.2
-  * Added SummerNote editor
-  * Switch editors
-    Please, check system updates: http://docs.balerocms.org/cgi-bin/moin.cgi/Updates
+DOWNLOAD CMS
+============
 
-    v.0.7
-  * Admin control panel re-designed
-  * Insert youtbe videos from toolbar editor (example: http://www.youtube.com/watch?v=SlKrelkKrQ8)
-  * Mobile Admin CP compatible
-  * Core's forms fixes
-  * MVC pattern Views fixes
-  * Core's fixes
-  * Admin modules fixes (virtual pages. blog, settings, languages)
-  * Some multi-language system changes
-  * Added HTML editor to Admin Panel
-  * Markdown and HTML compatible
-  * Added bootstrap framework to views
-  * MsgBox new styles
-  * Login page 'no-cache' fixes in Konqueror and other browsers
-  * Mobile language bar compatible
-  * And other minor bugs fixes
-  * Added bootstrap theme 'tundra'
-  * Tundra theme and virtual pages navigation bar fixes
-  * Router class changes
-  * Installer app changes and views fixes
-  * Security class compatible with markdown, youtube links and HTML content
+    $ git clone git@github.com:anibalg0mez/balerocms-src.git
+    $ git checkout development
 
-    v.0.6.2
-  * Installer auto-create database and fixes
-  
-    v.0.6
-  * Login and front-end template compatible with mobile and tablets
-  * New default theme added (responsive theme 'tundra')
-  * Some bugs fixes on installer and blog modules
-  * Language and pagination bar fixes
-  * Menu Highlight Virtual Pages
-  * Mobile menu added
-  
-    v.0.5.2
-  * Admin Panel Link on Post Example
-  * Blog's multilang fixes
-  * Virtual page's multilang fixes
+SETUP
+=====
 
-    v.0.5
-  * Few changes in core architecture
-  * New login page
-  * Few changes in Setup Wizard View
-  * Few changes in admin app
-  * Core fixes in:
-  * Index constants added (apps and mods)
-  * XML version control on config file
-  * Built-in apps constants fixes
+    $ cd balerocms-src
+    $ docker-compose up
 
-    v.0.4.2
-  * New styles in universe theme
-  * Now "installer" app has more compatibility with servers
-  * Language class (blog and virtual pages) fixes
-  * Some changes in view MsgBox under Admin Panel
+Run http://localhost:8002/ on your borwser. Follow installer setup. Done!
 
-    v.0.4
-  * Multilanguage Support
- 
-    v.0.3
-  * Removed ugly blog divs
-  * Lightweight package
-  * Pretty URLs support
-  * Basepath XML Settings
-  * Changes in Theme Views
-  * Core Fixes
-  * Apps Fixes
-  * Admin Control Panel Fixes
-  * Installer Fixes
-  * Light Installer View Added
-  * Core Router Fixes
-  * And other minor bugs fixes
+CREDENTIALS
+===========
 
-    v,0,2,5
-  * hotfix
- 
-    v.0.2.4
-  * editing virtual pages fix
- 
-    v.0.2.3
-  * security bugs fixed
- 
-    v.0.2.2
-  * stable version
+go to your ./balerocms-src/build/mysql/DockerFile to view your credentials!
+
+NOTE
+====
+
+This is a development version, if you want to download a stable version go to:
+
+https://github.com/anibalg0mez/balerocms-src/releases
+
+Referers
+========
+
+https://doc4dev.com/en/create-a-web-site-php-apache-mysql-in-5-minutes-with-docker/
 
 ==========
 
 Friendly contact:
 
-anibalgomez@balerocms.org
+balerocms@gmail.com
