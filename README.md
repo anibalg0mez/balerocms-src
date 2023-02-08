@@ -1,11 +1,28 @@
 Balero CMS
 ==========
 
-* Balero CMS Documentation:
+SETUP MANUALLY STEP
+===================
 
-[http://docs.balerocms.org/](http://docs.balerocms.org/)
+Download a version and unzip to your web server www folder.
 
-==========
+  $ curl https://github.com/anibalg0mez/balerocms-src/archive/refs/tags/0.8.3.zip -O -J -L
+  $ unzip balerocms-src-VERSION.zip -d /var/htdocs/www
+  $ cd balerocms-src-VERSION
+
+Start your web server and run setup install!
+
+http://localhost/balerocms-src/
+
+Done!
+
+SETUP WITH DOCKER
+=================
+
+  $ git@github.com:anibalg0mez/balerocms-src.git
+  $ git checkout development
+
+NOTE: The Docker Setup is in development progress, we are migrating to a full docker setup!
 
 CHANGELOG
 
