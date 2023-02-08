@@ -18,14 +18,6 @@ http://localhost/balerocms-src/
 
 Done!
 
-SETUP WITH DOCKER
-=================
-
-  $ git@github.com:anibalg0mez/balerocms-src.git
-  $ git checkout development
-
-NOTE: The Docker Setup is in development progress, we are migrating to a full docker setup!
-
 CHANGELOG
 
 ==========
@@ -131,6 +123,8 @@ CHANGELOG
   * stable version
 
 ==========
+
+Note that, Balero CMS is a legacy and unsupported software, we are migrating the code to a PHP 7+ or 8+ but only a framework!
 
 Friendly contact:
 
