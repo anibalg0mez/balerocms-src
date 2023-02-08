@@ -126,6 +126,10 @@ CHANGELOG
 
 Note that, Balero CMS is a legacy and unsupported software, we are migrating the code to a PHP 7+ or 8+ but only a framework!
 
+Maybe you want to checkout the framework based on this CMS.
+
+https://github.com/anibalg0mez/balero-framework
+
 Friendly contact:
 
 anibalgomez@balerocms.org
